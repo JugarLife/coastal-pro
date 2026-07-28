@@ -88,6 +88,8 @@ const PLANS = [
   },
 ];
 
+const RESERVE_CAP = 5;
+
 const CONCERNS = [
   {
     index: '01',
@@ -222,6 +224,24 @@ export default function Home() {
   const [annual, setAnnual] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState('');
+  const [reserveLeft, setReserveLeft] = useState<number | null>(null);
+
+  /* Reserve scarcity is counted from live Stripe subscriptions, never
+     hardcoded — the brief was explicit that fake scarcity is a
+     liability. Until Stripe is configured the endpoint reports
+     configured:false and the static note stands. */
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/availability')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (!cancelled && d?.configured) setReserveLeft(d.remaining);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   /* Header sits transparent over the hero and resolves to a solid
      paper bar once past it. */
@@ -663,11 +683,15 @@ export default function Home() {
                     </ul>
 
                     <div className="mt-auto">
-                      {plan.note && (
+                      {(plan.note || (isReserve && reserveLeft !== null)) && (
                         <p
                           className={`label mb-4 ${isReserve ? 'text-brass' : 'text-white/45'}`}
                         >
-                          {plan.note}
+                          {isReserve && reserveLeft !== null
+                            ? reserveLeft > 0
+                              ? `${reserveLeft} of ${RESERVE_CAP} places remaining`
+                              : 'Fully subscribed — waitlist open'
+                            : plan.note}
                         </p>
                       )}
                       <Link
@@ -1190,10 +1214,13 @@ export default function Home() {
               © 2026 Coastal Pro Property Care
             </span>
             <div className="flex gap-8">
-              {['Terms', 'Privacy'].map((l) => (
-                <a key={l} href="#" className="text-[13px] hover:text-paper transition-colors">
+              {[
+                ['Terms', '/terms'],
+                ['Privacy', '/privacy'],
+              ].map(([l, href]) => (
+                <Link key={href} href={href} className="text-[13px] hover:text-paper transition-colors">
                   {l}
-                </a>
+                </Link>
               ))}
             </div>
           </div>
