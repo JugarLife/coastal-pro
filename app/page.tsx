@@ -199,6 +199,12 @@ const FAQS = [
   },
 ];
 
+/* ⚠ PLACEHOLDER — these are written, not real, and are attributed to
+   named people. Replace with genuine testimonials (with the owners'
+   permission to use their name and suburb) or remove the section
+   BEFORE this site goes public. Publishing invented attributed
+   testimonials risks breaching s18 of the Australian Consumer Law.
+   Tracked in PRE-LAUNCH.md. */
 const TESTIMONIALS = [
   {
     quote: 'We are in Melbourne eleven months of the year. The report lands on the same day each month and I have stopped wondering what is happening down there.',
