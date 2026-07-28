@@ -107,7 +107,7 @@ export default function Home() {
     },
     {
       id: 'storm',
-      question: 'What happens if there's a storm or emergency?',
+      question: "What happens if there's a storm or emergency?",
       answer: "We inspect immediately, photograph all damage, and send you a detailed report within 24 hours. We'll provide urgent repair quotes from our trusted network. Emergency response is included—no additional cost.",
     },
     {
