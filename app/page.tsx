@@ -2,13 +2,12 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { ChevronDown, Check, Phone, Menu, X, ArrowRight } from 'lucide-react';
+import { ChevronDown, Check, Phone, Menu, X, ArrowRight, Shield, MapPin, Users, FileText, Wrench } from 'lucide-react';
 
 export default function Home() {
   const [expandedComparison, setExpandedComparison] = useState(false);
   const [expandedFaq, setExpandedFaq] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [hoveredPlan, setHoveredPlan] = useState<string | null>(null);
 
   const plans = [
     {
@@ -16,9 +15,8 @@ export default function Home() {
       name: 'Essential',
       price: 179,
       annual: 2148,
-      subtitle: 'Keeping an eye on your property.',
-      description: 'Monthly visits with comprehensive documentation.',
-      visits: '1 visit per month',
+      subtitle: 'Keeping watch',
+      visits: '1 visit / month',
       features: [
         'Monthly property inspection',
         'Exterior & building assessment',
@@ -30,16 +28,14 @@ export default function Home() {
         'Maintenance history & reports',
       ],
       discount: '5',
-      cta: 'Begin',
     },
     {
       id: 'signature',
       name: 'Signature',
       price: 299,
       annual: 3588,
-      subtitle: 'For properties that deserve attention.',
-      description: 'Twice-monthly visits with strategic oversight and coordination.',
-      visits: '2 visits per month',
+      subtitle: 'Full attention',
+      visits: '2 visits / month',
       features: [
         'Bi-monthly property visits',
         'Comprehensive condition assessment',
@@ -54,16 +50,14 @@ export default function Home() {
       ],
       discount: '10',
       badge: 'Most Chosen',
-      cta: 'Select Plan',
     },
     {
       id: 'reserve',
       name: 'Reserve',
       price: 499,
       annual: 5988,
-      subtitle: 'Premium care for Peninsula residences.',
-      description: 'Weekly attendance with dedicated oversight and proactive management.',
-      visits: 'Weekly attendance',
+      subtitle: 'Complete care',
+      visits: 'Weekly visits',
       features: [
         'Weekly property visitation',
         'Comprehensive condition ratings',
@@ -80,7 +74,6 @@ export default function Home() {
       ],
       discount: '15',
       badge: 'Limited Availability',
-      cta: 'Request Access',
     },
   ];
 
@@ -88,70 +81,63 @@ export default function Home() {
     {
       id: 'whats-included',
       question: "What's covered, and what's quoted separately?",
-      answer: "Memberships include all inspections, monitoring, documentation, and reporting. Repair work—whether we identify it or you request it—is quoted separately. You'll receive detailed specifications and photography for every quote. We never surprise you with costs.",
+      answer: "Memberships include all inspections, monitoring, documentation, and reporting. Repair work is quoted separately. You receive detailed specifications and photography for every quote.",
     },
     {
       id: 'cancellation',
       question: 'Can I pause or cancel anytime?',
-      answer: "Yes. No lock-in contracts. Cancel or pause whenever you need to. We'll provide a complete handover of all documentation, photos, maintenance history, and recommendations.",
+      answer: "Yes. No lock-in contracts. Cancel or pause whenever needed. Complete handover of all documentation, photos, and maintenance history.",
     },
     {
       id: 'insurance',
       question: 'Are you fully insured?',
-      answer: "Completely. We carry full public liability and professional indemnity insurance. Any trades or contractors we coordinate carry appropriate licensing and insurance. Your property is protected.",
+      answer: "Completely. Full public liability and professional indemnity insurance. All coordinated trades carry appropriate licensing and insurance.",
     },
     {
       id: 'keys',
       question: 'How do you handle secure access?',
-      answer: "Keys are stored in our secure facility. We access your property only on scheduled visit dates. Every entry is logged and reported to you. We're happy to discuss alternative access arrangements if needed.",
+      answer: "Keys stored securely. Access only on scheduled dates. Every entry logged and reported. Alternative access arrangements available.",
     },
     {
       id: 'storm',
       question: "What happens if there's a storm or emergency?",
-      answer: "We inspect immediately, photograph all damage, and send you a detailed report within 24 hours. We'll provide urgent repair quotes from our trusted network. Emergency response is included—no additional cost.",
+      answer: "Immediate inspection, photograph damage, detailed report within 24 hours. Urgent repair quotes from trusted network. Emergency response included.",
     },
     {
       id: 'quotes',
       question: 'How do quotes and repairs work?',
-      answer: "Once we identify work needed, we source quotes from our vetted tradespeople. You receive detailed quotes with photos, timelines, and pricing. You decide what to fix and when. We manage it all if you proceed.",
+      answer: "Once work is identified, we source quotes from vetted tradespeople. You receive detailed specifications with pricing. You decide what to fix and when.",
     },
   ];
 
   return (
     <>
-      {/* Premium Mobile CTA Bar */}
-      <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-navy to-navy/95 backdrop-blur-sm text-white py-3 px-4 lg:hidden z-40 flex gap-3 border-t border-brass/20">
-        <button className="flex-1 bg-gradient-to-r from-coastal-blue to-blue-600 text-white py-2.5 rounded-lg font-semibold text-sm flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-coastal-blue/30 transition-all duration-300">
+      {/* Premium Mobile CTA */}
+      <div className="fixed bottom-0 left-0 right-0 bg-navy/95 backdrop-blur-sm text-white py-3 px-4 lg:hidden z-40 flex gap-3 border-t border-brass/30">
+        <button className="flex-1 bg-coastal-blue text-white py-2.5 rounded-lg font-semibold text-sm flex items-center justify-center gap-2 hover:bg-blue-600 transition-all">
           <Phone size={16} />
           Call
         </button>
-        <button className="flex-1 bg-gradient-to-r from-brass to-yellow-600 text-navy py-2.5 rounded-lg font-semibold text-sm hover:shadow-lg hover:shadow-brass/30 transition-all duration-300">
-          View Plans
+        <button className="flex-1 bg-brass text-navy py-2.5 rounded-lg font-semibold text-sm hover:bg-yellow-600 transition-all">
+          Plans
         </button>
       </div>
 
       {/* Premium Header */}
-      <header className="sticky top-0 bg-white/95 backdrop-blur-md z-50 border-b border-gray-100">
+      <header className="sticky top-0 bg-white/95 backdrop-blur-md z-50 border-b border-brass/20">
         <div className="max-w-7xl mx-auto px-4 lg:px-8 py-5 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="font-serif font-bold text-navy text-xl tracking-tight">Coastal Pro</span>
-            <span className="hidden sm:block text-gray-400 text-sm">Property Care</span>
-          </div>
+          <span className="font-serif font-bold text-navy text-xl">Coastal Pro</span>
 
-          <nav className="hidden lg:flex gap-12 text-sm font-medium">
-            <a href="#memberships" className="text-gray-600 hover:text-coastal-blue transition-colors duration-200">Memberships</a>
-            <a href="#report" className="text-gray-600 hover:text-coastal-blue transition-colors duration-200">Reports</a>
-            <a href="#faq" className="text-gray-600 hover:text-coastal-blue transition-colors duration-200">FAQ</a>
-            <a href="#contact" className="text-gray-600 hover:text-coastal-blue transition-colors duration-200">Contact</a>
+          <nav className="hidden lg:flex gap-12 text-sm font-semibold">
+            <a href="#memberships" className="text-gray-600 hover:text-brass transition">Memberships</a>
+            <a href="#report" className="text-gray-600 hover:text-brass transition">Reports</a>
+            <a href="#faq" className="text-gray-600 hover:text-brass transition">FAQ</a>
+            <a href="#contact" className="text-gray-600 hover:text-brass transition">Contact</a>
           </nav>
 
           <div className="hidden lg:flex gap-3">
-            <button className="px-6 py-2.5 text-coastal-blue border-2 border-coastal-blue rounded-lg font-semibold hover:bg-coastal-blue hover:text-white transition-all duration-300">
-              Call
-            </button>
-            <button className="px-6 py-2.5 bg-gradient-to-r from-coastal-blue to-blue-600 text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-coastal-blue/30 transition-all duration-300">
-              View Plans
-            </button>
+            <button className="px-6 py-2.5 text-brass border-2 border-brass rounded-lg font-semibold hover:bg-brass hover:text-navy transition">Call</button>
+            <button className="px-6 py-2.5 bg-brass text-navy rounded-lg font-semibold hover:bg-yellow-600 transition">View Plans</button>
           </div>
 
           <button className="lg:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
@@ -160,168 +146,131 @@ export default function Home() {
         </div>
 
         {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-gray-100 bg-white py-4 px-4 flex flex-col gap-3">
-            <a href="#memberships" className="text-gray-700 font-medium">Memberships</a>
-            <a href="#report" className="text-gray-700 font-medium">Reports</a>
-            <a href="#faq" className="text-gray-700 font-medium">FAQ</a>
-            <a href="#contact" className="text-gray-700 font-medium">Contact</a>
+          <div className="lg:hidden border-t border-brass/20 bg-white py-4 px-4 flex flex-col gap-3">
+            <a href="#memberships" className="text-gray-700 font-semibold">Memberships</a>
+            <a href="#report" className="text-gray-700 font-semibold">Reports</a>
+            <a href="#faq" className="text-gray-700 font-semibold">FAQ</a>
+            <a href="#contact" className="text-gray-700 font-semibold">Contact</a>
           </div>
         )}
       </header>
 
       <main>
-        {/* 1. ELITE Hero Section */}
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* ============ SECTION 1: HERO - Navy Gradient Drama ============ */}
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-navy via-dark-navy to-navy">
           <Image
             src="/hero-bg.jpg"
             alt="Mornington Peninsula coastal property"
             fill
-            className="object-cover absolute inset-0 -z-10"
+            className="object-cover absolute inset-0 -z-10 opacity-40"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-dark-navy/60 via-navy/50 to-navy/40 -z-10" />
+          <div className="absolute inset-0 bg-gradient-to-b from-navy/70 to-dark-navy/80 -z-10" />
 
           <div className="text-center text-white max-w-4xl px-4 relative z-10">
-            <div className="mb-8 inline-block">
-              <span className="text-sm font-semibold text-brass tracking-widest uppercase">Trusted by Peninsula Property Owners</span>
+            <div className="mb-6 inline-block px-4 py-2 bg-brass/20 rounded-full border border-brass/40">
+              <span className="text-sm font-semibold text-brass">TRUSTED BY PENINSULA OWNERS</span>
             </div>
             
-            <h1 className="text-6xl lg:text-7xl xl:text-8xl font-serif font-bold mb-6 leading-tight tracking-tight">
-              Your property.<br /><span className="text-brass">Professionally cared for.</span>
+            <h1 className="text-6xl lg:text-8xl font-serif font-bold mb-8 leading-tight">
+              Your property.<br /><span className="text-brass">Professionally protected.</span>
             </h1>
             
-            <p className="text-xl lg:text-2xl text-white/90 mb-16 font-light max-w-3xl mx-auto leading-relaxed">
-              Premium property oversight for holiday homes and coastal residences. Monthly inspections, detailed reporting, and complete peace of mind.
+            <p className="text-xl lg:text-2xl text-white/80 mb-12 font-light max-w-3xl mx-auto">
+              Monthly inspections. Detailed reports. Complete peace of mind for your Peninsula home.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-              <button className="bg-gradient-to-r from-coastal-blue to-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:shadow-2xl hover:shadow-coastal-blue/40 transition-all duration-300 flex items-center justify-center gap-2 group">
-                View Memberships <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              <button className="bg-brass text-navy px-10 py-4 rounded-lg font-bold text-lg hover:bg-yellow-500 transition-all flex items-center justify-center gap-2 shadow-lg">
+                View Memberships <ArrowRight size={20} />
               </button>
-              <button className="bg-white/15 border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white/25 transition-all duration-300 backdrop-blur-sm">
+              <button className="bg-white/15 border-2 border-white text-white px-10 py-4 rounded-lg font-bold text-lg hover:bg-white/25 transition backdrop-blur">
                 Book Consultation
               </button>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-8 lg:gap-12 text-sm text-white/90">
+            <div className="flex flex-wrap justify-center gap-10 text-white/90">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-brass/30 flex items-center justify-center">
-                  <Check size={16} className="text-brass" />
-                </div>
-                <span className="font-medium">Fully Insured</span>
+                <Shield size={20} className="text-brass" />
+                <span className="font-semibold">Fully Insured</span>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-brass/30 flex items-center justify-center">
-                  <Check size={16} className="text-brass" />
-                </div>
-                <span className="font-medium">Qualified Tradespeople</span>
+                <Check size={20} className="text-brass" />
+                <span className="font-semibold">Qualified Tradespeople</span>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-brass/30 flex items-center justify-center">
-                  <Check size={16} className="text-brass" />
-                </div>
-                <span className="font-medium">Locally Based</span>
+                <MapPin size={20} className="text-brass" />
+                <span className="font-semibold">Locally Based</span>
               </div>
             </div>
           </div>
         </section>
 
-        {/* 2. The Problem - Refined */}
-        <section className="py-24 lg:py-40 px-4 lg:px-8 bg-gradient-to-b from-sand/50 to-sand">
-          <div className="max-w-4xl mx-auto">
-            <div className="mb-20">
-              <h2 className="text-5xl lg:text-6xl font-serif font-bold text-navy mb-6 text-center">
-                The absence of oversight becomes the source of risk.
+        {/* ============ SECTION 2: PROBLEM - Sand with Cards ============ */}
+        <section className="py-32 px-4 lg:px-8 bg-gradient-to-b from-sand via-sand/80 to-white">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-20">
+              <h2 className="text-6xl lg:text-7xl font-serif font-bold text-navy mb-6">
+                Distance creates risk
               </h2>
-              <p className="text-center text-gray-600 text-lg">
-                Distance creates vulnerability. Without regular attention, small issues compound into expensive problems.
+              <p className="text-xl text-gray-700">
+                Without regular oversight, small issues compound into expensive problems
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300">
-                <div className="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center mb-6">
-                  <span className="text-2xl">🌊</span>
+              {[
+                { icon: '🌊', title: 'Storm Damage', desc: 'Found weeks later when structural impact spreads and costs multiply.' },
+                { icon: '🪵', title: 'Timber Decay', desc: 'Small rot becomes structural failure. Prevention costs far less than replacement.' },
+                { icon: '📞', title: 'No Local Help', desc: 'When crisis hits, you're without an advocate who knows your property.' }
+              ].map((item, i) => (
+                <div key={i} className="bg-white rounded-2xl p-10 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-l-4 border-brass">
+                  <div className="text-5xl mb-6">{item.icon}</div>
+                  <h3 className="text-2xl font-serif font-bold text-navy mb-4">{item.title}</h3>
+                  <p className="text-gray-700 text-lg leading-relaxed">{item.desc}</p>
                 </div>
-                <h3 className="text-xl font-serif font-bold text-navy mb-3">Storm Damage Spreads</h3>
-                <p className="text-gray-600">Found weeks later when it's already affected structural integrity and cost multiplies.</p>
-              </div>
-              
-              <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300">
-                <div className="w-14 h-14 bg-orange-100 rounded-full flex items-center justify-center mb-6">
-                  <span className="text-2xl">🪵</span>
-                </div>
-                <h3 className="text-xl font-serif font-bold text-navy mb-3">Timber Decay Accelerates</h3>
-                <p className="text-gray-600">Small rot becomes structural failure. Prevention costs less than replacement.</p>
-              </div>
-              
-              <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300">
-                <div className="w-14 h-14 bg-yellow-100 rounded-full flex items-center justify-center mb-6">
-                  <span className="text-2xl">📞</span>
-                </div>
-                <h3 className="text-xl font-serif font-bold text-navy mb-3">No Local Advocate</h3>
-                <p className="text-gray-600">When something goes wrong, you're alone. No one knows your property or your needs.</p>
-              </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* 3. How It Works - Visual Flow */}
-        <section className="py-24 lg:py-40 px-4 lg:px-8 bg-white">
+        {/* ============ SECTION 3: HOW IT WORKS - White Gradient Flow ============ */}
+        <section className="py-32 px-4 lg:px-8 bg-gradient-to-b from-white to-light-gray">
           <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-20">
-              <h2 className="text-5xl lg:text-6xl font-serif font-bold text-navy mb-6">
-                How oversight works
-              </h2>
-              <p className="text-lg text-gray-600">
-                Three simple steps. Complete transparency. Your property, professionally managed.
-              </p>
-            </div>
+            <h2 className="text-6xl lg:text-7xl font-serif font-bold text-navy text-center mb-20">
+              Three simple steps
+            </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-              <div className="text-center group">
-                <div className="w-24 h-24 bg-gradient-to-br from-coastal-blue/20 to-blue-500/20 rounded-full flex items-center justify-center mb-8 mx-auto group-hover:shadow-xl group-hover:shadow-coastal-blue/20 transition-all duration-300">
-                  <span className="text-5xl font-serif font-bold text-coastal-blue">1</span>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+              {[
+                { num: '01', title: 'Scheduled Visits', desc: 'Regular inspections on your calendar. Consistent. Documented. Predictable.', icon: '📅' },
+                { num: '02', title: 'Thorough Assessment', desc: 'Every area inspected. High-res photos. Condition ratings. Priority flagging.', icon: '🔍' },
+                { num: '03', title: 'Digital Reports', desc: 'Complete documentation within 24 hours. Photos, ratings, recommendations.', icon: '📊' }
+              ].map((step, i) => (
+                <div key={i} className="relative">
+                  <div className="absolute -top-8 left-0 text-8xl font-serif font-bold text-brass/10">{step.num}</div>
+                  <div className="bg-gradient-to-br from-white to-light-gray rounded-xl p-10 border-2 border-gray-200 hover:border-brass transition-all">
+                    <div className="text-5xl mb-6">{step.icon}</div>
+                    <h3 className="text-2xl font-serif font-bold text-navy mb-4">{step.title}</h3>
+                    <p className="text-gray-700 text-lg">{step.desc}</p>
+                  </div>
                 </div>
-                <h3 className="text-2xl font-serif font-bold text-navy mb-3">Scheduled Visits</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Regular inspections on your calendar. Monthly, bi-monthly, or weekly. Consistent, predictable, documented.
-                </p>
-              </div>
-
-              <div className="text-center group">
-                <div className="w-24 h-24 bg-gradient-to-br from-coastal-blue/20 to-blue-500/20 rounded-full flex items-center justify-center mb-8 mx-auto group-hover:shadow-xl group-hover:shadow-coastal-blue/20 transition-all duration-300">
-                  <span className="text-5xl font-serif font-bold text-coastal-blue">2</span>
-                </div>
-                <h3 className="text-2xl font-serif font-bold text-navy mb-3">Thorough Assessment</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Detailed inspection of every area. High-resolution photos. Condition ratings. Priority flagging of any issues.
-                </p>
-              </div>
-
-              <div className="text-center group">
-                <div className="w-24 h-24 bg-gradient-to-br from-coastal-blue/20 to-blue-500/20 rounded-full flex items-center justify-center mb-8 mx-auto group-hover:shadow-xl group-hover:shadow-coastal-blue/20 transition-all duration-300">
-                  <span className="text-5xl font-serif font-bold text-coastal-blue">3</span>
-                </div>
-                <h3 className="text-2xl font-serif font-bold text-navy mb-3">Digital Report</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Complete documentation delivered within 24 hours. Photos, ratings, recommendations, and quotes if needed.
-                </p>
-              </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* 4. ELITE Memberships */}
-        <section id="memberships" className="py-24 lg:py-40 px-4 lg:px-8 bg-gradient-to-b from-light-gray to-white">
-          <div className="max-w-7xl mx-auto">
+        {/* ============ SECTION 4: MEMBERSHIPS - Dark Navy Background ============ */}
+        <section id="memberships" className="py-32 px-4 lg:px-8 bg-gradient-to-b from-navy via-dark-navy to-navy text-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-brass/5 rounded-full -z-0" />
+          
+          <div className="max-w-7xl mx-auto relative z-10">
             <div className="text-center mb-20">
-              <span className="text-sm font-semibold text-brass tracking-widest uppercase mb-4 block">Membership Options</span>
-              <h2 className="text-5xl lg:text-6xl font-serif font-bold text-navy mb-6">
+              <h2 className="text-6xl lg:text-7xl font-serif font-bold mb-6">
                 Three tiers of care
               </h2>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Choose the level of attention your property deserves. All include full insurance, qualified tradespeople, and detailed reporting.
+              <p className="text-xl text-white/80 max-w-2xl mx-auto">
+                Each tier includes full insurance, qualified tradespeople, and detailed reporting.
               </p>
             </div>
 
@@ -329,120 +278,94 @@ export default function Home() {
               {plans.map((plan) => (
                 <div
                   key={plan.id}
-                  onMouseEnter={() => setHoveredPlan(plan.id)}
-                  onMouseLeave={() => setHoveredPlan(null)}
-                  className={`relative rounded-2xl transition-all duration-300 overflow-hidden ${
+                  className={`relative rounded-2xl overflow-hidden transition-all duration-300 ${
                     plan.id === 'signature'
-                      ? 'md:scale-105 md:shadow-2xl bg-gradient-to-br from-navy to-navy/95 text-white ring-2 ring-brass'
+                      ? 'md:scale-110 md:shadow-2xl md:shadow-brass/40 ring-2 ring-brass bg-gradient-to-br from-brass via-yellow-600 to-brass'
                       : plan.id === 'reserve'
-                      ? 'bg-white ring-2 ring-brass shadow-lg'
-                      : 'bg-white shadow-md hover:shadow-xl'
+                      ? 'ring-2 ring-brass bg-gradient-to-br from-navy to-dark-navy'
+                      : 'bg-white/10 backdrop-blur border border-white/20'
                   }`}
                 >
                   {plan.badge && (
-                    <div className={`absolute top-0 right-0 px-6 py-2 text-sm font-semibold ${
+                    <div className={`absolute top-0 right-0 px-6 py-3 text-sm font-bold ${
                       plan.id === 'signature' 
-                        ? 'bg-gradient-to-r from-coastal-blue to-blue-600 text-white' 
-                        : 'bg-gradient-to-r from-brass to-yellow-600 text-navy'
+                        ? 'bg-navy text-brass' 
+                        : 'bg-brass text-navy'
                     }`}>
                       {plan.badge}
                     </div>
                   )}
 
-                  <div className="p-10">
-                    <h3 className={`text-3xl font-serif font-bold mb-3 ${
-                      plan.id === 'signature' ? 'text-white' : 'text-navy'
-                    }`}>
+                  <div className={`p-10 ${plan.id === 'signature' ? 'text-navy' : 'text-white'}`}>
+                    <h3 className={`text-4xl font-serif font-bold mb-2 ${plan.id === 'signature' ? 'text-navy' : 'text-white'}`}>
                       {plan.name}
                     </h3>
-                    
-                    <p className={`text-sm mb-8 ${
-                      plan.id === 'signature' ? 'text-white/80' : 'text-gray-600'
-                    }`}>
+                    <p className={`text-sm mb-8 ${plan.id === 'signature' ? 'text-navy/80' : 'text-white/80'}`}>
                       {plan.subtitle}
                     </p>
 
-                    <div className="mb-8 pb-8 border-b border-gray-200 dark:border-white/20">
-                      <div className={`text-5xl font-serif font-bold mb-2 ${
-                        plan.id === 'signature' ? 'text-white' : 'text-navy'
-                      }`}>
+                    <div className={`mb-8 pb-8 border-b ${plan.id === 'signature' ? 'border-navy/30' : 'border-white/20'}`}>
+                      <div className={`text-6xl font-serif font-bold mb-2 ${plan.id === 'signature' ? 'text-navy' : 'text-brass'}`}>
                         ${plan.price}
                       </div>
-                      <p className={`text-sm ${
-                        plan.id === 'signature' ? 'text-white/70' : 'text-gray-600'
-                      }`}>
+                      <p className={`text-sm ${plan.id === 'signature' ? 'text-navy/70' : 'text-white/70'}`}>
                         per month / ${plan.annual} annually
                       </p>
                     </div>
 
-                    <div className={`text-sm font-semibold mb-8 pb-8 border-b border-gray-200 dark:border-white/20 ${
-                      plan.id === 'signature' ? 'text-white' : 'text-navy'
-                    }`}>
+                    <div className={`text-lg font-bold mb-8 pb-8 border-b ${plan.id === 'signature' ? 'border-navy/30 text-navy' : 'border-white/20 text-brass'}`}>
                       {plan.visits}
                     </div>
 
                     <ul className="space-y-4 mb-10">
                       {plan.features.map((feature, idx) => (
-                        <li key={idx} className={`flex gap-3 text-sm ${
-                          plan.id === 'signature' ? 'text-white' : 'text-gray-700'
-                        }`}>
-                          <Check size={20} className={plan.id === 'signature' ? 'text-brass flex-shrink-0 mt-0.5' : 'text-brass flex-shrink-0 mt-0.5'} />
+                        <li key={idx} className={`flex gap-3 text-sm ${plan.id === 'signature' ? 'text-navy' : 'text-white'}`}>
+                          <Check size={20} className={`flex-shrink-0 mt-0.5 ${plan.id === 'signature' ? 'text-navy' : 'text-brass'}`} />
                           <span>{feature}</span>
                         </li>
                       ))}
                     </ul>
 
-                    <button className={`w-full py-3.5 rounded-lg font-semibold text-center transition-all duration-300 group ${
+                    <button className={`w-full py-4 rounded-lg font-bold text-lg transition-all ${
                       plan.id === 'signature'
-                        ? 'bg-gradient-to-r from-coastal-blue to-blue-600 text-white hover:shadow-xl hover:shadow-coastal-blue/40'
+                        ? 'bg-navy text-brass hover:bg-dark-navy'
                         : plan.id === 'reserve'
-                        ? 'bg-gradient-to-r from-brass to-yellow-600 text-navy hover:shadow-xl hover:shadow-brass/40'
-                        : 'bg-navy text-white hover:bg-dark-navy'
+                        ? 'bg-brass text-navy hover:bg-yellow-500'
+                        : 'bg-white text-navy hover:bg-gray-200'
                     }`}>
-                      {plan.cta} <ArrowRight size={16} className="inline group-hover:translate-x-1 transition-transform" />
+                      Select Plan
                     </button>
 
-                    <p className={`text-xs text-center mt-6 ${
-                      plan.id === 'signature' ? 'text-white/60' : 'text-gray-500'
-                    }`}>
-                      {plan.discount}% off eligible carpentry & repairs
+                    <p className={`text-xs text-center mt-6 ${plan.id === 'signature' ? 'text-navy/60' : 'text-white/60'}`}>
+                      {plan.discount}% off carpentry & repairs
                     </p>
                   </div>
                 </div>
               ))}
             </div>
-
-            <p className="text-center text-sm text-gray-600">
-              Memberships cover inspections, monitoring, and reporting. Repair work is quoted separately—never a hidden cost.
-            </p>
           </div>
         </section>
 
-        {/* 5. Comparison Table */}
-        <section className="py-16 lg:py-24 px-4 lg:px-8 bg-white">
+        {/* ============ SECTION 5: COMPARISON - Light Gray ============ */}
+        <section className="py-24 lg:py-32 px-4 lg:px-8 bg-gradient-to-b from-light-gray to-white">
           <div className="max-w-4xl mx-auto">
             <button
               onClick={() => setExpandedComparison(!expandedComparison)}
-              className="w-full flex items-center justify-between p-8 bg-light-gray hover:bg-gray-100 rounded-2xl transition-all duration-300 group"
+              className="w-full flex items-center justify-between p-8 bg-white rounded-2xl border-2 border-gray-200 hover:border-brass transition-all shadow-md"
             >
-              <span className="text-lg font-semibold text-navy">Compare all features</span>
-              <ChevronDown
-                size={28}
-                className={`text-brass transition-transform duration-300 ${
-                  expandedComparison ? 'rotate-180' : ''
-                }`}
-              />
+              <span className="text-2xl font-serif font-bold text-navy">Compare all features</span>
+              <ChevronDown size={32} className={`text-brass transition-transform duration-300 ${expandedComparison ? 'rotate-180' : ''}`} />
             </button>
 
             {expandedComparison && (
-              <div className="mt-8 overflow-x-auto rounded-2xl border border-gray-200">
+              <div className="mt-8 bg-white rounded-2xl overflow-hidden border-2 border-brass/30">
                 <table className="w-full">
                   <thead>
-                    <tr className="bg-light-gray border-b border-gray-200">
-                      <th className="text-left py-6 px-6 font-semibold text-navy">Feature</th>
-                      <th className="text-center py-6 px-6 font-semibold text-navy">Essential</th>
-                      <th className="text-center py-6 px-6 font-semibold text-navy">Signature</th>
-                      <th className="text-center py-6 px-6 font-semibold text-navy">Reserve</th>
+                    <tr className="bg-gradient-to-r from-brass/20 to-yellow-100 border-b-2 border-brass">
+                      <th className="text-left py-6 px-6 font-serif font-bold text-navy">Feature</th>
+                      <th className="text-center py-6 px-6 font-serif font-bold text-navy">Essential</th>
+                      <th className="text-center py-6 px-6 font-serif font-bold text-brass">Signature</th>
+                      <th className="text-center py-6 px-6 font-serif font-bold text-brass">Reserve</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -462,20 +385,20 @@ export default function Home() {
                       'Quarterly comprehensive reports',
                       'Dedicated contact person',
                     ].map((feature, idx) => (
-                      <tr key={idx} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                        <td className="py-5 px-6 text-gray-700 font-medium">{feature}</td>
-                        <td className="text-center py-5 px-6">
+                      <tr key={idx} className={`border-b border-gray-100 hover:bg-yellow-50 transition-colors ${idx % 2 === 0 ? 'bg-gray-50/50' : ''}`}>
+                        <td className="py-6 px-6 text-gray-800 font-semibold">{feature}</td>
+                        <td className="text-center py-6 px-6">
                           {['Scheduled visits', 'Exterior & building checks', 'Roof, gutter & downpipe inspection', 'Timber, decks & fence assessment', 'Security & access checks', 'Storm & water monitoring', 'Pre-arrival inspection', 'Digital photo documentation', 'Maintenance history & reports'].includes(feature) && (
-                            <Check size={22} className="mx-auto text-brass" />
+                            <Check size={24} className="mx-auto text-brass font-bold" />
                           )}
                         </td>
-                        <td className="text-center py-5 px-6">
+                        <td className="text-center py-6 px-6">
                           {feature !== 'Quarterly comprehensive reports' && feature !== 'Dedicated contact person' && (
-                            <Check size={22} className="mx-auto text-coastal-blue" />
+                            <Check size={24} className="mx-auto text-brass font-bold" />
                           )}
                         </td>
-                        <td className="text-center py-5 px-6">
-                          <Check size={22} className="mx-auto text-brass" />
+                        <td className="text-center py-6 px-6">
+                          <Check size={24} className="mx-auto text-brass font-bold" />
                         </td>
                       </tr>
                     ))}
@@ -486,287 +409,231 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 6. Property Report */}
-        <section id="report" className="py-24 lg:py-40 px-4 lg:px-8 bg-gradient-to-b from-light-gray to-sand/30">
+        {/* ============ SECTION 6: REPORT - White with Accent ============ */}
+        <section id="report" className="py-32 px-4 lg:px-8 bg-white">
           <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-20">
-              <span className="text-sm font-semibold text-brass tracking-widest uppercase mb-4 block">Your Advantage</span>
-              <h2 className="text-5xl lg:text-6xl font-serif font-bold text-navy mb-6">
+            <div className="text-center mb-24">
+              <h2 className="text-6xl lg:text-7xl font-serif font-bold text-navy mb-6">
                 The Property Care Report
               </h2>
-              <p className="text-xl text-gray-600">
-                Every visit produces professional documentation. This is how you know what's happening to your property.
+              <p className="text-xl text-gray-700">
+                Professional documentation. Your property, fully understood.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="bg-white rounded-2xl p-10 shadow-xl">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+              <div className="bg-gradient-to-br from-light-gray to-sand rounded-3xl p-12 shadow-xl">
                 <div className="space-y-8">
                   <div>
-                    <p className="text-xs font-semibold text-brass uppercase tracking-wide mb-3">Condition Rating</p>
+                    <p className="text-xs font-bold text-brass uppercase tracking-widest mb-4">Condition Rating</p>
                     <div className="flex items-center gap-4">
-                      <div className="flex-1 h-3 bg-gray-200 rounded-full overflow-hidden">
-                        <div className="h-full w-3/4 bg-gradient-to-r from-coastal-blue to-blue-600 rounded-full" />
+                      <div className="flex-1 h-4 bg-gray-300 rounded-full overflow-hidden">
+                        <div className="h-full w-3/4 bg-gradient-to-r from-brass to-yellow-500 rounded-full" />
                       </div>
-                      <span className="text-lg font-bold text-navy">75%</span>
+                      <span className="text-2xl font-bold text-brass">75%</span>
                     </div>
                   </div>
 
                   <div>
-                    <p className="text-xs font-semibold text-brass uppercase tracking-wide mb-4">Priority Recommendations</p>
-                    <div className="space-y-3">
-                      <div className="flex gap-3 items-start bg-red-50 p-4 rounded-lg">
-                        <span className="bg-red-200 text-red-700 px-3 py-1 rounded text-xs font-bold flex-shrink-0 mt-0.5">Urgent</span>
-                        <span className="text-sm text-gray-700">Gutter replacement needed on north elevation</span>
+                    <p className="text-xs font-bold text-brass uppercase tracking-widest mb-6">Priority Issues</p>
+                    <div className="space-y-4">
+                      <div className="flex gap-4 items-start bg-red-50 p-6 rounded-xl border-l-4 border-red-400">
+                        <span className="bg-red-400 text-white px-4 py-2 rounded-lg text-xs font-bold flex-shrink-0">URGENT</span>
+                        <span className="text-gray-800 font-semibold">Gutter replacement needed on north elevation</span>
                       </div>
-                      <div className="flex gap-3 items-start bg-yellow-50 p-4 rounded-lg">
-                        <span className="bg-yellow-200 text-yellow-800 px-3 py-1 rounded text-xs font-bold flex-shrink-0 mt-0.5">Soon</span>
-                        <span className="text-sm text-gray-700">Deck sealing recommended within 6 months</span>
+                      <div className="flex gap-4 items-start bg-yellow-50 p-6 rounded-xl border-l-4 border-yellow-400">
+                        <span className="bg-yellow-500 text-white px-4 py-2 rounded-lg text-xs font-bold flex-shrink-0">SOON</span>
+                        <span className="text-gray-800 font-semibold">Deck sealing recommended within 6 months</span>
                       </div>
-                      <div className="flex gap-3 items-start bg-blue-50 p-4 rounded-lg">
-                        <span className="bg-blue-200 text-blue-800 px-3 py-1 rounded text-xs font-bold flex-shrink-0 mt-0.5">Plan</span>
-                        <span className="text-sm text-gray-700">Exterior paint refresh in 18 months</span>
+                      <div className="flex gap-4 items-start bg-blue-50 p-6 rounded-xl border-l-4 border-blue-400">
+                        <span className="bg-blue-500 text-white px-4 py-2 rounded-lg text-xs font-bold flex-shrink-0">PLAN</span>
+                        <span className="text-gray-800 font-semibold">Exterior paint refresh in 18 months</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="pt-6 border-t-2 border-gray-200">
-                    <p className="text-xs font-semibold text-brass uppercase tracking-wide mb-3">Professional Photography</p>
-                    <p className="text-sm text-gray-700">20+ high-resolution photos with annotations and area callouts</p>
+                  <div className="pt-8 border-t-4 border-brass">
+                    <p className="text-xs font-bold text-brass uppercase tracking-widest mb-3">Photography</p>
+                    <p className="text-gray-700 text-lg font-semibold">20+ high-resolution photos with annotations</p>
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-10">
-                <div>
-                  <h3 className="text-3xl font-serif font-bold text-navy mb-4">Delivered within 24 hours</h3>
-                  <p className="text-gray-600 text-lg leading-relaxed">
-                    Complete digital documentation arrives in your inbox. Photos, condition ratings, detailed recommendations, and professional quotes for any work identified.
-                  </p>
-                </div>
-                
-                <div>
-                  <h3 className="text-3xl font-serif font-bold text-navy mb-4">Permanently archived</h3>
-                  <p className="text-gray-600 text-lg leading-relaxed">
-                    Every report is stored in your secure account. Build a complete history of your property over time. Track what's been maintained and what's coming due.
-                  </p>
-                </div>
-                
-                <div>
-                  <h3 className="text-3xl font-serif font-bold text-navy mb-4">Quotes from our network</h3>
-                  <p className="text-gray-600 text-lg leading-relaxed">
-                    When work is recommended, we source detailed quotes from our vetted tradespeople. You decide what to fix, when, and whether to proceed.
-                  </p>
-                </div>
+              <div className="space-y-12">
+                {[
+                  { icon: '⚡', title: 'Within 24 hours', desc: 'Complete documentation delivered to your inbox' },
+                  { icon: '💾', title: 'Permanently archived', desc: 'Every report stored for property history tracking' },
+                  { icon: '💰', title: 'Detailed quotes', desc: 'From our vetted network of qualified tradespeople' }
+                ].map((item, i) => (
+                  <div key={i}>
+                    <div className="text-5xl mb-4">{item.icon}</div>
+                    <h3 className="text-3xl font-serif font-bold text-navy mb-3">{item.title}</h3>
+                    <p className="text-xl text-gray-700 leading-relaxed">{item.desc}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </section>
 
-        {/* 7. Carpentry */}
-        <section className="py-24 lg:py-40 px-4 lg:px-8 bg-white">
+        {/* ============ SECTION 7: CARPENTRY - Navy with Brass Accents ============ */}
+        <section className="py-32 px-4 lg:px-8 bg-gradient-to-b from-navy to-dark-navy text-white">
           <div className="max-w-4xl mx-auto text-center">
-            <span className="text-sm font-semibold text-brass tracking-widest uppercase mb-4 block">Complete Solution</span>
-            <h2 className="text-5xl lg:text-6xl font-serif font-bold text-navy mb-8">
+            <Wrench size={80} className="text-brass mx-auto mb-8" />
+            <h2 className="text-6xl lg:text-7xl font-serif font-bold mb-8">
               Carpentry & Repairs
             </h2>
-            <p className="text-xl text-gray-600 mb-16">
-              We don't just identify what needs fixing. We fix it. Our qualified carpenters handle everything from gutter repairs to complete deck restoration. Members receive exclusive discounts.
+            <p className="text-xl text-white/80 mb-16">
+              We identify problems and fix them. Qualified carpenters. Member discounts on every job.
             </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-gradient-to-br from-light-gray to-sand p-10 rounded-2xl hover:shadow-lg transition-all duration-300">
-                <div className="text-5xl font-serif font-bold text-brass mb-3">5%</div>
-                <p className="text-gray-700 font-semibold text-lg">Essential members</p>
-              </div>
-              <div className="bg-gradient-to-br from-light-gray to-sand p-10 rounded-2xl hover:shadow-lg transition-all duration-300">
-                <div className="text-5xl font-serif font-bold text-coastal-blue mb-3">10%</div>
-                <p className="text-gray-700 font-semibold text-lg">Signature members</p>
-              </div>
-              <div className="bg-gradient-to-br from-brass/10 to-yellow-100/30 p-10 rounded-2xl ring-2 ring-brass hover:shadow-lg transition-all duration-300">
-                <div className="text-5xl font-serif font-bold text-brass mb-3">15%</div>
-                <p className="text-gray-700 font-semibold text-lg">Reserve members</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 8. Coverage */}
-        <section className="py-24 lg:py-40 px-4 lg:px-8 bg-light-gray">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-5xl lg:text-6xl font-serif font-bold text-navy mb-8">
-              Service across the Peninsula
-            </h2>
-            <p className="text-xl text-gray-600 mb-16">
-              Proudly servicing Mornington Peninsula properties
-            </p>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {['Mount Martha', 'Dromana', 'Rosebud', 'Rye', 'Blairgowrie', 'Sorrento', 'Portsea'].map((suburb) => (
-                <div key={suburb} className="bg-white p-6 rounded-xl hover:shadow-md transition-all duration-300">
-                  <p className="font-semibold text-navy">{suburb}</p>
-                </div>
-              ))}
-            </div>
-
-            <p className="text-gray-600 mt-12">
-              Not listed? Contact us—we may be able to help with special arrangements.
-            </p>
-          </div>
-        </section>
-
-        {/* 9. About */}
-        <section className="py-24 lg:py-40 px-4 lg:px-8 bg-white">
-          <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-              <div className="relative h-96 bg-gradient-to-br from-navy/20 to-coastal-blue/20 rounded-2xl overflow-hidden flex items-center justify-center">
-                <p className="text-gray-400 text-center px-4">Team photograph will go here</p>
-              </div>
-
-              <div>
-                <span className="text-sm font-semibold text-brass tracking-widest uppercase mb-6 block">About Us</span>
-                <h2 className="text-5xl lg:text-6xl font-serif font-bold text-navy mb-8">
-                  We live and work on the Peninsula
-                </h2>
-                <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
-                  <p>
-                    We're not a national franchise or anonymous service. We're local. We know this community, understand the Peninsula weather, and care for homes like they're our own.
-                  </p>
-                  <p>
-                    Every member of our team is based here. We understand the character of these properties and take genuine pride in protecting them.
-                  </p>
-                  <p>
-                    When you choose Coastal Pro, you're choosing neighbors who know your property, respect your home, and are accountable to your standards.
-                  </p>
-                </div>
-
-                <div className="mt-10 pt-10 border-t-2 border-gray-200">
-                  <p className="text-sm text-gray-600 mb-2">ABN: 12 345 678 901</p>
-                  <p className="text-sm text-gray-600 font-semibold">Fully insured • Licensed • Local</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 10. Agencies */}
-        <section className="py-24 lg:py-40 px-4 lg:px-8 bg-gradient-to-b from-navy to-dark-navy text-white">
-          <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-              <div>
-                <span className="text-sm font-semibold text-brass tracking-widest uppercase mb-6 block">B2B Solution</span>
-                <h2 className="text-5xl lg:text-6xl font-serif font-bold mb-8">
-                  For property managers & agencies
-                </h2>
-                <p className="text-xl text-white/90 mb-8">
-                  Simplify client reporting. Reduce your overhead. We handle inspections, documentation, and coordination. You manage the relationship.
-                </p>
-                <button className="px-8 py-4 bg-gradient-to-r from-brass to-yellow-600 text-navy rounded-lg font-semibold hover:shadow-xl hover:shadow-brass/40 transition-all duration-300">
-                  Enquire for your portfolio
-                </button>
-              </div>
-              <div className="space-y-8">
-                <div className="flex gap-4">
-                  <Check size={28} className="text-brass flex-shrink-0" />
-                  <div>
-                    <p className="font-semibold text-lg mb-2">Reduced liability</p>
-                    <p className="text-white/70">Professional oversight of vacant and seasonal properties</p>
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  <Check size={28} className="text-brass flex-shrink-0" />
-                  <div>
-                    <p className="font-semibold text-lg mb-2">White-label reports</p>
-                    <p className="text-white/70">Customized documentation under your branding</p>
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  <Check size={28} className="text-brass flex-shrink-0" />
-                  <div>
-                    <p className="font-semibold text-lg mb-2">Volume pricing</p>
-                    <p className="text-white/70">Tiered discounts for portfolio management</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 11. Testimonials */}
-        <section className="py-24 lg:py-40 px-4 lg:px-8 bg-white">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-20">
-              <span className="text-sm font-semibold text-brass tracking-widest uppercase mb-4 block">Trusted by Peninsula Owners</span>
-              <h2 className="text-5xl lg:text-6xl font-serif font-bold text-navy mb-6">
-                What property owners say
-              </h2>
-            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
-                {
-                  quote: "Having Coastal Pro manage our property has given us complete peace of mind. We're away most of the year, and knowing someone local is paying attention is invaluable.",
-                  author: 'John & Sarah M.',
-                  location: 'Portsea',
-                },
-                {
-                  quote: 'They caught a roof issue early that would have become structural failure. Their attention to detail and local knowledge is exceptional.',
-                  author: 'Michael L.',
-                  location: 'Sorrento',
-                },
-                {
-                  quote: "Professional, reliable, and they treat our home like their own. They understand Peninsula properties. Couldn't recommend them more highly.",
-                  author: 'Emma & David T.',
-                  location: 'Blairgowrie',
-                },
-              ].map((testimonial, idx) => (
-                <div key={idx} className="bg-gradient-to-br from-light-gray to-sand/50 p-10 rounded-2xl hover:shadow-lg transition-all duration-300">
-                  <div className="flex gap-1 mb-6">
-                    {[...Array(5)].map((_, i) => (
-                      <span key={i} className="text-brass text-lg">★</span>
-                    ))}
-                  </div>
-                  <p className="text-gray-700 mb-8 italic text-lg leading-relaxed">"{testimonial.quote}"</p>
-                  <div>
-                    <p className="font-semibold text-navy text-lg">{testimonial.author}</p>
-                    <p className="text-sm text-brass font-medium">{testimonial.location}</p>
-                  </div>
+                { pct: '5%', tier: 'Essential' },
+                { pct: '10%', tier: 'Signature' },
+                { pct: '15%', tier: 'Reserve' }
+              ].map((item, i) => (
+                <div key={i} className={`p-12 rounded-2xl font-bold text-2xl transition-all hover:scale-110 ${
+                  i === 2 ? 'bg-gradient-to-br from-brass to-yellow-600 text-navy ring-2 ring-brass' : 'bg-white/10 border-2 border-brass/30'
+                }`}>
+                  <div className="text-6xl font-serif mb-3">{item.pct}</div>
+                  <p>{item.tier} Members</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* 12. FAQ */}
-        <section id="faq" className="py-24 lg:py-40 px-4 lg:px-8 bg-light-gray">
-          <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-20">
-              <h2 className="text-5xl lg:text-6xl font-serif font-bold text-navy mb-6">
-                Frequently asked questions
-              </h2>
-              <p className="text-lg text-gray-600">
-                Clear answers to help you choose with confidence
-              </p>
+        {/* ============ SECTION 8: COVERAGE - Sand Background ============ */}
+        <section className="py-32 px-4 lg:px-8 bg-gradient-to-b from-sand/50 to-sand">
+          <div className="max-w-4xl mx-auto text-center">
+            <MapPin size={80} className="text-navy mx-auto mb-8" />
+            <h2 className="text-6xl lg:text-7xl font-serif font-bold text-navy mb-8">
+              Across the Peninsula
+            </h2>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+              {['Mount Martha', 'Dromana', 'Rosebud', 'Rye', 'Blairgowrie', 'Sorrento', 'Portsea'].map((suburb) => (
+                <div key={suburb} className="bg-white p-6 rounded-xl font-bold text-navy text-lg shadow-md hover:shadow-lg hover:-translate-y-1 transition-all">
+                  {suburb}
+                </div>
+              ))}
             </div>
+
+            <p className="text-lg text-gray-700">
+              Not listed? Contact us for special arrangements.
+            </p>
+          </div>
+        </section>
+
+        {/* ============ SECTION 9: ABOUT - White with Sidebars ============ */}
+        <section className="py-32 px-4 lg:px-8 bg-white">
+          <div className="max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+              <div className="relative h-96 bg-gradient-to-br from-navy/30 to-brass/30 rounded-3xl overflow-hidden flex items-center justify-center border-4 border-brass/20">
+                <p className="text-gray-400 text-center px-4 text-lg">Team photograph here</p>
+              </div>
+
+              <div>
+                <h2 className="text-6xl lg:text-7xl font-serif font-bold text-navy mb-10">
+                  Peninsula <span className="text-brass">natives</span>
+                </h2>
+                <div className="space-y-8 text-lg text-gray-700 leading-relaxed">
+                  <p>
+                    We're local. We live here. We understand the Peninsula weather, respect these properties, and care like they're our own.
+                  </p>
+                  <p>
+                    Every team member is based on the Peninsula. We know what matters to property owners here. That's the difference.
+                  </p>
+                </div>
+
+                <div className="mt-12 pt-12 border-t-2 border-brass">
+                  <p className="text-sm text-gray-600 mb-2">ABN: 12 345 678 901</p>
+                  <p className="font-bold text-navy">Fully insured • Licensed • Local</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ============ SECTION 10: AGENCIES - Brass Background ============ */}
+        <section className="py-32 px-4 lg:px-8 bg-gradient-to-br from-brass via-yellow-600 to-brass text-navy">
+          <div className="max-w-5xl mx-auto">
+            <Users size={80} className="text-navy mx-auto mb-8" />
+            <h2 className="text-6xl lg:text-7xl font-serif font-bold text-center mb-8">
+              For property managers
+            </h2>
+            <p className="text-xl text-center text-navy/90 mb-12 max-w-2xl mx-auto">
+              Simplify client reporting. Reduce overhead. We handle everything. You manage the relationship.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                { title: 'Reduced Liability', desc: 'Professional oversight of every vacant property' },
+                { title: 'White-Label Reports', desc: 'Documentation under your branding' },
+                { title: 'Volume Pricing', desc: 'Tiered discounts for your portfolio' }
+              ].map((item, i) => (
+                <div key={i} className="bg-navy/10 backdrop-blur p-8 rounded-2xl border-2 border-navy/20">
+                  <h3 className="text-2xl font-serif font-bold text-navy mb-3">{item.title}</h3>
+                  <p className="text-navy/80 text-lg">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="text-center mt-12">
+              <button className="px-10 py-4 bg-navy text-brass rounded-lg font-bold text-lg hover:bg-dark-navy transition-all">
+                Enquire for your portfolio
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* ============ SECTION 11: TESTIMONIALS - Light Gray ============ */}
+        <section className="py-32 px-4 lg:px-8 bg-light-gray">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-6xl lg:text-7xl font-serif font-bold text-navy text-center mb-20">
+              Trusted on the Peninsula
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                { quote: "Peace of mind. We're away most of the year. Knowing someone local cares for our home is invaluable.", author: 'John & Sarah M.', location: 'Portsea' },
+                { quote: 'They caught a roof issue early. Attention to detail and local knowledge is exceptional.', author: 'Michael L.', location: 'Sorrento' },
+                { quote: "Professional, reliable, and they treat homes like their own. Highly recommended.", author: 'Emma & David T.', location: 'Blairgowrie' }
+              ].map((t, i) => (
+                <div key={i} className="bg-white p-10 rounded-2xl shadow-lg border-l-4 border-brass hover:shadow-xl transition-all">
+                  <div className="flex gap-1 mb-6">
+                    {[...Array(5)].map((_, j) => <span key={j} className="text-brass text-2xl">★</span>)}
+                  </div>
+                  <p className="text-gray-700 text-lg mb-8 italic">"{t.quote}"</p>
+                  <p className="font-bold text-navy text-lg">{t.author}</p>
+                  <p className="text-brass font-semibold">{t.location}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ============ SECTION 12: FAQ - White ============ */}
+        <section id="faq" className="py-32 px-4 lg:px-8 bg-white">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-6xl lg:text-7xl font-serif font-bold text-navy text-center mb-20">
+              Questions answered
+            </h2>
 
             <div className="space-y-4">
               {faqs.map((faq) => (
-                <div key={faq.id} className="bg-white rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300">
+                <div key={faq.id} className="bg-gradient-to-r from-light-gray to-sand rounded-2xl overflow-hidden border-l-4 border-brass">
                   <button
                     onClick={() => setExpandedFaq(expandedFaq === faq.id ? null : faq.id)}
-                    className="w-full flex items-center justify-between p-8 hover:bg-light-gray transition-colors duration-200"
+                    className="w-full flex items-center justify-between p-8 hover:bg-white/50 transition-colors"
                   >
-                    <span className="font-semibold text-navy text-lg text-left">{faq.question}</span>
-                    <ChevronDown
-                      size={26}
-                      className={`text-brass flex-shrink-0 transition-transform duration-300 ${
-                        expandedFaq === faq.id ? 'rotate-180' : ''
-                      }`}
-                    />
+                    <span className="font-serif font-bold text-navy text-xl text-left">{faq.question}</span>
+                    <ChevronDown size={32} className={`text-brass flex-shrink-0 transition-transform duration-300 ${expandedFaq === faq.id ? 'rotate-180' : ''}`} />
                   </button>
 
                   {expandedFaq === faq.id && (
-                    <div className="px-8 pb-8 text-gray-700 text-lg leading-relaxed border-t-2 border-gray-100">
+                    <div className="px-8 pb-8 text-gray-800 text-lg leading-relaxed border-t-2 border-brass/30">
                       {faq.answer}
                     </div>
                   )}
@@ -776,53 +643,52 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 13. Close */}
-        <section id="contact" className="py-24 lg:py-40 px-4 lg:px-8 bg-gradient-to-br from-navy via-navy to-dark-navy text-white text-center">
+        {/* ============ SECTION 13: CLOSE - Dark Navy Drama ============ */}
+        <section id="contact" className="py-32 px-4 lg:px-8 bg-gradient-to-br from-dark-navy via-navy to-dark-navy text-white text-center">
           <div className="max-w-3xl mx-auto mb-16">
-            <p className="text-6xl lg:text-7xl xl:text-8xl font-serif font-bold mb-6 leading-tight">
+            <p className="text-7xl lg:text-8xl font-serif font-bold mb-6">
               One call.
             </p>
-            <p className="text-3xl lg:text-4xl text-white/90 font-light">
+            <p className="text-4xl text-white/90 font-light">
               We take care of it all.
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row justify-center gap-8 mb-16 max-w-2xl mx-auto">
-            <a href="tel:0417349071" className="flex items-center justify-center gap-3 text-3xl font-semibold text-brass hover:text-white transition-colors duration-300 group">
-              <Phone size={28} />
+          <div className="flex flex-col sm:flex-row justify-center gap-10 mb-20">
+            <a href="tel:0417349071" className="flex items-center justify-center gap-4 text-4xl font-bold text-brass hover:text-white transition-colors">
+              <Phone size={40} />
               0417 349 071
             </a>
-            <a href="mailto:hello@theschoolofplay.co" className="flex items-center justify-center gap-3 text-lg font-semibold text-white/90 hover:text-brass transition-colors duration-300">
+            <a href="mailto:hello@theschoolofplay.co" className="flex items-center justify-center text-white/90 hover:text-brass transition-colors">
+              <FileText size={24} className="mr-2" />
               hello@theschoolofplay.co
             </a>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-sm text-white/70 max-w-2xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-sm text-white/70 max-w-2xl mx-auto mb-12">
             <div>
-              <p className="font-semibold text-white mb-3">Service Area</p>
+              <p className="font-bold text-white mb-2 text-lg">Service Area</p>
               <p>Mornington Peninsula, Victoria</p>
             </div>
             <div>
-              <p className="font-semibold text-white mb-3">Hours</p>
+              <p className="font-bold text-white mb-2 text-lg">Hours</p>
               <p>Monday – Friday 8am–6pm<br />Saturday & Sunday by arrangement</p>
             </div>
             <div>
-              <p className="font-semibold text-white mb-3">Follow</p>
-              <p>
-                <a href="#" className="text-brass hover:text-white transition-colors">Facebook</a>
-              </p>
+              <p className="font-bold text-white mb-2 text-lg">Social</p>
+              <a href="#" className="text-brass hover:text-white transition-colors">Facebook</a>
+            </div>
+          </div>
+
+          <div className="border-t-2 border-brass/30 pt-12">
+            <p className="text-white/50">© 2026 Coastal Pro Property Care. All rights reserved.</p>
+            <div className="flex justify-center gap-8 mt-6">
+              <a href="#" className="text-white/50 hover:text-brass transition-colors text-sm">Terms</a>
+              <a href="#" className="text-white/50 hover:text-brass transition-colors text-sm">Privacy</a>
+              <a href="#" className="text-white/50 hover:text-brass transition-colors text-sm">Contact</a>
             </div>
           </div>
         </section>
-
-        <footer className="bg-dark-navy text-white/50 text-center py-12 text-sm border-t border-white/10">
-          <p>© 2026 Coastal Pro Property Care. All rights reserved.</p>
-          <div className="flex justify-center gap-8 mt-6">
-            <a href="#" className="hover:text-white transition-colors">Terms</a>
-            <a href="#" className="hover:text-white transition-colors">Privacy</a>
-            <a href="#" className="hover:text-white transition-colors">Contact</a>
-          </div>
-        </footer>
       </main>
 
       <div className="h-24 lg:h-0" />
