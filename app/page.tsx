@@ -226,9 +226,24 @@ export default function Home() {
       <header className="sticky top-0 z-50 bg-paper/92 backdrop-blur-md border-b rule">
         <div className="mx-auto max-w-[1240px] px-6 lg:px-10">
           <div className="flex items-center justify-between h-[74px]">
-            <a href="#top" className="flex items-baseline gap-2.5">
-              <span className="display d4 text-navy">Coastal Pro</span>
-              <span className="label text-muted hidden sm:block">Property Care</span>
+            <a href="#top" className="flex items-center gap-3.5 group">
+              <Image
+                src="/logo-mark-navy.png"
+                alt=""
+                width={280}
+                height={150}
+                priority
+                className="h-[30px] w-auto"
+              />
+              <span className="hidden sm:block h-7 w-px bg-[color:var(--rule)]" />
+              <span className="flex flex-col leading-none">
+                <span className="display text-[19px] text-navy tracking-[-0.02em]">
+                  Coastal Pro
+                </span>
+                <span className="label text-muted mt-[3px] text-[9.5px]">
+                  Property Care
+                </span>
+              </span>
             </a>
 
             <nav className="hidden lg:flex items-center gap-10">
@@ -991,6 +1006,14 @@ export default function Home() {
             Navy field. The one section that earns being centred. */}
         <section id="contact" className="bg-navy text-paper">
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-28 lg:py-40 text-center">
+            <Image
+              src="/logo-lockup.png"
+              alt="Coastal Pro Property Care"
+              width={540}
+              height={583}
+              className="h-[104px] w-auto mx-auto mb-12 opacity-95"
+            />
+
             <div className="flex items-center justify-center gap-4 mb-10">
               <span className="block w-11 h-px bg-brass" />
               <span className="label text-brass">One call</span>
