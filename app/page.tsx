@@ -222,7 +222,7 @@ export default function Home() {
               {[
                 { icon: '🌊', title: 'Storm Damage', desc: 'Found weeks later when structural impact spreads and costs multiply.' },
                 { icon: '🪵', title: 'Timber Decay', desc: 'Small rot becomes structural failure. Prevention costs far less than replacement.' },
-                { icon: '📞', title: 'No Local Help', desc: 'When crisis hits, you're without an advocate who knows your property.' }
+                { icon: '📞', title: 'No Local Help', desc: "When crisis hits, you're without an advocate who knows your property." }
               ].map((item, i) => (
                 <div key={i} className="bg-white rounded-2xl p-10 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-l-4 border-brass">
                   <div className="text-5xl mb-6">{item.icon}</div>
