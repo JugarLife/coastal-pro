@@ -106,6 +106,27 @@
     letter-spacing: -0.03em;
   }
 
+  /* ── Scroll reveal ──────────────────────────────────────────
+     Small distance, long easing. Anything that travels far or
+     bounces reads as a template.
+
+     The hidden state is scoped to .js-reveal, which the observer
+     adds to <html> only once it is about to take over. Without it
+     — JS disabled, script error, no IntersectionObserver — every
+     element simply renders visible rather than being stranded at
+     opacity 0. Content must never depend on JS to be seen.        */
+  .js-reveal .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  .js-reveal .reveal.is-in {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
   /* ── Hairlines ──────────────────────────────────────────────── */
   .rule      { border-color: var(--rule); }
   .rule-dark { border-color: var(--rule-dark); }
@@ -122,4 +143,5 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   html { scroll-behavior: auto; }
+  .js-reveal .reveal { opacity: 1 !important; transform: none !important; }
 }

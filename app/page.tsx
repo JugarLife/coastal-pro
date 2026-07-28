@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { ChevronDown, Check, Phone, Menu, X } from 'lucide-react';
 
 /* ─────────────────────────────────────────────────────────────
@@ -219,28 +220,107 @@ export default function Home() {
   const [showTable, setShowTable] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
   const [annual, setAnnual] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState('');
+
+  /* Header sits transparent over the hero and resolves to a solid
+     paper bar once past it. */
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.82);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  /* Reveals marked elements once, on first entry. Unobserved after,
+     so nothing re-fades on scroll-back. */
+  useEffect(() => {
+    const nodes = Array.from(document.querySelectorAll<HTMLElement>('.reveal'));
+    if (!nodes.length || typeof IntersectionObserver === 'undefined') return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    // Only now hide them — see .js-reveal in globals.css.
+    document.documentElement.classList.add('js-reveal');
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-in');
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { rootMargin: '0px 0px -10% 0px', threshold: 0.06 },
+    );
+
+    nodes.forEach((n) => io.observe(n));
+    return () => io.disconnect();
+  }, []);
+
+  /* Marks the nav item for whichever section owns the upper third
+     of the viewport. */
+  useEffect(() => {
+    const ids = ['memberships', 'report', 'coverage', 'faq'];
+    const nodes = ids
+      .map((id) => document.getElementById(id))
+      .filter((n): n is HTMLElement => n !== null);
+    if (!nodes.length) return;
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible[0]) setActive(visible[0].target.id);
+      },
+      { rootMargin: '-18% 0px -62% 0px' },
+    );
+
+    nodes.forEach((n) => io.observe(n));
+    return () => io.disconnect();
+  }, []);
 
   return (
     <>
       {/* ══ NAVIGATION ══════════════════════════════════════════ */}
-      <header className="sticky top-0 z-50 bg-paper/92 backdrop-blur-md border-b rule">
+      <header
+        className={`sticky top-0 z-50 transition-all duration-500 border-b ${
+          scrolled
+            ? 'bg-paper/92 backdrop-blur-md rule'
+            : 'bg-transparent border-transparent'
+        }`}
+      >
         <div className="mx-auto max-w-[1240px] px-6 lg:px-10">
           <div className="flex items-center justify-between h-[74px]">
             <a href="#top" className="flex items-center gap-3.5 group">
               <Image
-                src="/logo-mark-navy.png"
+                src={scrolled ? '/logo-mark-navy.png' : '/logo-mark.png'}
                 alt=""
                 width={280}
                 height={150}
                 priority
                 className="h-[30px] w-auto"
               />
-              <span className="hidden sm:block h-7 w-px bg-[color:var(--rule)]" />
+              <span
+                className={`hidden sm:block h-7 w-px transition-colors duration-500 ${
+                  scrolled ? 'bg-[color:var(--rule)]' : 'bg-white/25'
+                }`}
+              />
               <span className="flex flex-col leading-none">
-                <span className="display text-[19px] text-navy tracking-[-0.02em]">
+                <span
+                  className={`display text-[19px] tracking-[-0.02em] transition-colors duration-500 ${
+                    scrolled ? 'text-navy' : 'text-paper'
+                  }`}
+                >
                   Coastal Pro
                 </span>
-                <span className="label text-muted mt-[3px] text-[9.5px]">
+                <span
+                  className={`label mt-[3px] text-[9.5px] transition-colors duration-500 ${
+                    scrolled ? 'text-muted' : 'text-white/60'
+                  }`}
+                >
                   Property Care
                 </span>
               </span>
@@ -256,29 +336,52 @@ export default function Home() {
                 <a
                   key={href}
                   href={href}
-                  className="text-[14px] text-muted hover:text-navy transition-colors duration-200"
+                  className={`relative text-[14px] transition-colors duration-200 ${
+                    scrolled
+                      ? active === href.slice(1)
+                        ? 'text-navy'
+                        : 'text-muted hover:text-navy'
+                      : 'text-white/72 hover:text-paper'
+                  }`}
                 >
                   {label}
+                  <span
+                    className={`absolute -bottom-1.5 left-0 h-px bg-brass transition-all duration-300 ${
+                      active === href.slice(1) ? 'w-full opacity-100' : 'w-0 opacity-0'
+                    }`}
+                  />
                 </a>
               ))}
             </nav>
 
             <div className="hidden lg:flex items-center gap-6">
-              <a href="tel:0417349071" className="text-[14px] text-navy hover:text-blue transition-colors">
+              <a
+                href="tel:0417349071"
+                className={`text-[14px] transition-colors duration-500 ${
+                  scrolled ? 'text-navy hover:text-blue' : 'text-paper/85 hover:text-paper'
+                }`}
+              >
                 0417 349 071
               </a>
               <a
                 href="#memberships"
-                className="px-6 py-[11px] bg-navy text-paper text-[14px] font-medium hover:bg-navy-deep transition-colors duration-200"
+                className={`px-6 py-[11px] text-[14px] font-medium transition-all duration-500 ${
+                  scrolled
+                    ? 'bg-navy text-paper hover:bg-navy-deep'
+                    : 'bg-paper text-navy hover:bg-white'
+                }`}
               >
                 View memberships
               </a>
             </div>
 
             <button
-              className="lg:hidden text-navy"
+              className={`lg:hidden transition-colors duration-500 ${
+                scrolled || navOpen ? 'text-navy' : 'text-paper'
+              }`}
               onClick={() => setNavOpen(!navOpen)}
               aria-label="Menu"
+              aria-expanded={navOpen}
             >
               {navOpen ? <X size={22} strokeWidth={1.5} /> : <Menu size={22} strokeWidth={1.5} />}
             </button>
@@ -286,7 +389,7 @@ export default function Home() {
         </div>
 
         {navOpen && (
-          <div className="lg:hidden border-t rule bg-paper">
+          <div className="lg:hidden border-t rule bg-paper absolute inset-x-0 top-full">
             <div className="px-6 py-5 flex flex-col">
               {[
                 ['Memberships', '#memberships'],
@@ -312,7 +415,7 @@ export default function Home() {
         {/* ══ 01 · HERO ═════════════════════════════════════════
             Full-bleed image, navy scrim weighted to the left,
             content set low-left. Not centred.                    */}
-        <section className="relative min-h-[92vh] flex items-end overflow-hidden bg-navy">
+        <section className="relative min-h-[92vh] -mt-[75px] flex items-end overflow-hidden bg-navy">
           <Image
             src="/hero-bg.jpg"
             alt=""
@@ -354,12 +457,12 @@ export default function Home() {
                 >
                   View memberships
                 </a>
-                <a
-                  href="#contact"
+                <Link
+                  href="/enquire"
                   className="px-9 py-[15px] border border-white/38 text-paper text-[15px] font-medium text-center hover:bg-white/10 hover:border-white/60 transition-all duration-200"
                 >
                   Book a property consultation
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -388,7 +491,7 @@ export default function Home() {
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-24 lg:py-36">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-14 lg:gap-x-20">
               <div className="lg:col-span-5">
-                <div className="lg:sticky lg:top-32">
+                <div className="reveal lg:sticky lg:top-32">
                   <span className="label text-muted block mb-7">The problem</span>
                   <h2 className="display display-light d2 text-navy mb-7">
                     Who checks your property when you are not there?
@@ -404,7 +507,8 @@ export default function Home() {
                 {CONCERNS.map((c, i) => (
                   <div
                     key={c.index}
-                    className={`grid grid-cols-[auto_1fr] gap-x-8 py-9 ${
+                    style={{ transitionDelay: `${i * 90}ms` }}
+                    className={`reveal grid grid-cols-[auto_1fr] gap-x-8 py-9 ${
                       i === 0 ? 'lg:pt-2' : 'border-t rule'
                     }`}
                   >
@@ -425,7 +529,7 @@ export default function Home() {
             oversized outline numerals. Editorial, not iconic.    */}
         <section className="bg-paper">
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-24 lg:py-36">
-            <div className="max-w-[620px] mb-16 lg:mb-24">
+            <div className="reveal max-w-[620px] mb-16 lg:mb-24">
               <span className="label text-muted block mb-7">How it works</span>
               <h2 className="display display-light d2 text-navy">
                 Three steps, repeated with discipline.
@@ -436,7 +540,8 @@ export default function Home() {
               {PROCESS.map((step, i) => (
                 <div
                   key={step.index}
-                  className={`pt-10 pb-2 md:pr-12 ${
+                  style={{ transitionDelay: `${i * 90}ms` }}
+                  className={`reveal pt-10 pb-2 md:pr-12 ${
                     i > 0 ? 'md:pl-12 md:border-l rule border-t md:border-t-0' : ''
                   } ${i > 0 ? 'pt-10' : ''}`}
                 >
@@ -460,7 +565,7 @@ export default function Home() {
         <section id="memberships" className="bg-navy text-paper">
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-24 lg:py-36">
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10 mb-16 lg:mb-20">
-              <div className="max-w-[560px]">
+              <div className="reveal max-w-[560px]">
                 <span className="label text-white/50 block mb-7">Memberships</span>
                 <h2 className="display display-light d2 text-paper">
                   Three levels of care.
@@ -496,7 +601,8 @@ export default function Home() {
                 return (
                   <div
                     key={plan.id}
-                    className={`relative flex flex-col pt-11 pb-11 lg:pr-11 ${
+                    style={{ transitionDelay: `${i * 110}ms` }}
+                    className={`reveal relative flex flex-col pt-11 pb-11 lg:pr-11 ${
                       i > 0 ? 'lg:pl-11 lg:border-l rule-dark border-t lg:border-t-0' : ''
                     }`}
                   >
@@ -525,9 +631,16 @@ export default function Home() {
                       </span>
                     </div>
                     <p className="text-[13px] text-white/38 mb-9">
-                      {annual
-                        ? `Equivalent to $${plan.price} monthly`
-                        : `$${plan.annual.toLocaleString()} billed annually`}
+                      {annual ? (
+                        <>
+                          Equivalent to ${Math.round(plan.annual / 12)} monthly
+                          <span className={isReserve ? 'text-brass ml-2' : 'text-white/60 ml-2'}>
+                            Save ${(plan.price * 12 - plan.annual).toLocaleString()}
+                          </span>
+                        </>
+                      ) : (
+                        `$${plan.annual.toLocaleString()} billed annually`
+                      )}
                     </p>
 
                     <div className="py-4 border-y rule-dark mb-8">
@@ -557,8 +670,8 @@ export default function Home() {
                           {plan.note}
                         </p>
                       )}
-                      <a
-                        href="#contact"
+                      <Link
+                        href={`/enquire?plan=${plan.id}`}
                         className={`block w-full py-[14px] text-center text-[14px] font-medium transition-colors duration-200 ${
                           isReserve
                             ? 'bg-brass text-navy hover:bg-[#D9B237]'
@@ -568,7 +681,7 @@ export default function Home() {
                         }`}
                       >
                         {plan.cta}
-                      </a>
+                      </Link>
                       <p className="text-[12.5px] text-white/38 mt-4">
                         {plan.discount}% off eligible carpentry works
                       </p>
@@ -592,6 +705,7 @@ export default function Home() {
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10">
             <button
               onClick={() => setShowTable(!showTable)}
+              aria-expanded={showTable}
               className="w-full flex items-center justify-between py-9 border-b rule group"
             >
               <span className="display d4 text-navy">Compare all inclusions</span>
@@ -654,7 +768,7 @@ export default function Home() {
             the left, three terse points on the right.            */}
         <section id="report" className="bg-sand">
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-24 lg:py-36">
-            <div className="max-w-[620px] mb-16 lg:mb-20">
+            <div className="reveal max-w-[620px] mb-16 lg:mb-20">
               <span className="label text-muted block mb-7">The artefact</span>
               <h2 className="display display-light d2 text-navy mb-7">
                 The Property Care Report
@@ -668,7 +782,7 @@ export default function Home() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-14 lg:gap-x-20 items-start">
               {/* Document */}
               <div className="lg:col-span-7">
-                <div className="bg-paper border rule p-8 lg:p-11 shadow-[0_1px_2px_rgba(11,37,69,0.05)]">
+                <div className="reveal bg-paper border rule p-8 lg:p-11 shadow-[0_1px_2px_rgba(11,37,69,0.05)]">
                   <div className="flex items-start justify-between pb-6 border-b rule">
                     <div>
                       <p className="label text-muted mb-2">Property Care Report</p>
@@ -770,7 +884,11 @@ export default function Home() {
                     b: 'Nothing proceeds without written approval. Members receive five, ten or fifteen per cent off eligible carpentry depending on tier.',
                   },
                 ].map((item, i) => (
-                  <div key={item.t} className={`py-8 ${i > 0 ? 'border-t rule' : 'pt-0'}`}>
+                  <div
+                    key={item.t}
+                    style={{ transitionDelay: `${i * 90}ms` }}
+                    className={`reveal py-8 ${i > 0 ? 'border-t rule' : 'pt-0'}`}
+                  >
                     <h3 className="display d4 text-navy mb-3">{item.t}</h3>
                     <p className="text-[16px] leading-[1.68] text-muted">{item.b}</p>
                   </div>
@@ -830,7 +948,7 @@ export default function Home() {
         <section id="coverage" className="bg-paper">
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-24 lg:py-36">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-12 lg:gap-x-20">
-              <div className="lg:col-span-4">
+              <div className="reveal lg:col-span-4">
                 <span className="label text-muted block mb-7">Coverage</span>
                 <h2 className="display display-light d2 text-navy mb-6">
                   We work the length of the Peninsula.
@@ -846,7 +964,8 @@ export default function Home() {
                   {SUBURBS.map((s, i) => (
                     <div
                       key={s}
-                      className="flex items-baseline justify-between py-[18px] border-b rule group"
+                      style={{ transitionDelay: `${i * 55}ms` }}
+                      className="reveal flex items-baseline justify-between py-[18px] border-b rule group"
                     >
                       <span className="display d3 text-navy">{s}</span>
                       <span className="numeral text-[13px] text-navy/25">
@@ -867,14 +986,14 @@ export default function Home() {
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-24 lg:py-36">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-12 lg:gap-x-20 items-center">
               <div className="lg:col-span-6">
-                <div className="relative aspect-[4/3] bg-navy/8 border rule">
+                <div className="reveal relative aspect-[4/3] bg-navy/8 border rule">
                   <div className="absolute inset-0 flex items-center justify-center">
                     <span className="label text-navy/35">Photograph — team and vehicle</span>
                   </div>
                 </div>
               </div>
 
-              <div className="lg:col-span-5 lg:col-start-8">
+              <div className="reveal lg:col-span-5 lg:col-start-8" style={{ transitionDelay: '110ms' }}>
                 <span className="label text-muted block mb-7">Who we are</span>
                 <h2 className="display display-light d2 text-navy mb-8">
                   We live and work on the Peninsula.
@@ -916,12 +1035,12 @@ export default function Home() {
                   Portfolio oversight, white-labelled reporting and volume terms.
                 </p>
               </div>
-              <a
-                href="#contact"
+              <Link
+                href="/enquire?plan=undecided"
                 className="shrink-0 px-8 py-[13px] border border-navy text-navy text-[14px] font-medium text-center hover:bg-navy hover:text-paper transition-colors duration-200"
               >
                 Enquire for a portfolio
-              </a>
+              </Link>
             </div>
           </div>
         </section>
@@ -937,7 +1056,8 @@ export default function Home() {
               {TESTIMONIALS.map((t, i) => (
                 <figure
                   key={t.name}
-                  className={`pt-10 pb-2 md:pr-10 ${
+                  style={{ transitionDelay: `${i * 90}ms` }}
+                  className={`reveal pt-10 pb-2 md:pr-10 ${
                     i > 0 ? 'md:pl-10 md:border-l rule border-t md:border-t-0 pt-10' : ''
                   }`}
                 >
@@ -961,7 +1081,7 @@ export default function Home() {
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-24 lg:py-36">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-12 lg:gap-x-20">
               <div className="lg:col-span-4">
-                <div className="lg:sticky lg:top-32">
+                <div className="reveal lg:sticky lg:top-32">
                   <span className="label text-muted block mb-7">Questions</span>
                   <h2 className="display display-light d2 text-navy">
                     Before you commit.
@@ -977,6 +1097,8 @@ export default function Home() {
                       <div key={faq.id} className="border-b rule">
                         <button
                           onClick={() => setOpenFaq(open ? null : faq.id)}
+                          aria-expanded={open}
+                          aria-controls={`faq-${faq.id}`}
                           className="w-full flex items-start justify-between gap-8 py-7 text-left group"
                         >
                           <span className="display d4 text-navy">{faq.q}</span>
@@ -989,7 +1111,10 @@ export default function Home() {
                           />
                         </button>
                         {open && (
-                          <p className="pb-8 pr-12 text-[16px] leading-[1.72] text-muted max-w-[620px]">
+                          <p
+                            id={`faq-${faq.id}`}
+                            className="pb-8 pr-12 text-[16px] leading-[1.72] text-muted max-w-[620px]"
+                          >
                             {faq.a}
                           </p>
                         )}
@@ -1036,12 +1161,12 @@ export default function Home() {
               >
                 0417 349 071
               </a>
-              <a
-                href="mailto:coastalpropertycare@outlook.com"
+              <Link
+                href="/enquire"
                 className="w-full sm:w-auto px-10 py-[15px] border border-white/38 text-paper text-[15px] font-medium hover:bg-white/10 hover:border-white/60 transition-all duration-200"
               >
                 Send an enquiry
-              </a>
+              </Link>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-y-9 border-t rule-dark pt-12 text-left max-w-[820px] mx-auto">
