@@ -3,225 +3,21 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ChevronDown, Check, Phone, Menu, X } from 'lucide-react';
-
-/* ─────────────────────────────────────────────────────────────
-   Coastal Pro Property Care
-   Design system: flat colour fields, hairline rules, asymmetric
-   editorial grids. Brass appears in exactly two places — the
-   Reserve tier and the hero eyebrow rule. Nowhere else.
-   ───────────────────────────────────────────────────────────── */
-
-const PLANS = [
-  {
-    id: 'essential',
-    index: '01',
-    name: 'Essential',
-    price: 179,
-    annual: 2148,
-    line: 'Keeping an eye on your property.',
-    cadence: 'One scheduled visit each month',
-    features: [
-      'Monthly attendance',
-      'Exterior and building condition check',
-      'Roofline, gutters and downpipes',
-      'Timber, decks, fences and external areas',
-      'Security and access verification',
-      'Storm and water monitoring',
-      'Pre-arrival inspection',
-      'Photographic record and written report',
-    ],
-    discount: '5',
-    cta: 'Enquire',
-  },
-  {
-    id: 'signature',
-    index: '02',
-    name: 'Signature',
-    price: 299,
-    annual: 3588,
-    line: 'Actively caring for your property.',
-    cadence: 'Two scheduled visits each month',
-    features: [
-      'Fortnightly attendance',
-      'Exterior and building condition check',
-      'Roofline, gutters and downpipes',
-      'Timber, decks, fences and external areas',
-      'Security and access verification',
-      'Storm and water monitoring',
-      'Pre-arrival inspection',
-      'Photographic record and written report',
-      'Trades and contractor coordination',
-      'Priority booking and response',
-      'Annual property health assessment',
-    ],
-    discount: '10',
-    cta: 'Enquire',
-    note: 'Most chosen',
-  },
-  {
-    id: 'reserve',
-    index: '03',
-    name: 'Reserve',
-    price: 499,
-    annual: 5988,
-    line: 'Private care for when excellence is expected.',
-    cadence: 'Weekly scheduled attendance',
-    features: [
-      'Weekly attendance',
-      'Exterior and building condition check',
-      'Roofline, gutters and downpipes',
-      'Timber, decks, fences and external areas',
-      'Security and access verification',
-      'Storm and water monitoring',
-      'Pre-arrival inspection',
-      'Photographic record and written report',
-      'Trades and contractor coordination',
-      'Priority booking and response',
-      'Quarterly comprehensive condition report',
-      'Annual preventative maintenance plan',
-      'Dedicated Coastal Pro contact',
-    ],
-    discount: '15',
-    cta: 'Request consultation',
-    note: 'Limited to five memberships',
-  },
-];
+import { ChevronDown, Plus, Phone, Menu, X, ArrowUpRight } from 'lucide-react';
+import {
+  PLANS, CONCERNS, PROCESS, COMPARISON,
+  REPORT_CONDITIONS, REPORT_FINDINGS, SUBURBS, FAQS, TESTIMONIALS,
+} from './data';
 
 const RESERVE_CAP = 5;
+const TONE = { amber: 'var(--amber)', stone: 'var(--stone)', sage: 'var(--sage)' } as const;
 
-const CONCERNS = [
-  {
-    index: '01',
-    title: 'Storm damage found late',
-    body: 'A lifted sheet or blocked downpipe goes unseen for six weeks. What was a morning of work becomes a ceiling, a floor and an insurance claim.',
-  },
-  {
-    index: '02',
-    title: 'Timber that fails quietly',
-    body: 'Salt air and westerly weather work on decks, posts and window frames year round. Caught early it is maintenance. Caught late it is structural.',
-  },
-  {
-    index: '03',
-    title: 'No one on the ground',
-    body: 'Something goes wrong on a Friday and you are ninety minutes away with no local contact who knows the property, the access or the history.',
-  },
-];
-
-const PROCESS = [
-  {
-    index: '01',
-    title: 'We attend on schedule',
-    body: 'Visits are planned, not reactive. You know when we are coming and so does your calendar.',
-  },
-  {
-    index: '02',
-    title: 'We inspect and photograph',
-    body: 'A consistent checklist across roofline, structure, timber, drainage, security and grounds. Everything documented.',
-  },
-  {
-    index: '03',
-    title: 'You receive the report',
-    body: 'In your inbox within twenty-four hours. Condition ratings, photographs, and anything requiring attention priced separately.',
-  },
-];
-
-const COMPARISON = [
-  { feature: 'Scheduled attendance', essential: true, signature: true, reserve: true },
-  { feature: 'Exterior and building condition checks', essential: true, signature: true, reserve: true },
-  { feature: 'Roofline, gutters and downpipes', essential: true, signature: true, reserve: true },
-  { feature: 'Timber, decks, fences and external areas', essential: true, signature: true, reserve: true },
-  { feature: 'Security and access checks', essential: true, signature: true, reserve: true },
-  { feature: 'Storm and water monitoring', essential: true, signature: true, reserve: true },
-  { feature: 'Pre-arrival inspection', essential: true, signature: true, reserve: true },
-  { feature: 'Photographic record and written report', essential: true, signature: true, reserve: true },
-  { feature: 'Trades and contractor coordination', essential: false, signature: true, reserve: true },
-  { feature: 'Priority booking and response', essential: false, signature: true, reserve: true },
-  { feature: 'Annual property health assessment', essential: false, signature: true, reserve: true },
-  { feature: 'Quarterly comprehensive condition report', essential: false, signature: false, reserve: true },
-  { feature: 'Annual preventative maintenance plan', essential: false, signature: false, reserve: true },
-  { feature: 'Dedicated Coastal Pro contact', essential: false, signature: false, reserve: true },
-];
-
-const REPORT_CONDITIONS = [
-  { area: 'Roofline and gutters', rating: 'Attention', pct: 42 },
-  { area: 'Timber and decking', rating: 'Fair', pct: 64 },
-  { area: 'External paint', rating: 'Good', pct: 81 },
-  { area: 'Drainage and grounds', rating: 'Good', pct: 88 },
-];
-
-const REPORT_FINDINGS = [
-  { level: 'Urgent', text: 'Gutter separation, north elevation', quoted: true },
-  { level: 'Monitor', text: 'Deck sealing due within six months', quoted: true },
-  { level: 'Planned', text: 'Exterior repaint, eighteen month horizon', quoted: false },
-];
-
-const SUBURBS = [
-  'Mount Martha',
-  'Dromana',
-  'Rosebud',
-  'Rye',
-  'Blairgowrie',
-  'Sorrento',
-  'Portsea',
-];
-
-const FAQS = [
-  {
-    id: 'scope',
-    q: 'What does a membership actually cover?',
-    a: 'Oversight, attendance and reporting. We attend on schedule, inspect against a consistent checklist, photograph everything and send you a written report. Repair work is quoted separately, always with photographs and a fixed price before anything begins.',
-  },
-  {
-    id: 'cancel',
-    q: 'Can I pause or cancel?',
-    a: 'At any time, with no exit fee and no minimum term. Many Peninsula owners pause over the months they are in residence and resume when they leave. Your full reporting history remains available to you either way.',
-  },
-  {
-    id: 'insurance',
-    q: 'Are you insured, and are the trades you engage insured?',
-    a: 'We carry public liability and professional indemnity cover. Every trade we coordinate on your behalf is licensed and separately insured, and we verify currency before they attend your property.',
-  },
-  {
-    id: 'keys',
-    q: 'How are keys and access handled?',
-    a: 'Keys are held in a locked, access-controlled cabinet and are never labelled with your address. We attend only on scheduled dates, every entry and exit is logged, and the log appears in your report. Coded entry or a smart lock works equally well if you prefer.',
-  },
-  {
-    id: 'storm',
-    q: 'What happens after a storm?',
-    a: 'We attend without waiting to be asked. You receive a photographic damage assessment within twenty-four hours, along with anything needed for an insurance claim and quotes for urgent repair. There is no additional charge for a storm attendance.',
-  },
-  {
-    id: 'quotes',
-    q: 'How does quoting for repair work?',
-    a: 'Anything we find is documented with photographs and priced before work begins. You approve each item individually. Members receive five, ten or fifteen per cent off eligible carpentry depending on tier. Nothing proceeds without your written go-ahead.',
-  },
-];
-
-/* ⚠ PLACEHOLDER — these are written, not real, and are attributed to
-   named people. Replace with genuine testimonials (with the owners'
-   permission to use their name and suburb) or remove the section
-   BEFORE this site goes public. Publishing invented attributed
-   testimonials risks breaching s18 of the Australian Consumer Law.
-   Tracked in PRE-LAUNCH.md. */
-const TESTIMONIALS = [
-  {
-    quote: 'We are in Melbourne eleven months of the year. The report lands on the same day each month and I have stopped wondering what is happening down there.',
-    name: 'J. and S. Marchetti',
-    place: 'Portsea',
-  },
-  {
-    quote: 'They found a gutter separation in April that would have been inside the wall by spring. The photographs made the insurance conversation straightforward.',
-    name: 'M. Lawson',
-    place: 'Sorrento',
-  },
-  {
-    quote: 'Understated, punctual and genuinely knowledgeable about coastal timber. They treat the house the way we would if we were there.',
-    name: 'E. and D. Thornbury',
-    place: 'Blairgowrie',
-  },
-];
+const NAV = [
+  ['Memberships', '#memberships'],
+  ['The report', '#report'],
+  ['Coverage', '#coverage'],
+  ['Questions', '#faq'],
+] as const;
 
 export default function Home() {
   const [openFaq, setOpenFaq] = useState<string | null>(null);
@@ -231,206 +27,161 @@ export default function Home() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState('');
   const [reserveLeft, setReserveLeft] = useState<number | null>(null);
+  const [reportFocus, setReportFocus] = useState('condition');
+  const [quote, setQuote] = useState(0);
+  const [hoverSuburb, setHoverSuburb] = useState<string | null>(null);
 
-  /* Reserve scarcity is counted from live Stripe subscriptions, never
-     hardcoded — the brief was explicit that fake scarcity is a
-     liability. Until Stripe is configured the endpoint reports
-     configured:false and the static note stands. */
+  /* Header: transparent over the hero, solid off-white past it. */
   useEffect(() => {
-    let cancelled = false;
-    fetch('/api/availability')
-      .then((r) => (r.ok ? r.json() : null))
-      .then((d) => {
-        if (!cancelled && d?.configured) setReserveLeft(d.remaining);
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  /* Header sits transparent over the hero and resolves to a solid
-     paper bar once past it. */
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.82);
+    const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.8);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  /* Reveals marked elements once, on first entry. Unobserved after,
-     so nothing re-fades on scroll-back. */
+  /* Reveal marked elements once, then unobserve. */
   useEffect(() => {
     const nodes = Array.from(document.querySelectorAll<HTMLElement>('.reveal'));
     if (!nodes.length || typeof IntersectionObserver === 'undefined') return;
-
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    // Only now hide them — see .js-reveal in globals.css.
     document.documentElement.classList.add('js-reveal');
-
     const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add('is-in');
-            io.unobserve(e.target);
-          }
-        });
-      },
-      { rootMargin: '0px 0px -10% 0px', threshold: 0.06 },
+      (es) => es.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+      }),
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.05 },
     );
-
     nodes.forEach((n) => io.observe(n));
     return () => io.disconnect();
   }, []);
 
-  /* Marks the nav item for whichever section owns the upper third
-     of the viewport. */
+  /* Active nav section. */
   useEffect(() => {
-    const ids = ['memberships', 'report', 'coverage', 'faq'];
-    const nodes = ids
-      .map((id) => document.getElementById(id))
-      .filter((n): n is HTMLElement => n !== null);
+    const nodes = NAV.map(([, h]) => document.getElementById(h.slice(1)))
+      .filter((n): n is HTMLElement => !!n);
     if (!nodes.length) return;
-
     const io = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
+      (es) => {
+        const vis = es.filter((e) => e.isIntersecting)
           .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-        if (visible[0]) setActive(visible[0].target.id);
+        if (vis[0]) setActive(vis[0].target.id);
       },
       { rootMargin: '-18% 0px -62% 0px' },
     );
-
     nodes.forEach((n) => io.observe(n));
     return () => io.disconnect();
   }, []);
 
+  /* Sticky report: the document pins while the notes scroll past,
+     and the matching part of the report lifts as each arrives. */
+  useEffect(() => {
+    const nodes = Array.from(document.querySelectorAll<HTMLElement>('[data-report]'));
+    if (!nodes.length) return;
+    const io = new IntersectionObserver(
+      (es) => {
+        const vis = es.filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (vis[0]) setReportFocus((vis[0].target as HTMLElement).dataset.report!);
+      },
+      { rootMargin: '-42% 0px -42% 0px' },
+    );
+    nodes.forEach((n) => io.observe(n));
+    return () => io.disconnect();
+  }, []);
+
+  /* Reserve scarcity counted from live subscriptions, never hardcoded. */
+  useEffect(() => {
+    let off = false;
+    fetch('/api/availability')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => { if (!off && d?.configured) setReserveLeft(d.remaining); })
+      .catch(() => {});
+    return () => { off = true; };
+  }, []);
+
+  /* Testimonials cycle one at a time. Paused for reduced motion. */
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const t = setInterval(() => setQuote((q) => (q + 1) % TESTIMONIALS.length), 7000);
+    return () => clearInterval(t);
+  }, []);
+
+  const dim = scrolled ? 'text-muted' : 'text-white/70';
+
   return (
     <>
-      {/* ══ NAVIGATION ══════════════════════════════════════════ */}
+      {/* Page-load curtain — wipes up and gets out of the way. */}
+      <div className="curtain fixed inset-0 z-[90] bg-paper" aria-hidden="true" />
+
+      {/* ══ NAV ═══════════════════════════════════════════════ */}
       <header
-        className={`sticky top-0 z-50 transition-all duration-500 border-b ${
-          scrolled
-            ? 'bg-paper/92 backdrop-blur-md rule'
-            : 'bg-transparent border-transparent'
+        className={`sticky top-0 z-50 border-b transition-all duration-300 ${
+          scrolled ? 'bg-paper/94 backdrop-blur-md rule' : 'bg-transparent border-transparent'
         }`}
       >
         <div className="mx-auto max-w-[1240px] px-6 lg:px-10">
-          <div className="flex items-center justify-between h-[74px]">
-            <a href="#top" className="flex items-center gap-3.5 group">
+          <div className="h-[76px] flex items-center justify-between">
+            <a href="#top" className="flex items-center gap-3.5">
               <Image
                 src={scrolled ? '/logo-mark-navy.png' : '/logo-mark.png'}
-                alt=""
-                width={280}
-                height={150}
-                priority
-                className="h-[30px] w-auto"
+                alt="" width={280} height={150} priority
+                className="h-[30px] w-auto transition-opacity duration-300"
               />
-              <span
-                className={`hidden sm:block h-7 w-px transition-colors duration-500 ${
-                  scrolled ? 'bg-[color:var(--rule)]' : 'bg-white/25'
-                }`}
-              />
-              <span className="flex flex-col leading-none">
-                <span
-                  className={`display text-[19px] tracking-[-0.02em] transition-colors duration-500 ${
-                    scrolled ? 'text-navy' : 'text-paper'
-                  }`}
-                >
-                  Coastal Pro
-                </span>
-                <span
-                  className={`label mt-[3px] text-[9.5px] transition-colors duration-500 ${
-                    scrolled ? 'text-muted' : 'text-white/60'
-                  }`}
-                >
+              <span className={`hidden sm:block h-7 w-px transition-colors duration-300 ${
+                scrolled ? 'bg-[color:var(--rule)]' : 'bg-white/25'}`} />
+              <span className="hidden sm:flex flex-col leading-none">
+                <span className={`display text-[19px] transition-colors duration-300 ${
+                  scrolled ? 'text-ink' : 'text-paper'}`}>Coastal Pro</span>
+                <span className={`label label-sm mt-[4px] transition-colors duration-300 ${dim}`}>
                   Property Care
                 </span>
               </span>
             </a>
 
-            <nav className="hidden lg:flex items-center gap-10">
-              {[
-                ['Memberships', '#memberships'],
-                ['The report', '#report'],
-                ['Coverage', '#coverage'],
-                ['Questions', '#faq'],
-              ].map(([label, href]) => (
-                <a
-                  key={href}
-                  href={href}
+            <nav className="hidden lg:flex gap-10">
+              {NAV.map(([label, href]) => (
+                <a key={href} href={href}
                   className={`relative text-[14px] transition-colors duration-200 ${
                     scrolled
-                      ? active === href.slice(1)
-                        ? 'text-navy'
-                        : 'text-muted hover:text-navy'
-                      : 'text-white/72 hover:text-paper'
-                  }`}
-                >
+                      ? active === href.slice(1) ? 'text-ink' : 'text-muted hover:text-ink'
+                      : 'text-white/72 hover:text-paper'}`}>
                   {label}
-                  <span
-                    className={`absolute -bottom-1.5 left-0 h-px bg-brass transition-all duration-300 ${
-                      active === href.slice(1) ? 'w-full opacity-100' : 'w-0 opacity-0'
-                    }`}
-                  />
+                  <span className={`absolute -bottom-1.5 left-0 h-px bg-brass transition-all duration-300 ${
+                    active === href.slice(1) ? 'w-full opacity-100' : 'w-0 opacity-0'}`} />
                 </a>
               ))}
             </nav>
 
-            <div className="hidden lg:flex items-center gap-6">
-              <a
-                href="tel:0417349071"
-                className={`text-[14px] transition-colors duration-500 ${
-                  scrolled ? 'text-navy hover:text-blue' : 'text-paper/85 hover:text-paper'
-                }`}
-              >
-                0417 349 071
+            <div className="hidden lg:flex items-center gap-7">
+              {/* Highest-intent element on the page — accent + icon. */}
+              <a href="tel:0417349071"
+                className={`flex items-center gap-2 text-[14.5px] transition-colors duration-300 ${
+                  scrolled ? 'text-brass-ink hover:text-ink' : 'text-brass-lift hover:text-paper'}`}>
+                <Phone size={14} strokeWidth={1.75} />
+                <span className="tnum">0417 349 071</span>
               </a>
-              <a
-                href="#memberships"
-                className={`px-6 py-[11px] text-[14px] font-medium transition-all duration-500 ${
-                  scrolled
-                    ? 'bg-navy text-paper hover:bg-navy-deep'
-                    : 'bg-paper text-navy hover:bg-white'
-                }`}
-              >
-                View memberships
-              </a>
+              <Link href="/enquire"
+                className={`px-6 py-[11px] text-[14px] font-medium transition-all duration-300 ${
+                  scrolled ? 'bg-ink text-paper hover:bg-ink-deep' : 'bg-paper text-ink hover:bg-white'}`}>
+                Enquire
+              </Link>
             </div>
 
-            <button
-              className={`lg:hidden transition-colors duration-500 ${
-                scrolled || navOpen ? 'text-navy' : 'text-paper'
-              }`}
-              onClick={() => setNavOpen(!navOpen)}
-              aria-label="Menu"
-              aria-expanded={navOpen}
-            >
+            <button className={`lg:hidden transition-colors duration-300 ${
+              scrolled || navOpen ? 'text-ink' : 'text-paper'}`}
+              onClick={() => setNavOpen(!navOpen)} aria-label="Menu" aria-expanded={navOpen}>
               {navOpen ? <X size={22} strokeWidth={1.5} /> : <Menu size={22} strokeWidth={1.5} />}
             </button>
           </div>
         </div>
 
         {navOpen && (
-          <div className="lg:hidden border-t rule bg-paper absolute inset-x-0 top-full">
-            <div className="px-6 py-5 flex flex-col">
-              {[
-                ['Memberships', '#memberships'],
-                ['The report', '#report'],
-                ['Coverage', '#coverage'],
-                ['Questions', '#faq'],
-              ].map(([label, href]) => (
-                <a
-                  key={href}
-                  href={href}
-                  onClick={() => setNavOpen(false)}
-                  className="py-3 border-b rule text-[15px] text-navy last:border-0"
-                >
-                  {label}
-                </a>
+          <div className="lg:hidden absolute inset-x-0 top-full border-t rule bg-paper">
+            <div className="px-6 py-4 flex flex-col">
+              {NAV.map(([label, href]) => (
+                <a key={href} href={href} onClick={() => setNavOpen(false)}
+                  className="py-3.5 border-b rule text-[15px] text-ink last:border-0">{label}</a>
               ))}
             </div>
           </div>
@@ -438,71 +189,61 @@ export default function Home() {
       </header>
 
       <main id="top">
-        {/* ══ 01 · HERO ═════════════════════════════════════════
-            Full-bleed image, navy scrim weighted to the left,
-            content set low-left. Not centred.                    */}
-        <section className="relative min-h-[92vh] -mt-[75px] flex items-end overflow-hidden bg-navy">
-          <Image
-            src="/hero-bg.jpg"
-            alt=""
-            fill
-            priority
-            className="object-cover"
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                'linear-gradient(96deg, rgba(5,20,40,0.95) 0%, rgba(6,23,45,0.90) 34%, rgba(9,31,58,0.68) 58%, rgba(11,37,69,0.46) 80%, rgba(11,37,69,0.38) 100%)',
-            }}
-          />
+        {/* ══ 01 · HERO ═══════════════════════════════════════ */}
+        <section className="relative min-h-[94vh] -mt-[76px] flex items-end overflow-hidden bg-ink">
+          <div className="absolute inset-0 ken-burns">
+            <Image src="/hero-bg.jpg" alt="" fill priority className="object-cover" />
+          </div>
+          {/* Vertical scrim keeps the photo photographic rather than
+              flatly overlaid. A second, left-weighted layer carries the
+              type without touching the right of the frame. */}
+          <div className="absolute inset-0" style={{
+            background:
+              'linear-gradient(180deg, rgba(7,26,51,0.40) 0%, rgba(7,26,51,0.12) 30%, rgba(7,26,51,0.52) 74%, rgba(7,26,51,0.86) 100%)',
+          }} />
+          <div className="absolute inset-0" style={{
+            background:
+              'linear-gradient(90deg, rgba(7,26,51,0.46) 0%, rgba(7,26,51,0.22) 42%, rgba(7,26,51,0) 72%)',
+          }} />
 
-          <div className="relative w-full mx-auto max-w-[1240px] px-6 lg:px-10 pb-20 lg:pb-28 pt-32">
-            <div className="max-w-[880px] rise">
-              <div className="flex items-center gap-4 mb-9">
-                <span className="block w-11 h-px bg-brass" />
-                <span className="label text-brass">Mornington Peninsula</span>
+          <div className="relative w-full mx-auto max-w-[1240px] px-6 lg:px-10 pb-[92px] lg:pb-[132px] pt-40">
+            <div className="max-w-[880px]">
+              <div className="hero-fade flex items-center gap-4 mb-9" style={{ animationDelay: '80ms' }}>
+                <span className="block w-11 h-px bg-brass-lift" />
+                <span className="label text-brass-lift">Mornington Peninsula</span>
               </div>
 
+              {/* Line break is explicit and holds at every breakpoint. */}
               <h1 className="display display-light d1 text-paper mb-8">
-                Your property.
-                <br />
-                Professionally cared for.
+                <span className="block hero-line" style={{ animationDelay: '160ms' }}>Your property.</span>
+                <span className="block hero-line" style={{ animationDelay: '220ms' }}>Professionally cared for.</span>
               </h1>
 
-              <p className="lede text-white/72 max-w-[540px] mb-11">
+              <p className="hero-line lede text-white/74 measure mb-11" style={{ animationDelay: '300ms' }}>
                 Property care memberships for holiday homes and coastal residences.
-                Scheduled attendance, considered oversight, and a written report
-                after every visit.
+                Scheduled attendance, considered oversight, and a written report after every visit.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-3.5">
-                <a
-                  href="#memberships"
-                  className="px-9 py-[15px] bg-paper text-navy text-[15px] font-medium text-center hover:bg-white transition-colors duration-200"
-                >
+              <div className="hero-line flex flex-col sm:flex-row gap-3.5" style={{ animationDelay: '360ms' }}>
+                <a href="#memberships"
+                  className="px-9 py-[15px] bg-paper text-ink text-[15px] font-medium text-center hover:bg-white transition-colors duration-200">
                   View memberships
                 </a>
-                <Link
-                  href="/enquire"
-                  className="px-9 py-[15px] border border-white/38 text-paper text-[15px] font-medium text-center hover:bg-white/10 hover:border-white/60 transition-all duration-200"
-                >
+                <Link href="/enquire"
+                  className="px-9 py-[15px] border border-white/38 text-paper text-[15px] font-medium text-center hover:bg-white/10 hover:border-white/60 transition-all duration-200">
                   Book a property consultation
                 </Link>
               </div>
             </div>
           </div>
 
-          {/* Trust bar — text only, divided by hairlines */}
-          <div className="absolute bottom-0 inset-x-0 border-t rule-dark">
+          {/* Trust marks — no pills. Small-caps, hairline dividers. */}
+          <div className="absolute bottom-0 inset-x-0 border-t rule-dark hero-fade" style={{ animationDelay: '520ms' }}>
             <div className="mx-auto max-w-[1240px] px-6 lg:px-10">
               <div className="flex flex-wrap">
-                {['Fully insured', 'Qualified carpenters', 'Locally based'].map((item, i) => (
-                  <div
-                    key={item}
-                    className={`py-4 pr-8 lg:pr-14 ${i > 0 ? 'pl-8 lg:pl-14 border-l rule-dark' : ''}`}
-                  >
-                    <span className="label text-white/62">{item}</span>
+                {['Fully insured', 'Qualified carpenters', 'Locally based'].map((t, i) => (
+                  <div key={t} className={`py-[18px] pr-8 lg:pr-14 ${i > 0 ? 'pl-8 lg:pl-14 border-l rule-dark' : ''}`}>
+                    <span className="label text-white/60">{t}</span>
                   </div>
                 ))}
               </div>
@@ -510,39 +251,34 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ══ 02 · THE PROBLEM ══════════════════════════════════
-            Sand field. Asymmetric 12-col: statement left,
-            indexed list right, divided by hairlines. No cards.   */}
+        {/* ══ 02 · THE PROBLEM ════════════════════════════════ */}
         <section className="bg-sand">
-          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-24 lg:py-36">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-14 lg:gap-x-20">
+          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[88px] lg:py-[160px]">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-16 lg:gap-x-20">
               <div className="lg:col-span-5">
                 <div className="reveal lg:sticky lg:top-32">
-                  <span className="label text-muted block mb-7">The problem</span>
-                  <h2 className="display display-light d2 text-navy mb-7">
+                  <span className="label text-muted block mb-8">The problem</span>
+                  <h2 className="display display-light d2 text-ink mb-7">
                     Who checks your property when you are not there?
                   </h2>
-                  <p className="lede text-muted max-w-[400px]">
-                    Distance is the whole difficulty. Nothing about a coastal
-                    house fails suddenly — it fails slowly, unobserved.
+                  <p className="lede text-muted measure-sm">
+                    Distance is the whole difficulty. Nothing about a coastal house
+                    fails suddenly — it fails slowly, unobserved.
                   </p>
                 </div>
               </div>
 
               <div className="lg:col-span-6 lg:col-start-7">
                 {CONCERNS.map((c, i) => (
-                  <div
-                    key={c.index}
-                    style={{ transitionDelay: `${i * 90}ms` }}
-                    className={`reveal grid grid-cols-[auto_1fr] gap-x-8 py-9 ${
-                      i === 0 ? 'lg:pt-2' : 'border-t rule'
-                    }`}
-                  >
-                    <span className="numeral text-[15px] text-navy/32 pt-1.5">{c.index}</span>
-                    <div>
-                      <h3 className="display d4 text-navy mb-3">{c.title}</h3>
-                      <p className="text-[16px] leading-[1.68] text-muted">{c.body}</p>
-                    </div>
+                  <div key={c.index}
+                    style={{ transitionDelay: `${i * 100}ms` }}
+                    className={`reveal py-11 ${i > 0 ? 'border-t rule' : 'lg:pt-0'}`}>
+                    {/* Large, light, faint — sits above the heading. */}
+                    <span className="numeral block text-[48px] leading-none text-ink/[0.13] mb-5">
+                      {c.index}
+                    </span>
+                    <h3 className="display d3 text-ink mb-4">{c.title}</h3>
+                    <p className="text-[16px] leading-[1.68] text-muted measure">{c.body}</p>
                   </div>
                 ))}
               </div>
@@ -550,169 +286,145 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ══ 03 · PROCESS ══════════════════════════════════════
-            Paper field. Three columns under a full rule, with
-            oversized outline numerals. Editorial, not iconic.    */}
+        {/* ══ 03 · PROCESS ════════════════════════════════════ */}
         <section className="bg-paper">
-          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-24 lg:py-36">
+          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[88px] lg:py-[160px]">
             <div className="reveal max-w-[620px] mb-16 lg:mb-24">
-              <span className="label text-muted block mb-7">How it works</span>
-              <h2 className="display display-light d2 text-navy">
+              <span className="label text-muted block mb-8">How it works</span>
+              <h2 className="display display-light d2 text-ink">
                 Three steps, repeated with discipline.
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 border-t rule">
-              {PROCESS.map((step, i) => (
-                <div
-                  key={step.index}
-                  style={{ transitionDelay: `${i * 90}ms` }}
-                  className={`reveal pt-10 pb-2 md:pr-12 ${
-                    i > 0 ? 'md:pl-12 md:border-l rule border-t md:border-t-0' : ''
-                  } ${i > 0 ? 'pt-10' : ''}`}
-                >
-                  <span className="numeral block text-[56px] leading-none text-navy/13 mb-8">
-                    {step.index}
-                  </span>
-                  <h3 className="display d4 text-navy mb-4">{step.title}</h3>
-                  <p className="text-[16px] leading-[1.68] text-muted max-w-[300px]">
-                    {step.body}
-                  </p>
+            <div className="relative grid grid-cols-1 md:grid-cols-3 gap-y-14 md:gap-x-16">
+              {/* Thin line connecting the numerals. */}
+              <span aria-hidden className="hidden md:block absolute top-[13px] left-[8%] right-[8%] h-px bg-[color:var(--rule)]" />
+              {PROCESS.map((s, i) => (
+                <div key={s.index} style={{ transitionDelay: `${i * 100}ms` }} className="reveal relative">
+                  <div className="flex items-center gap-4 mb-8">
+                    <span className="relative z-10 bg-paper pr-4 numeral text-[26px] leading-none text-brass-ink">
+                      {s.index}
+                    </span>
+                  </div>
+                  <h3 className="display d3 text-ink mb-4">{s.title}</h3>
+                  <p className="text-[16px] leading-[1.68] text-muted measure">{s.body}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ══ 04 · MEMBERSHIPS ══════════════════════════════════
-            Navy field. Three columns separated by vertical
-            hairlines — not floating cards. Brass appears here,
-            on Reserve only.                                      */}
-        <section id="memberships" className="bg-navy text-paper">
-          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-24 lg:py-36">
-            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10 mb-16 lg:mb-20">
-              <div className="reveal max-w-[560px]">
-                <span className="label text-white/50 block mb-7">Memberships</span>
-                <h2 className="display display-light d2 text-paper">
-                  Three levels of care.
-                  <br />
-                  One trusted team.
+        {/* ══ 04 · MEMBERSHIPS ════════════════════════════════ */}
+        <section id="memberships" className="bg-paper border-y rule">
+          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[88px] lg:py-[160px]">
+            <div className="reveal flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10 mb-8">
+              <div className="max-w-[560px]">
+                <span className="label text-muted block mb-8">Memberships</span>
+                <h2 className="display display-light d2 text-ink">
+                  Three levels of care.<br />One trusted team.
                 </h2>
               </div>
 
-              {/* Billing toggle — hairline segmented control */}
-              <div className="inline-flex border rule-dark self-start lg:self-auto">
-                <button
-                  onClick={() => setAnnual(false)}
-                  className={`px-6 py-2.5 text-[13px] font-medium transition-colors duration-200 ${
-                    !annual ? 'bg-paper text-navy' : 'text-white/62 hover:text-paper'
-                  }`}
-                >
-                  Monthly
-                </button>
-                <button
-                  onClick={() => setAnnual(true)}
-                  className={`px-6 py-2.5 text-[13px] font-medium border-l rule-dark transition-colors duration-200 ${
-                    annual ? 'bg-paper text-navy' : 'text-white/62 hover:text-paper'
-                  }`}
-                >
-                  Annual
-                </button>
+              <div className="inline-flex border rule self-start lg:self-auto bg-paper">
+                {(['Monthly', 'Annual'] as const).map((l) => {
+                  const on = (l === 'Annual') === annual;
+                  return (
+                    <button key={l} onClick={() => setAnnual(l === 'Annual')}
+                      className={`px-6 py-2.5 text-[13px] font-medium transition-colors duration-200 ${
+                        l === 'Annual' ? 'border-l rule' : ''} ${
+                        on ? 'bg-ink text-paper' : 'text-muted hover:text-ink'}`}>
+                      {l}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 border-t rule-dark">
+            {/* Emergency promise — the thing an anxious owner most wants
+                to hear, stated rather than implied. */}
+            <p className="reveal text-[15.5px] leading-[1.7] text-muted measure border-l-2 border-brass pl-6 mb-16">
+              If we find something urgent while you are away, we make it safe
+              immediately and tell you the same day, with photographs. Every tier.
+            </p>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-6">
               {PLANS.map((plan, i) => {
                 const isReserve = plan.id === 'reserve';
+                const isSig = plan.id === 'signature';
                 return (
-                  <div
-                    key={plan.id}
-                    style={{ transitionDelay: `${i * 110}ms` }}
-                    className={`reveal relative flex flex-col pt-11 pb-11 lg:pr-11 ${
-                      i > 0 ? 'lg:pl-11 lg:border-l rule-dark border-t lg:border-t-0' : ''
-                    }`}
-                  >
-                    {/* Brass top rule — Reserve only */}
-                    {isReserve && (
-                      <span className="absolute top-0 left-0 lg:left-11 right-0 h-px bg-brass" />
-                    )}
-
-                    <div className="flex items-baseline justify-between mb-1.5">
-                      <h3
-                        className={`display d3 ${isReserve ? 'text-brass' : 'text-paper'}`}
-                      >
-                        {plan.name}
-                      </h3>
-                      <span className="numeral text-[13px] text-white/28">{plan.index}</span>
+                  <div key={plan.id} style={{ transitionDelay: `${i * 100}ms` }} className="reveal flex flex-col">
+                    {/* Label sits ABOVE the card, outside it. */}
+                    <div className="h-7 flex items-end mb-3">
+                      {isSig && <span className="label text-brass-ink">Most chosen</span>}
                     </div>
 
-                    <p className="text-[15px] text-white/55 mb-9 max-w-[280px]">{plan.line}</p>
+                    <div className={`flex flex-col flex-1 p-9 lg:p-10 border ${
+                      isSig ? 'bg-paper-warm border-[color:var(--rule)]' : 'bg-transparent border-[color:var(--rule)]'
+                    }`}>
+                      <div className="flex items-baseline justify-between mb-2">
+                        <h3 className={`display d3 ${isReserve ? 'text-brass-ink' : 'text-ink'}`}>{plan.name}</h3>
+                        <span className="numeral text-[13px] text-ink/25">{plan.index}</span>
+                      </div>
+                      <p className="text-[15px] text-muted measure-sm mb-9">{plan.line}</p>
 
-                    <div className="mb-2">
-                      <span className="display display-light text-[52px] leading-none text-paper tabular-nums">
-                        ${annual ? plan.annual.toLocaleString() : plan.price}
-                      </span>
-                      <span className="text-[14px] text-white/50 ml-2">
-                        {annual ? 'per year' : 'per month'}
-                      </span>
-                    </div>
-                    <p className="text-[13px] text-white/38 mb-9">
-                      {annual ? (
-                        <>
-                          Equivalent to ${Math.round(plan.annual / 12)} monthly
-                          <span className={isReserve ? 'text-brass ml-2' : 'text-white/60 ml-2'}>
-                            Save ${(plan.price * 12 - plan.annual).toLocaleString()}
+                      {/* $ small and raised, number large in the serif,
+                          period small and quiet underneath. */}
+                      <div className="mb-2">
+                        <span key={annual ? 'a' : 'm'} className="hero-fade inline-flex items-start">
+                          <span className="display text-[19px] text-ink/55 mt-[10px] mr-[3px]">$</span>
+                          <span className="display display-light text-[54px] leading-[0.95] text-ink tnum">
+                            {annual ? plan.annual.toLocaleString() : plan.price}
                           </span>
-                        </>
-                      ) : (
-                        `$${plan.annual.toLocaleString()} billed annually`
+                        </span>
+                      </div>
+                      <p className="text-[13.5px] text-muted mb-2">
+                        {annual ? 'per year' : 'per month'}
+                      </p>
+                      {annual && (
+                        <span className="hero-fade inline-block self-start label text-brass-ink border rule px-2.5 py-1 mb-2">
+                          Save ${(plan.price * 12 - plan.annual).toLocaleString()}
+                        </span>
                       )}
-                    </p>
 
-                    <div className="py-4 border-y rule-dark mb-8">
-                      <span className="text-[14px] text-paper">{plan.cadence}</span>
-                    </div>
+                      <div className="py-4 border-y rule my-8">
+                        <span className="text-[14px] text-ink">{plan.cadence}</span>
+                      </div>
 
-                    <ul className="space-y-3 mb-10 flex-1">
-                      {plan.features.map((f) => (
-                        <li key={f} className="flex gap-3 text-[14.5px] leading-[1.5]">
-                          <Check
-                            size={15}
-                            strokeWidth={2}
-                            className={`shrink-0 mt-[5px] ${
-                              isReserve ? 'text-brass' : 'text-white/40'
-                            }`}
-                          />
-                          <span className="text-white/78">{f}</span>
-                        </li>
-                      ))}
-                    </ul>
+                      {/* Inherited features muted, new ones full ink —
+                          the upgrade reads at a glance. */}
+                      <ul className="space-y-3 mb-9 flex-1">
+                        {plan.inherited.map((f) => (
+                          <li key={f} className="flex gap-3.5 text-[14.5px] leading-[1.5] text-muted/75">
+                            <span className="mt-[10px] w-2.5 h-px bg-[color:var(--rule)] shrink-0" />
+                            <span>{f}</span>
+                          </li>
+                        ))}
+                        {plan.added.map((f) => (
+                          <li key={f} className="flex gap-3.5 text-[14.5px] leading-[1.5] text-text">
+                            <span className="mt-[8px] w-[3px] h-[3px] rounded-full bg-brass shrink-0" />
+                            <span>{f}</span>
+                          </li>
+                        ))}
+                      </ul>
 
-                    <div className="mt-auto">
-                      {(plan.note || (isReserve && reserveLeft !== null)) && (
-                        <p
-                          className={`label mb-4 ${isReserve ? 'text-brass' : 'text-white/45'}`}
-                        >
-                          {isReserve && reserveLeft !== null
+                      {isReserve && (
+                        <p className="label text-brass-ink border rule px-4 py-3 mb-6 text-center">
+                          {reserveLeft !== null
                             ? reserveLeft > 0
-                              ? `${reserveLeft} of ${RESERVE_CAP} places remaining`
+                              ? `${reserveLeft} of ${RESERVE_CAP} remaining`
                               : 'Fully subscribed — waitlist open'
                             : plan.note}
                         </p>
                       )}
-                      <Link
-                        href={`/enquire?plan=${plan.id}`}
+
+                      <Link href={`/enquire?plan=${plan.id}`}
                         className={`block w-full py-[14px] text-center text-[14px] font-medium transition-colors duration-200 ${
-                          isReserve
-                            ? 'bg-brass text-navy hover:bg-[#D9B237]'
-                            : plan.id === 'signature'
-                            ? 'bg-paper text-navy hover:bg-white'
-                            : 'border rule-dark text-paper hover:bg-white/10'
-                        }`}
-                      >
+                          isReserve ? 'bg-brass-ink text-paper hover:bg-ink'
+                          : isSig ? 'bg-ink text-paper hover:bg-ink-deep'
+                          : 'border border-[color:var(--ink)] text-ink hover:bg-ink hover:text-paper'}`}>
                         {plan.cta}
                       </Link>
-                      <p className="text-[12.5px] text-white/38 mt-4">
+                      <p className="text-[12.5px] text-muted mt-4 text-center">
                         {plan.discount}% off eligible carpentry works
                       </p>
                     </div>
@@ -721,67 +433,44 @@ export default function Home() {
               })}
             </div>
 
-            <p className="label text-white/40 mt-14 max-w-[620px] leading-[1.9]">
-              Memberships cover oversight, attendance and reporting. Repair work is
-              quoted separately.
+            <p className="label text-muted mt-14 measure leading-[1.9]">
+              Memberships cover oversight, attendance and reporting. Repair work is quoted separately.
             </p>
           </div>
         </section>
 
-        {/* ══ 05 · COMPARISON ═══════════════════════════════════
-            Paper field. Disclosure row as a hairline band.
-            Table uses rules only — no fills, no zebra.           */}
+        {/* ══ 05 · COMPARISON ═════════════════════════════════ */}
         <section className="bg-paper">
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10">
-            <button
-              onClick={() => setShowTable(!showTable)}
-              aria-expanded={showTable}
-              className="w-full flex items-center justify-between py-9 border-b rule group"
-            >
-              <span className="display d4 text-navy">Compare all inclusions</span>
-              <ChevronDown
-                size={22}
-                strokeWidth={1.5}
-                className={`text-muted group-hover:text-navy transition-all duration-300 ${
-                  showTable ? 'rotate-180' : ''
-                }`}
-              />
+            <button onClick={() => setShowTable(!showTable)} aria-expanded={showTable}
+              className="w-full flex items-center justify-between py-9 border-b rule group">
+              <span className="display d4 text-ink">Compare all inclusions</span>
+              <ChevronDown size={22} strokeWidth={1.5}
+                className={`text-muted group-hover:text-ink transition-all duration-300 ${showTable ? 'rotate-180' : ''}`} />
             </button>
 
             {showTable && (
-              <div className="overflow-x-auto pb-24 lg:pb-32">
+              <div className="overflow-x-auto pb-[88px] lg:pb-[120px]">
                 <table className="w-full min-w-[720px] text-left">
                   <thead>
                     <tr className="border-b rule">
                       <th className="label text-muted font-semibold py-6 pr-6">Inclusion</th>
-                      <th className="label text-muted font-semibold py-6 px-6 text-center w-[128px]">
-                        Essential
-                      </th>
-                      <th className="label text-muted font-semibold py-6 px-6 text-center w-[128px]">
-                        Signature
-                      </th>
-                      <th className="label text-brass font-semibold py-6 pl-6 text-center w-[128px]">
-                        Reserve
-                      </th>
+                      {['Essential', 'Signature', 'Reserve'].map((t) => (
+                        <th key={t} className={`label font-semibold py-6 px-6 text-center w-[128px] ${
+                          t === 'Reserve' ? 'text-brass-ink' : 'text-muted'}`}>{t}</th>
+                      ))}
                     </tr>
                   </thead>
                   <tbody>
                     {COMPARISON.map((row) => (
                       <tr key={row.feature} className="border-b rule">
-                        <td className="py-[18px] pr-6 text-[15px] text-ink">{row.feature}</td>
-                        {(['essential', 'signature', 'reserve'] as const).map((tier) => (
-                          <td key={tier} className="py-[18px] px-6 text-center">
-                            {row[tier] ? (
-                              <Check
-                                size={16}
-                                strokeWidth={2}
-                                className={`mx-auto ${
-                                  tier === 'reserve' ? 'text-brass' : 'text-navy/45'
-                                }`}
-                              />
-                            ) : (
-                              <span className="block w-3 h-px bg-navy/15 mx-auto" />
-                            )}
+                        <td className="py-[18px] pr-6 text-[15px] text-text">{row.feature}</td>
+                        {(['essential', 'signature', 'reserve'] as const).map((t) => (
+                          <td key={t} className="py-[18px] px-6">
+                            {row[t]
+                              ? <span className={`block w-[5px] h-[5px] rounded-full mx-auto ${
+                                  t === 'reserve' ? 'bg-brass' : 'bg-ink/45'}`} />
+                              : <span className="block w-3 h-px bg-ink/12 mx-auto" />}
                           </td>
                         ))}
                       </tr>
@@ -793,134 +482,107 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ══ 06 · THE REPORT ═══════════════════════════════════
-            Sand field. Asymmetric: a real document rendered on
-            the left, three terse points on the right.            */}
-        <section id="report" className="bg-sand">
-          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-24 lg:py-36">
-            <div className="reveal max-w-[620px] mb-16 lg:mb-20">
-              <span className="label text-muted block mb-7">The artefact</span>
-              <h2 className="display display-light d2 text-navy mb-7">
-                The Property Care Report
-              </h2>
-              <p className="lede text-muted">
-                The membership is the service. The report is the proof of it —
-                delivered after every visit, archived for the life of the property.
+        {/* ══ 06 · THE REPORT — the centrepiece ═══════════════ */}
+        <section id="report" className="bg-ink text-paper">
+          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[88px] lg:py-[160px]">
+            <div className="reveal max-w-[620px] mb-16 lg:mb-24">
+              <span className="label text-brass-lift block mb-8">The artefact</span>
+              <h2 className="display display-light d2 text-paper mb-7">The Property Care Report</h2>
+              <p className="lede text-white/64 measure">
+                The membership is the service. The report is the proof of it — delivered
+                after every visit, archived for the life of the property.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-14 lg:gap-x-20 items-start">
-              {/* Document */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-16 lg:gap-x-20 items-start">
+              {/* Document pins while the notes scroll past. */}
               <div className="lg:col-span-7">
-                <div className="reveal bg-paper border rule p-8 lg:p-11 shadow-[0_1px_2px_rgba(11,37,69,0.05)]">
-                  <div className="flex items-start justify-between pb-6 border-b rule">
-                    <div>
-                      <p className="label text-muted mb-2">Property Care Report</p>
-                      <p className="display d4 text-navy">14 Point Nepean Road</p>
-                    </div>
-                    <div className="text-right shrink-0 pl-6">
-                      <p className="label text-muted mb-2">Visit</p>
-                      <p className="text-[14px] text-navy tabular-nums">12 Jun 2026</p>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-3 gap-6 py-6 border-b rule">
-                    {[
-                      ['Attendance', 'Scheduled'],
-                      ['Duration', '48 minutes'],
-                      ['Attended by', 'D. Sidebottom'],
-                    ].map(([k, v]) => (
-                      <div key={k}>
-                        <p className="label text-muted mb-2">{k}</p>
-                        <p className="text-[14px] text-ink">{v}</p>
+                <div className="lg:sticky lg:top-28">
+                  <div className="bg-white text-text p-8 lg:p-11 doc-shadow rotate-[-0.7deg]">
+                    <div className="flex items-start justify-between pb-6 border-b rule">
+                      <div>
+                        <p className="label text-muted mb-2">Property Care Report</p>
+                        <p className="display d4 text-ink">14 Point Nepean Road</p>
+                        <p className="label label-sm text-brass-ink mt-2">Sample — not a real property</p>
                       </div>
-                    ))}
-                  </div>
+                      <div className="text-right shrink-0 pl-6">
+                        <p className="label text-muted mb-2">Visit</p>
+                        <p className="text-[14px] text-ink tnum">12 Jun 2026</p>
+                      </div>
+                    </div>
 
-                  <div className="py-7 border-b rule">
-                    <p className="label text-muted mb-6">Condition assessment</p>
-                    <div className="space-y-4">
-                      {REPORT_CONDITIONS.map((c) => (
-                        <div key={c.area} className="flex items-center gap-5">
-                          <span className="text-[14px] text-ink w-[168px] shrink-0">
-                            {c.area}
-                          </span>
-                          <span className="flex-1 h-[3px] bg-navy/10 relative">
-                            <span
-                              className="absolute inset-y-0 left-0"
-                              style={{
-                                width: `${c.pct}%`,
-                                background:
-                                  c.pct < 50 ? '#B4472E' : c.pct < 75 ? '#C9A227' : '#0B2545',
-                              }}
-                            />
-                          </span>
-                          <span className="text-[13px] text-muted w-[68px] text-right shrink-0">
-                            {c.rating}
-                          </span>
+                    <div className="grid grid-cols-3 gap-6 py-6 border-b rule">
+                      {[['Attendance', 'Scheduled'], ['Duration', '48 minutes'], ['Attended by', 'D. Sidebottom']].map(([k, v]) => (
+                        <div key={k}>
+                          <p className="label text-muted mb-2">{k}</p>
+                          <p className="text-[14px] text-text">{v}</p>
                         </div>
                       ))}
                     </div>
-                  </div>
 
-                  <div className="py-7 border-b rule">
-                    <p className="label text-muted mb-6">Findings</p>
-                    <div className="space-y-4">
-                      {REPORT_FINDINGS.map((f) => (
-                        <div key={f.text} className="flex items-baseline gap-4">
-                          <span
-                            className="label w-[74px] shrink-0"
-                            style={{
-                              color:
-                                f.level === 'Urgent'
-                                  ? '#B4472E'
-                                  : f.level === 'Monitor'
-                                  ? '#8A6F14'
-                                  : '#66727F',
-                            }}
-                          >
-                            {f.level}
-                          </span>
-                          <span className="text-[14.5px] text-ink flex-1">{f.text}</span>
-                          {f.quoted && (
-                            <span className="text-[12px] text-muted shrink-0">
-                              Quote attached
+                    <div className={`py-7 border-b rule transition-opacity duration-500 ${
+                      reportFocus === 'condition' ? 'opacity-100' : 'opacity-40'}`}>
+                      <p className="label text-muted mb-6">Condition assessment</p>
+                      <div className="space-y-4">
+                        {REPORT_CONDITIONS.map((c) => (
+                          <div key={c.area} className="flex items-center gap-5">
+                            <span className="text-[14px] text-text w-[168px] shrink-0">{c.area}</span>
+                            <span className="flex-1 h-[3px] bg-ink/10 relative">
+                              <span className="absolute inset-y-0 left-0"
+                                style={{ width: `${c.pct}%`, background: TONE[c.tone] }} />
                             </span>
-                          )}
-                        </div>
-                      ))}
+                            <span className="flex items-center gap-2 w-[86px] shrink-0 justify-end">
+                              <span className="w-[5px] h-[5px] rounded-full" style={{ background: TONE[c.tone] }} />
+                              <span className="text-[13px] text-muted">{c.rating}</span>
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className={`py-7 border-b rule transition-opacity duration-500 ${
+                      reportFocus === 'findings' ? 'opacity-100' : 'opacity-40'}`}>
+                      <p className="label text-muted mb-6">Findings</p>
+                      <div className="space-y-4">
+                        {REPORT_FINDINGS.map((f) => (
+                          <div key={f.text} className="flex items-baseline gap-4">
+                            <span className="flex items-center gap-2 w-[86px] shrink-0">
+                              <span className="w-[5px] h-[5px] rounded-full" style={{ background: TONE[f.tone] }} />
+                              <span className="label" style={{ color: TONE[f.tone] }}>{f.level}</span>
+                            </span>
+                            <span className="text-[14.5px] text-text flex-1">{f.text}</span>
+                            {f.quoted && <span className="text-[12px] text-muted shrink-0">Quote attached</span>}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className={`pt-6 transition-opacity duration-500 ${
+                      reportFocus === 'archive' ? 'opacity-100' : 'opacity-40'}`}>
+                      <p className="text-[13px] text-muted">
+                        22 photographs attached · Next scheduled attendance 26 June 2026
+                      </p>
                     </div>
                   </div>
 
-                  <p className="pt-6 text-[13px] text-muted">
-                    22 photographs attached · Next scheduled attendance 26 June 2026
-                  </p>
+                  <a href="/sample-report"
+                    className="inline-flex items-center gap-2 mt-8 text-[14.5px] text-brass-lift hover:text-paper transition-colors">
+                    See a full sample report
+                    <ArrowUpRight size={15} strokeWidth={1.75} />
+                  </a>
                 </div>
               </div>
 
-              {/* Notes */}
               <div className="lg:col-span-5">
                 {[
-                  {
-                    t: 'Delivered within twenty-four hours',
-                    b: 'Every visit produces a report. Condition ratings, photographs, and anything found — with a fixed price attached before any work is discussed.',
-                  },
-                  {
-                    t: 'Archived for the life of the property',
-                    b: 'Reports accumulate into a maintenance record. What was done, when, and what is coming due. Useful at sale, essential at claim.',
-                  },
-                  {
-                    t: 'Quoted, never assumed',
-                    b: 'Nothing proceeds without written approval. Members receive five, ten or fifteen per cent off eligible carpentry depending on tier.',
-                  },
+                  { k: 'condition', t: 'Every area rated, every visit', b: 'Roofline, timber, paint and drainage are scored the same way each time, so change is visible across months rather than guessed at.' },
+                  { k: 'findings', t: 'Findings priced before they are discussed', b: 'Anything we find arrives with photographs and a fixed price. Nothing proceeds without your written approval.' },
+                  { k: 'archive', t: 'Archived for the life of the property', b: 'Reports accumulate into a maintenance record — what was done, when, and what is coming due. Useful at sale, essential at claim.' },
                 ].map((item, i) => (
-                  <div
-                    key={item.t}
-                    style={{ transitionDelay: `${i * 90}ms` }}
-                    className={`reveal py-8 ${i > 0 ? 'border-t rule' : 'pt-0'}`}
-                  >
-                    <h3 className="display d4 text-navy mb-3">{item.t}</h3>
-                    <p className="text-[16px] leading-[1.68] text-muted">{item.b}</p>
+                  <div key={item.k} data-report={item.k}
+                    className={`reveal py-14 lg:py-[120px] ${i > 0 ? 'border-t rule-dark' : 'lg:pt-0'}`}>
+                    <h3 className="display d3 text-paper mb-4">{item.t}</h3>
+                    <p className="text-[16px] leading-[1.7] text-white/62 measure">{item.b}</p>
                   </div>
                 ))}
               </div>
@@ -928,42 +590,25 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ══ 07 · CARPENTRY ════════════════════════════════════
-            Navy band. Deliberately compact — a statement and
-            three figures on one line. Not a full section.        */}
-        <section className="bg-navy-deep text-paper">
-          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-16 lg:py-20">
+        {/* ══ 07 · CARPENTRY ══════════════════════════════════ */}
+        <section className="bg-paper">
+          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[72px] lg:py-[104px]">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-10 lg:gap-x-20 items-center">
-              <div className="lg:col-span-6">
-                <span className="label text-white/45 block mb-6">Carpentry and repairs</span>
-                <h2 className="display display-light d3 text-paper mb-4">
-                  We can also fix what we find.
-                </h2>
-                <p className="text-[16px] leading-[1.68] text-white/60 max-w-[440px]">
-                  Qualified carpenters, licensed trades, and a single point of
-                  coordination. Members receive a standing discount on eligible works.
+              <div className="reveal lg:col-span-6">
+                <span className="label text-muted block mb-6">Carpentry and repairs</span>
+                <h2 className="display display-light d3 text-ink mb-4">We can also fix what we find.</h2>
+                <p className="text-[16px] leading-[1.68] text-muted measure">
+                  Qualified carpenters, licensed trades, and a single point of coordination.
+                  Members receive a standing discount on eligible works.
                 </p>
               </div>
-
-              <div className="lg:col-span-6">
-                <div className="grid grid-cols-3 border-t rule-dark">
-                  {[
-                    ['5%', 'Essential'],
-                    ['10%', 'Signature'],
-                    ['15%', 'Reserve'],
-                  ].map(([pct, tier], i) => (
-                    <div
-                      key={tier}
-                      className={`pt-7 pb-1 ${i > 0 ? 'pl-6 border-l rule-dark' : ''}`}
-                    >
-                      <span
-                        className={`numeral block text-[38px] leading-none mb-3 ${
-                          tier === 'Reserve' ? 'text-brass' : 'text-paper'
-                        }`}
-                      >
-                        {pct}
-                      </span>
-                      <span className="label text-white/45">{tier}</span>
+              <div className="reveal lg:col-span-6">
+                <div className="grid grid-cols-3 border-t rule">
+                  {[['5%', 'Essential'], ['10%', 'Signature'], ['15%', 'Reserve']].map(([p, t], i) => (
+                    <div key={t} className={`pt-7 ${i > 0 ? 'pl-6 border-l rule' : ''}`}>
+                      <span className={`numeral block text-[38px] leading-none mb-3 ${
+                        t === 'Reserve' ? 'text-brass-ink' : 'text-ink'}`}>{p}</span>
+                      <span className="label text-muted">{t}</span>
                     </div>
                   ))}
                 </div>
@@ -972,150 +617,186 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ══ 08 · COVERAGE ═════════════════════════════════════
-            Paper field. Suburb names set large in serif, in a
-            ruled list. Typographic, not a map graphic.           */}
-        <section id="coverage" className="bg-paper">
-          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-24 lg:py-36">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-12 lg:gap-x-20">
-              <div className="reveal lg:col-span-4">
-                <span className="label text-muted block mb-7">Coverage</span>
-                <h2 className="display display-light d2 text-navy mb-6">
+        {/* ══ 08 · COVERAGE ═══════════════════════════════════ */}
+        <section id="coverage" className="bg-sand border-y rule">
+          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[88px] lg:py-[160px]">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-14 lg:gap-x-20 items-center">
+              <div className="reveal lg:col-span-5">
+                <span className="label text-muted block mb-8">Coverage</span>
+                <h2 className="display display-light d2 text-ink mb-6">
                   We work the length of the Peninsula.
                 </h2>
-                <p className="text-[16px] leading-[1.68] text-muted max-w-[320px]">
+                <p className="text-[16px] leading-[1.68] text-muted measure mb-10">
                   If your property sits outside these suburbs, speak to us. We take on
                   work beyond this list where the schedule allows.
                 </p>
+
+                <ul className="border-t rule">
+                  {SUBURBS.map((s) => (
+                    <li key={s.name}
+                      onMouseEnter={() => setHoverSuburb(s.name)}
+                      onMouseLeave={() => setHoverSuburb(null)}
+                      className="border-b rule py-3 flex items-baseline justify-between cursor-default transition-colors">
+                      <span className={`display d4 transition-colors duration-200 ${
+                        hoverSuburb === s.name ? 'text-brass-ink' : 'text-ink'}`}>{s.name}</span>
+                      <span className={`w-1.5 h-1.5 rounded-full transition-all duration-200 ${
+                        hoverSuburb === s.name ? 'bg-brass scale-150' : 'bg-ink/20'}`} />
+                    </li>
+                  ))}
+                </ul>
               </div>
 
-              <div className="lg:col-span-7 lg:col-start-6">
-                <div className="border-t rule">
-                  {SUBURBS.map((s, i) => (
-                    <div
-                      key={s}
-                      style={{ transitionDelay: `${i * 55}ms` }}
-                      className="reveal flex items-baseline justify-between py-[18px] border-b rule group"
-                    >
-                      <span className="display d3 text-navy">{s}</span>
-                      <span className="numeral text-[13px] text-navy/25">
-                        {String(i + 1).padStart(2, '0')}
-                      </span>
-                    </div>
-                  ))}
-                </div>
+              {/* Thin-stroke coastline. Suburb positions are derived from
+                  real lat/long, so the run of the coast is true. */}
+              <div className="reveal lg:col-span-7">
+                <svg viewBox="0 0 600 260" className="w-full h-auto" role="img"
+                  aria-label="Stylised map of the Mornington Peninsula showing serviced suburbs">
+                  <path d="M556 8 C 520 34, 470 74, 404 96 C 330 121, 262 134, 196 148 C 150 158, 110 142, 74 116 C 52 100, 34 86, 20 78"
+                    fill="none" stroke="var(--ink)" strokeOpacity="0.32" strokeWidth="1.25" strokeLinecap="round" />
+                  <path d="M566 30 C 528 60, 476 100, 408 124 C 332 150, 258 164, 190 176 C 142 185, 100 168, 62 138 C 40 120, 24 106, 12 98"
+                    fill="none" stroke="var(--ink)" strokeOpacity="0.14" strokeWidth="1" strokeLinecap="round"
+                    strokeDasharray="2 5" />
+                  {SUBURBS.map((s) => {
+                    const on = hoverSuburb === s.name;
+                    const cx = s.x * 0.92 + 22;
+                    const cy = s.y * 0.72 + 22;
+                    return (
+                      <g key={s.name}
+                        onMouseEnter={() => setHoverSuburb(s.name)}
+                        onMouseLeave={() => setHoverSuburb(null)}
+                        style={{ cursor: 'default' }}>
+                        <circle cx={cx} cy={cy} r={on ? 5 : 3}
+                          fill={on ? 'var(--brass)' : 'var(--ink)'}
+                          fillOpacity={on ? 1 : 0.42}
+                          style={{ transition: 'all 200ms var(--ease)' }} />
+                        <text x={cx} y={cy - 13} textAnchor="middle"
+                          fontSize="10.5" letterSpacing="1.6"
+                          fill={on ? 'var(--brass-ink)' : 'var(--muted)'}
+                          fontWeight={on ? 600 : 400}
+                          style={{ textTransform: 'uppercase', transition: 'all 200ms var(--ease)' }}>
+                          {s.name}
+                        </text>
+                      </g>
+                    );
+                  })}
+                </svg>
+                <p className="label text-muted/70 mt-6">Indicative — not to scale</p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ══ 09 · WHO WE ARE ═══════════════════════════════════
-            Sand field. Image left running to the grid edge,
-            first-person copy right.                              */}
-        <section className="bg-sand">
-          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-24 lg:py-36">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-12 lg:gap-x-20 items-center">
-              <div className="lg:col-span-6">
-                <div className="reveal relative aspect-[4/3] bg-navy/8 border rule">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="label text-navy/35">Photograph — team and vehicle</span>
+        {/* ══ 09 · WHO WE ARE ═════════════════════════════════ */}
+        <section className="bg-paper">
+          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[88px] lg:py-[160px]">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-14 lg:gap-x-20 items-center">
+              <div className="reveal lg:col-span-6">
+                <div className="relative aspect-[16/10] bg-ink/[0.06] border rule flex items-center justify-center">
+                  <div className="text-center px-8">
+                    <p className="label text-ink/35 mb-2">Photograph required</p>
+                    <p className="text-[14px] text-muted measure-sm mx-auto">
+                      Team and vehicle, coastal light, mid-work rather than posed. Wide cinematic crop.
+                    </p>
                   </div>
                 </div>
               </div>
 
-              <div className="reveal lg:col-span-5 lg:col-start-8" style={{ transitionDelay: '110ms' }}>
-                <span className="label text-muted block mb-7">Who we are</span>
-                <h2 className="display display-light d2 text-navy mb-8">
+              <div className="reveal lg:col-span-5 lg:col-start-8" style={{ transitionDelay: '100ms' }}>
+                <span className="label text-muted block mb-8">Who we are</span>
+                <h2 className="display display-light d2 text-ink mb-8">
                   We live and work on the Peninsula.
                 </h2>
-                <div className="space-y-5 text-[16.5px] leading-[1.7] text-muted">
+                <div className="space-y-5 text-[16.5px] leading-[1.7] text-muted measure">
                   <p>
-                    We are not a franchise and not a call centre. We are a small local
-                    team of qualified carpenters who look after a limited number of
-                    properties properly, rather than a large number superficially.
+                    We are not a franchise and not a call centre. We are a small local team of
+                    qualified carpenters who look after a limited number of properties properly,
+                    rather than a large number superficially.
                   </p>
                   <p>
-                    We know what a westerly does to a deck, what salt does to fixings,
-                    and which houses on which streets need watching after a big blow.
-                    We care for your home the way we would our own.
+                    We know what a westerly does to a deck, what salt does to fixings, and which
+                    houses on which streets need watching after a big blow.
                   </p>
                 </div>
 
-                <div className="mt-10 pt-8 border-t rule flex flex-wrap gap-x-10 gap-y-3">
-                  <span className="label text-muted">ABN 12 345 678 901</span>
-                  <span className="label text-muted">Fully insured</span>
-                  <span className="label text-muted">Licensed</span>
-                </div>
+                {/* Anonymity is the enemy of trust when you hold the keys. */}
+                <ul className="mt-10 border-t rule">
+                  {[
+                    ['Dale', 'Carpenter — Cert III Carpentry, [licence no.]'],
+                    ['[Name]', '[Trade and qualification]'],
+                  ].map(([n, r]) => (
+                    <li key={n} className="py-4 border-b rule flex items-baseline gap-5">
+                      <span className="display d4 text-ink w-[92px] shrink-0">{n}</span>
+                      <span className="text-[14.5px] text-muted">{r}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ══ 10 · AGENCIES ═════════════════════════════════════
-            Paper field, single compact strip. Deliberately does
-            not compete with the consumer flow.                   */}
+        {/* ══ 10 · AGENCIES ═══════════════════════════════════ */}
         <section className="bg-paper">
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10">
-            <div className="border-y rule py-11 flex flex-col lg:flex-row lg:items-center justify-between gap-7">
-              <div className="max-w-[640px]">
-                <span className="label text-muted block mb-3">
-                  For agencies and property managers
-                </span>
-                <p className="display d4 text-navy">
+            <div className="reveal border-y rule py-11 flex flex-col lg:flex-row lg:items-center justify-between gap-7">
+              <div className="measure">
+                <span className="label text-muted block mb-3">For agencies and property managers</span>
+                <p className="display d4 text-ink">
                   Portfolio oversight, white-labelled reporting and volume terms.
                 </p>
               </div>
-              <Link
-                href="/enquire?plan=undecided"
-                className="shrink-0 px-8 py-[13px] border border-navy text-navy text-[14px] font-medium text-center hover:bg-navy hover:text-paper transition-colors duration-200"
-              >
+              <Link href="/enquire?plan=undecided"
+                className="shrink-0 px-8 py-[13px] border border-[color:var(--ink)] text-ink text-[14px] font-medium text-center hover:bg-ink hover:text-paper transition-colors duration-200">
                 Enquire for a portfolio
               </Link>
             </div>
           </div>
         </section>
 
-        {/* ══ 11 · TESTIMONIALS ═════════════════════════════════
-            Paper field. Three ruled columns. Serif quotes,
-            small-caps attribution. No stars, no cards.           */}
+        {/* ══ 11 · TESTIMONIALS ═══════════════════════════════ */}
         <section className="bg-paper">
-          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-24 lg:py-32">
-            <span className="label text-muted block mb-14">In their words</span>
+          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[88px] lg:py-[140px]">
+            <div className="reveal max-w-[900px]">
+              <span className="label text-muted block mb-12">In their words</span>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 border-t rule">
-              {TESTIMONIALS.map((t, i) => (
-                <figure
-                  key={t.name}
-                  style={{ transitionDelay: `${i * 90}ms` }}
-                  className={`reveal pt-10 pb-2 md:pr-10 ${
-                    i > 0 ? 'md:pl-10 md:border-l rule border-t md:border-t-0 pt-10' : ''
-                  }`}
-                >
-                  <blockquote className="display display-light text-[21px] leading-[1.42] text-navy mb-8">
-                    {t.quote}
-                  </blockquote>
-                  <figcaption>
-                    <span className="label text-navy block mb-1.5">{t.name}</span>
-                    <span className="label text-muted">{t.place}</span>
-                  </figcaption>
-                </figure>
-              ))}
+              <div className="grid min-h-[220px] lg:min-h-[200px]">
+                {TESTIMONIALS.map((t, i) => (
+                  <figure key={t.name}
+                    aria-hidden={i !== quote}
+                    className={`col-start-1 row-start-1 transition-opacity duration-700 ${
+                      i === quote ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+                    <blockquote className="display display-light text-[clamp(1.45rem,2.9vw,2.3rem)] leading-[1.32] text-ink mb-9">
+                      {t.quote}
+                    </blockquote>
+                    <figcaption className="flex items-center gap-3">
+                      <span className="label text-muted">{t.name}</span>
+                      <span className="w-5 h-px bg-[color:var(--rule)]" />
+                      <span className="label text-brass-ink">{t.place}</span>
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+
+              <div className="flex gap-2.5 mt-12">
+                {TESTIMONIALS.map((t, i) => (
+                  <button key={t.name} onClick={() => setQuote(i)}
+                    aria-label={`Testimonial ${i + 1}`}
+                    className={`h-px transition-all duration-500 ${
+                      i === quote ? 'w-12 bg-brass' : 'w-6 bg-ink/20 hover:bg-ink/40'}`} />
+                ))}
+              </div>
             </div>
           </div>
         </section>
 
-        {/* ══ 12 · FAQ ══════════════════════════════════════════
-            Sand field. Hairline accordion, two-column header.
-            No boxes, no borders beyond the rules.                */}
-        <section id="faq" className="bg-sand">
-          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-24 lg:py-36">
+        {/* ══ 12 · FAQ ════════════════════════════════════════ */}
+        <section id="faq" className="bg-sand border-y rule">
+          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[88px] lg:py-[160px]">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-12 lg:gap-x-20">
               <div className="lg:col-span-4">
                 <div className="reveal lg:sticky lg:top-32">
-                  <span className="label text-muted block mb-7">Questions</span>
-                  <h2 className="display display-light d2 text-navy">
-                    Before you commit.
-                  </h2>
+                  <span className="label text-muted block mb-8">Questions</span>
+                  <h2 className="display display-light d2 text-ink">Before you commit.</h2>
                 </div>
               </div>
 
@@ -1125,29 +806,23 @@ export default function Home() {
                     const open = openFaq === faq.id;
                     return (
                       <div key={faq.id} className="border-b rule">
-                        <button
-                          onClick={() => setOpenFaq(open ? null : faq.id)}
-                          aria-expanded={open}
-                          aria-controls={`faq-${faq.id}`}
-                          className="w-full flex items-start justify-between gap-8 py-7 text-left group"
-                        >
-                          <span className="display d4 text-navy">{faq.q}</span>
-                          <ChevronDown
-                            size={20}
-                            strokeWidth={1.5}
-                            className={`shrink-0 mt-1 text-muted group-hover:text-navy transition-all duration-300 ${
-                              open ? 'rotate-180' : ''
-                            }`}
-                          />
+                        <button onClick={() => setOpenFaq(open ? null : faq.id)}
+                          aria-expanded={open} aria-controls={`faq-${faq.id}`}
+                          className="w-full flex items-start justify-between gap-8 py-[30px] text-left group">
+                          <span className="display d4 text-ink">{faq.q}</span>
+                          {/* Plus rotates to a minus. */}
+                          <Plus size={19} strokeWidth={1.5}
+                            className={`shrink-0 mt-1 text-muted group-hover:text-ink transition-transform duration-[420ms] ${
+                              open ? 'rotate-[135deg]' : ''}`}
+                            style={{ transitionTimingFunction: 'var(--ease)' }} />
                         </button>
-                        {open && (
-                          <p
-                            id={`faq-${faq.id}`}
-                            className="pb-8 pr-12 text-[16px] leading-[1.72] text-muted max-w-[620px]"
-                          >
-                            {faq.a}
-                          </p>
-                        )}
+                        <div id={`faq-${faq.id}`} className={`collapse ${open ? 'open' : ''}`}>
+                          <div>
+                            <p className="pb-[30px] pr-12 text-[16px] leading-[1.72] text-muted measure">
+                              {faq.a}
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     );
                   })}
@@ -1157,97 +832,90 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ══ 13 · CLOSE ════════════════════════════════════════
-            Navy field. The one section that earns being centred. */}
-        <section id="contact" className="bg-navy text-paper">
-          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-28 lg:py-40 text-center">
-            <Image
-              src="/logo-lockup.png"
-              alt="Coastal Pro Property Care"
-              width={540}
-              height={583}
-              className="h-[104px] w-auto mx-auto mb-12 opacity-95"
-            />
+        {/* ══ 13 · CLOSE — bookend to the hero ════════════════ */}
+        <section id="contact" className="bg-ink text-paper">
+          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[104px] lg:py-[176px] text-center">
+            <div className="reveal">
+              <div className="flex items-center justify-center gap-4 mb-10">
+                <span className="block w-11 h-px bg-brass-lift" />
+                <span className="label text-brass-lift">One call</span>
+                <span className="block w-11 h-px bg-brass-lift" />
+              </div>
 
-            <div className="flex items-center justify-center gap-4 mb-10">
-              <span className="block w-11 h-px bg-brass" />
-              <span className="label text-brass">One call</span>
-              <span className="block w-11 h-px bg-brass" />
-            </div>
+              <h2 className="display display-light d1 text-paper mb-8">We take care of it all.</h2>
 
-            <h2 className="display display-light d1 text-paper mb-8">
-              We take care of it all.
-            </h2>
+              <p className="lede text-white/64 max-w-[520px] mx-auto mb-14">
+                Tell us about the property and we will arrange a consultation.
+                No obligation, and no pressure to proceed.
+              </p>
 
-            <p className="lede text-white/62 max-w-[520px] mx-auto mb-14">
-              Tell us about the property and we will arrange a consultation.
-              No obligation, and no pressure to proceed.
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
-              <a
-                href="tel:0417349071"
-                className="w-full sm:w-auto px-10 py-[15px] bg-paper text-navy text-[15px] font-medium hover:bg-white transition-colors duration-200"
-              >
-                0417 349 071
-              </a>
-              <Link
-                href="/enquire"
-                className="w-full sm:w-auto px-10 py-[15px] border border-white/38 text-paper text-[15px] font-medium hover:bg-white/10 hover:border-white/60 transition-all duration-200"
-              >
-                Send an enquiry
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-y-9 border-t rule-dark pt-12 text-left max-w-[820px] mx-auto">
-              {[
-                ['Service area', 'Mornington Peninsula, Victoria'],
-                ['Hours', 'Monday to Friday, 8am — 6pm\nWeekends by arrangement'],
-                ['Follow', 'Facebook'],
-              ].map(([k, v]) => (
-                <div key={k}>
-                  <span className="label text-white/42 block mb-3">{k}</span>
-                  <span className="text-[14.5px] text-white/72 whitespace-pre-line">{v}</span>
-                </div>
-              ))}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="tel:0417349071"
+                  className="w-full sm:w-auto px-10 py-[15px] bg-paper text-ink text-[15px] font-medium hover:bg-white transition-colors duration-200 inline-flex items-center justify-center gap-2.5">
+                  <Phone size={15} strokeWidth={1.75} />
+                  <span className="tnum">0417 349 071</span>
+                </a>
+                <Link href="/enquire"
+                  className="w-full sm:w-auto px-10 py-[15px] border border-white/38 text-paper text-[15px] font-medium hover:bg-white/10 hover:border-white/60 transition-all duration-200">
+                  Send an enquiry
+                </Link>
+              </div>
             </div>
           </div>
         </section>
 
-        <footer className="bg-navy-deep text-white/45">
-          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <span className="text-[13px]">
-              © 2026 Coastal Pro Property Care
-            </span>
-            <div className="flex gap-8">
-              {[
-                ['Terms', '/terms'],
-                ['Privacy', '/privacy'],
-              ].map(([l, href]) => (
-                <Link key={href} href={href} className="text-[13px] hover:text-paper transition-colors">
-                  {l}
+        {/* ══ FOOTER — spare ══════════════════════════════════ */}
+        <footer className="bg-ink-deep text-white/50">
+          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-16">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b rule-dark">
+              <div>
+                <Image src="/logo-mark.png" alt="Coastal Pro Property Care"
+                  width={280} height={150} className="h-[34px] w-auto mb-5 opacity-90" />
+                <p className="label text-white/40">ABN [ABN]</p>
+                <p className="label text-white/40 mt-2">Fully insured · Licensed</p>
+              </div>
+              <div>
+                <p className="label text-white/70 mb-4">Service area</p>
+                <p className="text-[14.5px] leading-[1.6]">Mornington Peninsula, Victoria</p>
+              </div>
+              <div>
+                <p className="label text-white/70 mb-4">Hours</p>
+                <p className="text-[14.5px] leading-[1.6]">
+                  Monday to Friday, 8am — 6pm<br />Weekends by arrangement
+                </p>
+              </div>
+              <div>
+                <p className="label text-white/70 mb-4">Contact</p>
+                <a href="tel:0417349071" className="block text-[14.5px] text-brass-lift hover:text-paper transition-colors tnum mb-1.5">
+                  0417 349 071
+                </a>
+                <Link href="/enquire" className="block text-[14.5px] hover:text-paper transition-colors">
+                  Send an enquiry
                 </Link>
-              ))}
+              </div>
+            </div>
+
+            <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <span className="text-[13px]">© 2026 Coastal Pro Property Care</span>
+              <div className="flex gap-8">
+                <Link href="/terms" className="text-[13px] hover:text-paper transition-colors">Terms</Link>
+                <Link href="/privacy" className="text-[13px] hover:text-paper transition-colors">Privacy</Link>
+              </div>
             </div>
           </div>
         </footer>
       </main>
 
-      {/* ══ MOBILE ACTION BAR ═══════════════════════════════════ */}
+      {/* ══ MOBILE BAR ══════════════════════════════════════ */}
       <div className="fixed bottom-0 inset-x-0 z-40 lg:hidden grid grid-cols-2 border-t rule-dark">
-        <a
-          href="tel:0417349071"
-          className="flex items-center justify-center gap-2 py-4 bg-navy text-paper text-[14px] font-medium"
-        >
-          <Phone size={15} strokeWidth={1.75} />
-          Call
+        <a href="tel:0417349071"
+          className="flex items-center justify-center gap-2 py-4 bg-ink text-paper text-[14px] font-medium">
+          <Phone size={15} strokeWidth={1.75} />Call
         </a>
-        <a
-          href="#memberships"
-          className="flex items-center justify-center py-4 bg-paper text-navy text-[14px] font-medium border-l rule"
-        >
-          View memberships
-        </a>
+        <Link href="/enquire"
+          className="flex items-center justify-center py-4 bg-paper text-ink text-[14px] font-medium border-l rule">
+          Enquire
+        </Link>
       </div>
       <div className="h-14 lg:hidden" />
     </>

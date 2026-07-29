@@ -13,8 +13,8 @@ const CLAUSES: Clause[] = [
     body: (
       <>
         <p>
-          Coastal Pro Property Care (ABN <span className="text-navy">[ABN]</span>), of{' '}
-          <span className="text-navy">[registered address]</span>, Victoria. In these terms
+          Coastal Pro Property Care (ABN <span className="text-ink">[ABN]</span>), of{' '}
+          <span className="text-ink">[registered address]</span>, Victoria. In these terms
           &ldquo;we&rdquo;, &ldquo;us&rdquo; and &ldquo;our&rdquo; mean Coastal Pro Property Care.
           &ldquo;You&rdquo; means the member named on the membership.
         </p>
@@ -30,7 +30,7 @@ const CLAUSES: Clause[] = [
     body: (
       <>
         <p>
-          A membership covers <strong className="text-navy">oversight, attendance and reporting</strong>{' '}
+          A membership covers <strong className="text-ink">oversight, attendance and reporting</strong>{' '}
           at the frequency of your tier: Essential one visit each month, Signature two visits each
           month, Reserve weekly attendance.
         </p>
@@ -51,7 +51,7 @@ const CLAUSES: Clause[] = [
     body: (
       <>
         <p>
-          Repair, maintenance and improvement works are <strong className="text-navy">quoted separately</strong>{' '}
+          Repair, maintenance and improvement works are <strong className="text-ink">quoted separately</strong>{' '}
           and are never carried out without your prior written approval. This includes work we
           identify during an inspection.
         </p>
@@ -75,16 +75,16 @@ const CLAUSES: Clause[] = [
         <p>
           Fees are as published at the time you join. Monthly memberships are billed monthly in
           advance; annual memberships are billed yearly in advance. All amounts are in Australian
-          dollars and <span className="text-navy">[include / exclude]</span> GST.
+          dollars and <span className="text-ink">[include / exclude]</span> GST.
         </p>
         <p>
-          We may change fees on <span className="text-navy">[30 / 60]</span> days&rsquo; written
+          We may change fees on <span className="text-ink">[30 / 60]</span> days&rsquo; written
           notice. Any change takes effect from your next billing period, and you may cancel before
           it applies.
         </p>
         <p>
           If a payment fails we will contact you. Attendance may be suspended if an account remains
-          unpaid for more than <span className="text-navy">[14]</span> days.
+          unpaid for more than <span className="text-ink">[14]</span> days.
         </p>
       </>
     ),
@@ -103,7 +103,7 @@ const CLAUSES: Clause[] = [
           reporting and photographic history.
         </p>
         <p>
-          We may cancel a membership on <span className="text-navy">[30]</span> days&rsquo; notice,
+          We may cancel a membership on <span className="text-ink">[30]</span> days&rsquo; notice,
           or immediately where a property is unsafe to attend, where access is not workable, or
           where fees remain unpaid.
         </p>
@@ -149,7 +149,7 @@ const CLAUSES: Clause[] = [
           services with due care and skill.
         </p>
         <p>
-          <strong className="text-navy">
+          <strong className="text-ink">
             Nothing in these terms excludes, restricts or modifies any guarantee, right or remedy
             under the Australian Consumer Law that cannot lawfully be excluded.
           </strong>{' '}
@@ -162,7 +162,7 @@ const CLAUSES: Clause[] = [
           trades engaged directly by you, or for consequential loss including loss of rent.
         </p>
         <p>
-          <span className="text-navy">
+          <span className="text-ink">
             [Solicitor to confirm this clause is enforceable and appropriately scoped.]
           </span>
         </p>
@@ -175,7 +175,7 @@ const CLAUSES: Clause[] = [
       <p>
         We collect and handle personal information — including property addresses, access
         arrangements and photographs of your property — as described in our{' '}
-        <a href="/privacy" className="text-navy underline underline-offset-4 hover:text-blue">
+        <a href="/privacy" className="text-ink underline underline-offset-4 hover:text-blue">
           Privacy Policy
         </a>
         , which forms part of these terms.
@@ -195,7 +195,7 @@ const CLAUSES: Clause[] = [
           non-exclusive jurisdiction of its courts.
         </p>
         <p>
-          Questions: <span className="text-navy">[email]</span> or 0417 349 071.
+          Questions: <span className="text-ink">[email]</span> or 0417 349 071.
         </p>
       </>
     ),

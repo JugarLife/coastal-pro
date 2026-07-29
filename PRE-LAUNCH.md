@@ -32,7 +32,18 @@ Everything below must be resolved before a domain is pointed at this site.
       Vercel. Until then `/api/enquiry` validates and logs only, and returns
       `delivered:false`. Send a real test enquiry after setting them.
 
-- [ ] **Team photograph** placeholder in the "Who we are" section.
+- [ ] **Team photograph** placeholder in the "Who we are" section. Two people,
+      branded ute, coastal light, mid-morning. Mid-work and slightly candid,
+      not smiling at camera. Wide cinematic crop.
+
+- [ ] **Team names and qualifications** — one row is filled, the second is
+      `[Name]` / `[Trade and qualification]`. Anonymity is the enemy of trust
+      for a business built on key access.
+
+- [ ] **Process photography (optional but recommended)** — a hand on a
+      downpipe, a phone photographing a deck joint, a laptop with the report
+      open. Would let "How it works" become alternating full-bleed rows
+      rather than three columns.
 
 ## Before taking payment
 
@@ -50,7 +61,13 @@ Everything below must be resolved before a domain is pointed at this site.
       current assets were rebuilt from a lossy raster with no alpha channel.
 - [ ] Analytics — at minimum scroll depth and enquiry-form starts vs completions.
 - [ ] Verify the scroll/reveal motion on real devices.
-- [ ] Add an OG share image (metadata is wired; no image is set).
+- [ ] Add an OG share image (metadata is wired; no image is set). Use a
+      photograph, not the logo.
+- [ ] Convert imagery to AVIF/WebP with blur-up placeholders once real photos
+      land, and confirm Lighthouse 95+ on mobile.
+- [ ] **Domain.** `coastalpropropertycare.com.au` is a mouthful. Prefer
+      `coastalpro.com.au`, else `thecoastalpro.com.au` or
+      `coastalproperty.care`. The .com.au matters for local trust.
 
 ## Verified working
 

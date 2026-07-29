@@ -95,7 +95,7 @@ export default function EnquireForm() {
 
   const fieldCls = (k: string) =>
     `w-full bg-transparent border-b px-0 py-3 text-[16px] text-ink outline-none transition-colors ${
-      errors[k] ? 'border-[#B4472E]' : 'border-[color:var(--rule)] focus:border-navy'
+      errors[k] ? 'border-[#B4472E]' : 'border-[color:var(--rule)] focus:border-ink'
     }`;
 
   /* ── Confirmation ─────────────────────────────────────────── */
@@ -108,14 +108,14 @@ export default function EnquireForm() {
       >
         <div className="flex items-center gap-4 mb-9">
           <span className="block w-11 h-px bg-brass" />
-          <span className="label text-brass">Enquiry received</span>
+          <span className="label text-brass-ink">Enquiry received</span>
         </div>
 
-        <h1 className="display display-light d2 text-navy mb-7">Thank you. We have it.</h1>
+        <h1 className="display display-light d2 text-ink mb-7">Thank you. We have it.</h1>
 
         <p className="lede text-muted mb-10">
           Your enquiry reference is{' '}
-          <span className="text-navy font-medium tabular-nums">{reference}</span>. We read every
+          <span className="text-ink font-medium tabular-nums">{reference}</span>. We read every
           enquiry personally — you will not be entered into an automated sequence.
         </p>
 
@@ -126,11 +126,11 @@ export default function EnquireForm() {
             ['You receive terms and a start date', 'Only then do we discuss payment. Nothing is charged before you have met us.'],
           ].map(([t, b], i) => (
             <div key={t} className="grid grid-cols-[auto_1fr] gap-x-7 py-7 border-b rule">
-              <span className="numeral text-[15px] text-navy/32 pt-1">
+              <span className="numeral text-[15px] text-ink/32 pt-1">
                 {String(i + 1).padStart(2, '0')}
               </span>
               <div>
-                <p className="display d4 text-navy mb-2">{t}</p>
+                <p className="display d4 text-ink mb-2">{t}</p>
                 <p className="text-[15.5px] leading-[1.65] text-muted">{b}</p>
               </div>
             </div>
@@ -140,13 +140,13 @@ export default function EnquireForm() {
         <div className="mt-12 flex flex-col sm:flex-row gap-3.5">
           <Link
             href="/"
-            className="px-8 py-[14px] bg-navy text-paper text-[14px] font-medium text-center hover:bg-navy-deep transition-colors"
+            className="px-8 py-[14px] bg-ink text-paper text-[14px] font-medium text-center hover:bg-ink-deep transition-colors"
           >
             Return to the site
           </Link>
           <a
             href="tel:0417349071"
-            className="px-8 py-[14px] border border-navy text-navy text-[14px] font-medium text-center hover:bg-navy hover:text-paper transition-colors"
+            className="px-8 py-[14px] border border-ink text-ink text-[14px] font-medium text-center hover:bg-ink hover:text-paper transition-colors"
           >
             Or call 0417 349 071
           </a>
@@ -160,7 +160,7 @@ export default function EnquireForm() {
     <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-14 lg:py-20">
       <Link
         href="/"
-        className="inline-flex items-center gap-2.5 label text-muted hover:text-navy transition-colors mb-12"
+        className="inline-flex items-center gap-2.5 label text-muted hover:text-ink transition-colors mb-12"
       >
         <ArrowLeft size={14} strokeWidth={1.75} />
         Back
@@ -169,7 +169,7 @@ export default function EnquireForm() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-14 lg:gap-x-20">
         {/* Form column */}
         <div className="lg:col-span-7">
-          <h1 className="display display-light d2 text-navy mb-5">Enquire about a membership</h1>
+          <h1 className="display display-light d2 text-ink mb-5">Enquire about a membership</h1>
           <p className="lede text-muted mb-14 max-w-[520px]">
             A few details so we can prepare properly before we speak. This is an enquiry, not a
             purchase — nothing is charged, and no payment details are collected.
@@ -277,7 +277,7 @@ export default function EnquireForm() {
             <button
               type="submit"
               disabled={status === 'sending'}
-              className="w-full sm:w-auto px-12 py-[16px] bg-navy text-paper text-[15px] font-medium hover:bg-navy-deep transition-colors disabled:opacity-55 disabled:cursor-not-allowed"
+              className="w-full sm:w-auto px-12 py-[16px] bg-ink text-paper text-[15px] font-medium hover:bg-ink-deep transition-colors disabled:opacity-55 disabled:cursor-not-allowed"
             >
               {status === 'sending' ? 'Sending…' : 'Send enquiry'}
             </button>
@@ -288,11 +288,11 @@ export default function EnquireForm() {
         <aside className="lg:col-span-4 lg:col-start-9">
           <div className="lg:sticky lg:top-14">
             <div
-              className={`border-t-2 pt-8 ${plan === 'reserve' ? 'border-brass' : 'border-navy'}`}
+              className={`border-t-2 pt-8 ${plan === 'reserve' ? 'border-brass' : 'border-ink'}`}
             >
               <span className="label text-muted block mb-4">Selected</span>
               <h2
-                className={`display d3 mb-2 ${plan === 'reserve' ? 'text-brass' : 'text-navy'}`}
+                className={`display d3 mb-2 ${plan === 'reserve' ? 'text-brass-ink' : 'text-ink'}`}
               >
                 {chosen.name}
               </h2>
@@ -310,7 +310,7 @@ export default function EnquireForm() {
                 <select
                   id="plan" name="plan" value={plan}
                   onChange={(e) => setPlan(e.target.value as PlanKey)}
-                  className="w-full bg-transparent border-b border-[color:var(--rule)] focus:border-navy px-0 py-3 text-[16px] text-ink outline-none transition-colors"
+                  className="w-full bg-transparent border-b border-[color:var(--rule)] focus:border-ink px-0 py-3 text-[16px] text-ink outline-none transition-colors"
                 >
                   <option value="essential">Essential — $179</option>
                   <option value="signature">Signature — $299</option>
@@ -329,7 +329,7 @@ export default function EnquireForm() {
                   'Terms and a start date, only if you proceed',
                 ].map((t) => (
                   <li key={t} className="flex gap-3 text-[15px] leading-[1.55] text-ink">
-                    <Check size={15} strokeWidth={2} className="shrink-0 mt-[5px] text-navy/40" />
+                    <Check size={15} strokeWidth={2} className="shrink-0 mt-[5px] text-ink/40" />
                     <span>{t}</span>
                   </li>
                 ))}
@@ -355,7 +355,7 @@ function Field({
     <div className={className}>
       <label htmlFor={id} className="label text-muted block mb-2.5">
         {label}
-        {required && <span className="text-brass ml-1.5">*</span>}
+        {required && <span className="text-brass-ink ml-1.5">*</span>}
       </label>
       {children}
       {error && (

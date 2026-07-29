@@ -1,45 +1,62 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────────────────────────
-   IMPORTANT — cascade layers.
-   Tailwind v4 emits its utilities inside @layer utilities. Any CSS
-   written OUTSIDE a layer beats every layered rule regardless of
-   specificity. So all custom base/component styles below are placed
-   in @layer base / @layer components, which sort BEFORE utilities.
-   Writing them unlayered silently disables px-*, text-*, leading-*.
+   CASCADE LAYERS — load-bearing.
+   Tailwind v4 emits utilities inside @layer utilities. CSS written
+   outside a layer beats every layered rule regardless of specificity.
+   All custom styling below therefore lives in @layer base/components
+   so utilities can still win. Writing it unlayered silently disables
+   padding, margin and colour utilities site-wide.
    ───────────────────────────────────────────────────────────── */
 
 :root {
-  /* Fields */
-  --navy:       #0B2545;
-  --navy-deep:  #071A33;
+  /* Fields — warm off-white, never pure white */
+  --paper:      #FAF8F5;
+  --paper-warm: #F5F2EC;   /* Signature card, alternate bands */
   --sand:       #F1ECE3;
-  --paper:      #FDFCFA;
+  --ink:        #0B2545;   /* deep ink navy */
+  --ink-deep:   #071A33;
 
-  /* Ink */
-  --ink:        #16202E;
-  --muted:      #66727F;
+  /* Text */
+  --text:       #16202E;
+  --muted:      #626E7B;
+  --muted-dark: rgba(255, 255, 255, 0.62);
 
-  /* Accents — deliberately rationed */
-  --brass:      #C9A227;
-  --blue:       #1B7FD4;
+  /* Accent — weathered brass. Two tones so it stays legible on
+     both fields: -ink for text on paper, base for dark grounds. */
+  --brass:      #A8883F;
+  --brass-ink:  #7D6425;
+  --brass-lift: #C4A55C;
+
+  /* Condition indicators — stone/amber/sage, never traffic-light */
+  --sage:       #6E8067;
+  --stone:      #A8996F;
+  --amber:      #B07C3E;
 
   /* Hairlines */
-  --rule:       rgba(11, 37, 69, 0.14);
-  --rule-dark:  rgba(255, 255, 255, 0.15);
+  --rule:       rgba(11, 37, 69, 0.13);
+  --rule-dark:  rgba(255, 255, 255, 0.14);
+
+  /* Motion */
+  --ease:       cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @theme inline {
-  --color-navy:      var(--navy);
-  --color-navy-deep: var(--navy-deep);
-  --color-sand:      var(--sand);
-  --color-paper:     var(--paper);
-  --color-ink:       var(--ink);
-  --color-muted:     var(--muted);
-  --color-brass:     var(--brass);
-  --color-blue:      var(--blue);
-  --font-display:    var(--font-fraunces), Georgia, serif;
-  --font-sans:       var(--font-inter), system-ui, sans-serif;
+  --color-paper:      var(--paper);
+  --color-paper-warm: var(--paper-warm);
+  --color-sand:       var(--sand);
+  --color-ink:        var(--ink);
+  --color-ink-deep:   var(--ink-deep);
+  --color-text:       var(--text);
+  --color-muted:      var(--muted);
+  --color-brass:      var(--brass);
+  --color-brass-ink:  var(--brass-ink);
+  --color-brass-lift: var(--brass-lift);
+  --color-sage:       var(--sage);
+  --color-stone:      var(--stone);
+  --color-amber:      var(--amber);
+  --font-display:     var(--font-fraunces), Georgia, serif;
+  --font-sans:        var(--font-inter), system-ui, sans-serif;
 }
 
 @layer base {
@@ -51,7 +68,7 @@
 
   body {
     background: var(--paper);
-    color: var(--ink);
+    color: var(--text);
     font-family: var(--font-inter), system-ui, sans-serif;
     font-size: 17px;
     line-height: 1.65;
@@ -59,31 +76,36 @@
 
   a { color: inherit; text-decoration: none; }
 
+  ::selection {
+    background: rgba(168, 136, 63, 0.22);
+    color: var(--ink);
+  }
+
   :focus-visible {
     outline: 2px solid var(--brass);
     outline-offset: 3px;
+    border-radius: 1px;
   }
 }
 
 @layer components {
-  /* ── Display type ───────────────────────────────────────────
-     Fraunces at light weight. Heavy serif at large sizes shouts;
-     light serif carries. Tight leading, negative tracking.       */
+  /* ── Display ──────────────────────────────────────────────
+     Light-weight serif. Heavy serif at scale shouts; light
+     serif carries. Tight leading, negative tracking.          */
   .display {
     font-family: var(--font-fraunces), Georgia, serif;
     font-weight: 400;
-    line-height: 1.04;
-    letter-spacing: -0.022em;
+    line-height: 1.07;
+    letter-spacing: -0.021em;
   }
   .display-light { font-weight: 300; }
 
-  .d1 { font-size: clamp(2.5rem, 5.05vw, 4.55rem); }
-  .d2 { font-size: clamp(2rem, 3.9vw, 3.25rem); }
-  .d3 { font-size: clamp(1.42rem, 2.2vw, 1.9rem);  line-height: 1.18; }
-  .d4 { font-size: clamp(1.1rem, 1.45vw, 1.28rem); line-height: 1.3; letter-spacing: -0.012em; }
+  .d1 { font-size: clamp(2.5rem, 5.05vw, 4.55rem); line-height: 1.05; }
+  .d2 { font-size: clamp(1.95rem, 3.8vw, 3.15rem); line-height: 1.08; }
+  .d3 { font-size: clamp(1.4rem, 2.15vw, 1.85rem);  line-height: 1.16; }
+  .d4 { font-size: clamp(1.08rem, 1.4vw, 1.25rem);  line-height: 1.3; letter-spacing: -0.011em; }
 
-  /* ── Eyebrow / small-caps label ─────────────────────────────
-     Wide tracking is the single strongest "considered" signal.   */
+  /* ── Small-caps label — the strongest "considered" signal ── */
   .label {
     font-size: 11px;
     font-weight: 600;
@@ -91,57 +113,98 @@
     text-transform: uppercase;
     line-height: 1.5;
   }
+  .label-sm { font-size: 9.5px; letter-spacing: 0.22em; }
 
   .lede {
-    font-size: clamp(1.02rem, 1.35vw, 1.19rem);
-    line-height: 1.68;
+    font-size: clamp(1.02rem, 1.3vw, 1.17rem);
+    line-height: 1.7;
     font-weight: 300;
   }
 
-  /* ── Editorial indices ──────────────────────────────────────── */
+  /* Hard measure — paragraphs never exceed ~62 characters */
+  .measure    { max-width: 62ch; }
+  .measure-sm { max-width: 48ch; }
+
   .numeral {
     font-family: var(--font-fraunces), Georgia, serif;
     font-weight: 300;
     font-variant-numeric: lining-nums tabular-nums;
     letter-spacing: -0.03em;
   }
+  .tnum { font-variant-numeric: tabular-nums; }
 
-  /* ── Scroll reveal ──────────────────────────────────────────
-     Small distance, long easing. Anything that travels far or
-     bounces reads as a template.
-
-     The hidden state is scoped to .js-reveal, which the observer
-     adds to <html> only once it is about to take over. Without it
-     — JS disabled, script error, no IntersectionObserver — every
-     element simply renders visible rather than being stranded at
-     opacity 0. Content must never depend on JS to be seen.        */
+  /* ── Scroll reveal ────────────────────────────────────────
+     20px, 500ms, never more. The hidden state is scoped to
+     .js-reveal, added to <html> only once the observer is ready
+     — so if JS fails, content renders visible rather than being
+     stranded at opacity 0.                                     */
   .js-reveal .reveal {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(20px);
   }
   .js-reveal .reveal.is-in {
     opacity: 1;
     transform: none;
     transition:
-      opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity 0.5s var(--ease),
+      transform 0.5s var(--ease);
   }
 
-  /* ── Hairlines ──────────────────────────────────────────────── */
   .rule      { border-color: var(--rule); }
   .rule-dark { border-color: var(--rule-dark); }
+
+  /* ── Report document — multi-layer shadow, low opacity,
+        large blur. One shadow reads flat; three reads like paper. */
+  .doc-shadow {
+    box-shadow:
+      0 1px 2px rgba(7, 26, 51, 0.10),
+      0 8px 20px rgba(7, 26, 51, 0.14),
+      0 28px 64px rgba(7, 26, 51, 0.22);
+  }
+
+  /* ── FAQ height animation without measuring ──────────────── */
+  .collapse      { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.42s var(--ease); }
+  .collapse.open { grid-template-rows: 1fr; }
+  .collapse > div { overflow: hidden; }
 }
 
-@keyframes rise {
-  from { opacity: 0; transform: translateY(14px); }
+/* ── Hero: staggered headline ───────────────────────────────── */
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(26px); }
   to   { opacity: 1; transform: none; }
 }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+/* Barely perceptible. Adds life without announcing itself. */
+@keyframes kenBurns {
+  from { transform: scale(1); }
+  to   { transform: scale(1.06); }
+}
+/* Page-load curtain wipes up and stays out of the way. */
+@keyframes curtain {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-101%); }
+}
+
 @layer components {
-  .rise { animation: rise 0.75s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .hero-line  { animation: riseIn 0.6s var(--ease) both; }
+  .hero-fade  { animation: fadeIn 0.7s var(--ease) both; }
+  .ken-burns  { animation: kenBurns 20s ease-out both; }
+  .curtain {
+    animation: curtain 0.7s var(--ease) 0.15s both;
+    pointer-events: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; transition: none !important; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
   html { scroll-behavior: auto; }
   .js-reveal .reveal { opacity: 1 !important; transform: none !important; }
+  .ken-burns { animation: none !important; }
 }

@@ -22,9 +22,9 @@ const CLAUSES: Clause[] = [
             ['Billing information', 'handled by our payment provider. We do not see or store full card numbers.'],
           ].map(([k, v]) => (
             <li key={k as string} className="flex gap-3">
-              <span className="text-navy/30 mt-[2px]">—</span>
+              <span className="text-ink/30 mt-[2px]">—</span>
               <span>
-                <strong className="text-navy font-medium">{k}</strong>: {v}
+                <strong className="text-ink font-medium">{k}</strong>: {v}
               </span>
             </li>
           ))}
@@ -41,7 +41,7 @@ const CLAUSES: Clause[] = [
           quotes. They are stored with your reporting history and are available to you at any time.
         </p>
         <p>
-          <strong className="text-navy">
+          <strong className="text-ink">
             We will not use photographs of your property in marketing, on our website, or on social
             media without your express written consent
           </strong>
@@ -57,14 +57,14 @@ const CLAUSES: Clause[] = [
       <>
         <p>
           Keys and access devices are held in a locked, access-controlled cabinet at{' '}
-          <span className="text-navy">[location]</span>. They are identified by a code, never by
+          <span className="text-ink">[location]</span>. They are identified by a code, never by
           your name or address, so that a lost key cannot be matched to a property.
         </p>
         <p>
           Alarm codes and access instructions are stored{' '}
-          <span className="text-navy">[describe: e.g. in an encrypted password manager]</span>,
+          <span className="text-ink">[describe: e.g. in an encrypted password manager]</span>,
           separately from address records, and are accessible only to{' '}
-          <span className="text-navy">[who]</span>.
+          <span className="text-ink">[who]</span>.
         </p>
         <p>
           If a key or access credential is lost, we will tell you without delay and meet the
@@ -97,14 +97,14 @@ const CLAUSES: Clause[] = [
             'Where required by law.',
           ].map((t) => (
             <li key={t} className="flex gap-3">
-              <span className="text-navy/30 mt-[2px]">—</span>
+              <span className="text-ink/30 mt-[2px]">—</span>
               <span>{t}</span>
             </li>
           ))}
         </ul>
         <p>
           Some service providers may store data outside Australia.{' '}
-          <span className="text-navy">
+          <span className="text-ink">
             [List providers and countries, and confirm the cross-border disclosure position.]
           </span>
         </p>
@@ -121,7 +121,7 @@ const CLAUSES: Clause[] = [
         </p>
         <p>
           We keep reporting and photographic history for{' '}
-          <span className="text-navy">[retention period]</span> after a membership ends, so that it
+          <span className="text-ink">[retention period]</span> after a membership ends, so that it
           remains available for insurance or sale, then destroy or de-identify it. Access records
           and keys are returned or destroyed on cancellation.
         </p>
@@ -133,8 +133,8 @@ const CLAUSES: Clause[] = [
     body: (
       <p>
         You may ask for a copy of the information we hold about you, ask us to correct it, or ask us
-        to delete it. Write to <span className="text-navy">[email]</span> and we will respond within{' '}
-        <span className="text-navy">[30]</span> days. There is no charge for a reasonable request.
+        to delete it. Write to <span className="text-ink">[email]</span> and we will respond within{' '}
+        <span className="text-ink">[30]</span> days. There is no charge for a reasonable request.
       </p>
     ),
   },
@@ -144,8 +144,8 @@ const CLAUSES: Clause[] = [
       <>
         <p>
           If you are concerned about how we have handled your information, contact us first at{' '}
-          <span className="text-navy">[email]</span> or 0417 349 071. We will acknowledge within{' '}
-          <span className="text-navy">[5]</span> business days.
+          <span className="text-ink">[email]</span> or 0417 349 071. We will acknowledge within{' '}
+          <span className="text-ink">[5]</span> business days.
         </p>
         <p>
           If you are not satisfied with our response, you may contact the Office of the Australian
@@ -159,7 +159,7 @@ const CLAUSES: Clause[] = [
     body: (
       <>
         <p>
-          <span className="text-navy">
+          <span className="text-ink">
             [For your solicitor: businesses with an annual turnover of $3 million or less are
             generally exempt from the Privacy Act 1988 (Cth), though exceptions apply and a business
             may opt in. Confirm whether Coastal Pro is bound, and whether opting in is preferable.]

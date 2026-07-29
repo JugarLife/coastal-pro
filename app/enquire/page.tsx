@@ -27,11 +27,11 @@ export default function EnquirePage() {
             />
             <span className="hidden sm:block h-7 w-px bg-[color:var(--rule)]" />
             <span className="hidden sm:flex flex-col leading-none">
-              <span className="display text-[19px] text-navy tracking-[-0.02em]">Coastal Pro</span>
+              <span className="display text-[19px] text-ink tracking-[-0.02em]">Coastal Pro</span>
               <span className="label text-muted mt-[3px] text-[9.5px]">Property Care</span>
             </span>
           </Link>
-          <a href="tel:0417349071" className="text-[14px] text-navy hover:text-blue transition-colors">
+          <a href="tel:0417349071" className="text-[14px] text-ink hover:text-blue transition-colors">
             0417 349 071
           </a>
         </div>
@@ -49,7 +49,7 @@ export default function EnquirePage() {
         </Suspense>
       </main>
 
-      <footer className="bg-navy-deep text-white/45 mt-auto">
+      <footer className="bg-ink-deep text-white/45 mt-auto">
         <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <span className="text-[13px]">© 2026 Coastal Pro Property Care</span>
           <div className="flex gap-8">
