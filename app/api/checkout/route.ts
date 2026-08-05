@@ -57,7 +57,7 @@ export async function POST(request: Request) {
   const origin =
     process.env.NEXT_PUBLIC_SITE_URL ||
     request.headers.get('origin') ||
-    'https://coastal-pro.vercel.app';
+    'https://coastalpropertycare.net.au';
 
   try {
     const session = await getStripe().checkout.sessions.create({

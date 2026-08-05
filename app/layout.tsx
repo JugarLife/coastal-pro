@@ -22,7 +22,7 @@ const DESCRIPTION =
   'Property care memberships for holiday homes and coastal residences across the Mornington Peninsula. Scheduled attendance, considered oversight, and a written report after every visit.';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://coastal-pro.vercel.app'),
+  metadataBase: new URL('https://coastalpropertycare.net.au'),
   title: {
     default: 'Coastal Pro Property Care — Mornington Peninsula',
     template: '%s · Coastal Pro Property Care',
