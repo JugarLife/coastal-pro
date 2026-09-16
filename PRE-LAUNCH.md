@@ -19,6 +19,9 @@ Everything below must be resolved before a domain is pointed at this site.
       Any local will recognise it, three scrolls above "We live and work on
       the Peninsula." Reshoot at Cape Schanck, Bushrangers Bay or the
       Sorrento back beach road, at dusk.
+      NOTE: the current file is only 1448x1086, which is soft for a
+      full-bleed hero on a retina display. Shoot the replacement at
+      2560px wide minimum.
 
 - [ ] **ABN is a placeholder** (`12 345 678 901`) in `app/page.tsx` and
       `/terms`.
@@ -54,6 +57,21 @@ Everything below must be resolved before a domain is pointed at this site.
       (`/api/availability` → `configured: true`).
 - [ ] Decide whether Essential gets a direct-Checkout fast lane. Signature and
       Reserve stay consultation-first per the brief.
+
+## Decided — no longer open
+
+- [x] **Top tier is "Premium", not "Reserve".** The 2026 brochure names it
+      PREMIUM ("Limited to 5 properties only"), so the site now matches the
+      printed collateral. This was the first open question in the project.
+
+- [x] **Tagline is "One call and we organise it all."** Taken from the
+      brochure and the vehicle. The exclamation mark is dropped on the site
+      to suit its typographic register — say the word if you want it back.
+
+- [x] **Regulatory scope statement is live** on the Specialist Coordination
+      section and in the FAQ, verbatim from brochure p.7. Important: it is
+      what keeps the "we organise trades" positioning clearly distinct from
+      holding licences you do not hold.
 
 ## Recommended
 

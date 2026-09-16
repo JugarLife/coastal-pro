@@ -5,11 +5,11 @@ import {
   PRICE_IDS,
   isStripeConfigured,
   getStripe,
-  getReserveAvailability,
+  getPremiumAvailability,
 } from '@/lib/stripe';
 
 /* Creates a Checkout Session. Per the brief this is NOT linked from the
-   pricing cards — Signature and Reserve go through consultation first.
+   pricing cards — Signature and Premium go through consultation first.
    It exists so a reviewed applicant can be sent a direct link, and so
    Essential can be given a fast lane later if wanted. */
 
@@ -42,13 +42,13 @@ export async function POST(request: Request) {
     );
   }
 
-  // Enforce the Reserve cap server-side. A client-side check would be
+  // Enforce the Premium cap server-side. A client-side check would be
   // trivially bypassed by anyone holding the link.
-  if (tier === 'reserve') {
-    const { remaining } = await getReserveAvailability();
+  if (tier === 'premium') {
+    const { remaining } = await getPremiumAvailability();
     if (remaining <= 0) {
       return NextResponse.json(
-        { ok: false, error: 'Reserve is fully subscribed.', waitlist: true },
+        { ok: false, error: 'Premium is fully subscribed.', waitlist: true },
         { status: 409 },
       );
     }

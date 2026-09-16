@@ -32,7 +32,7 @@ const CLAUSES: Clause[] = [
         <p>
           A membership covers <strong className="text-ink">oversight, attendance and reporting</strong>{' '}
           at the frequency of your tier: Essential one visit each month, Signature two visits each
-          month, Reserve weekly attendance.
+          month, Premium weekly attendance.
         </p>
         <p>
           Each attendance includes a visual inspection against our standard checklist, photographic
@@ -62,7 +62,7 @@ const CLAUSES: Clause[] = [
         </p>
         <p>
           Members receive a discount on eligible carpentry works performed by us: 5% (Essential),
-          10% (Signature), 15% (Reserve). The discount applies to our labour only, not to materials
+          10% (Signature), 15% (Premium). The discount applies to our labour only, not to materials
           or third-party charges.
         </p>
       </>
@@ -131,10 +131,10 @@ const CLAUSES: Clause[] = [
     ),
   },
   {
-    heading: 'Reserve — limited availability',
+    heading: 'Premium — limited availability',
     body: (
       <p>
-        Reserve is capped at five concurrent memberships so that weekly attendance remains
+        Premium is capped at five concurrent memberships so that weekly attendance remains
         deliverable. Where the cap is reached, enquiries are placed on a waitlist. Being on the
         waitlist does not guarantee an offer, and we may decline any application at our discretion.
       </p>

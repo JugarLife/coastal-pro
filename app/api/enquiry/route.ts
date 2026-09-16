@@ -10,7 +10,7 @@ import { NextResponse } from 'next/server';
    and ENQUIRY_TO in the Vercel project before launch.
    ───────────────────────────────────────────────────────────── */
 
-const PLANS = new Set(['essential', 'signature', 'reserve', 'undecided']);
+const PLANS = new Set(['essential', 'signature', 'premium', 'undecided']);
 
 type Field = { key: string; label: string; required: boolean; max: number };
 

@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     case 'customer.subscription.deleted':
     case 'customer.subscription.updated': {
       const sub = event.data.object as Stripe.Subscription;
-      // Reserve availability is counted live from Stripe, so a lapse
+      // Premium availability is counted live from Stripe, so a lapse
       // frees the place with no bookkeeping here.
       console.log('[webhook] subscription', event.type, sub.id, sub.status);
       break;

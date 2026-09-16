@@ -85,7 +85,7 @@ export default function SampleReport() {
             {/* Meta */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 py-7 border-b rule">
               {[
-                ['Membership', 'Reserve'],
+                ['Membership', 'Premium'],
                 ['Attendance', 'Scheduled — weekly'],
                 ['Duration', '48 minutes'],
                 ['Attended by', 'D. Sidebottom'],
@@ -156,7 +156,7 @@ export default function SampleReport() {
                 ))}
               </div>
               <p className="text-[14px] leading-[1.6] text-muted mt-8 measure">
-                Nothing above proceeds without your written approval. Reserve members receive
+                Nothing above proceeds without your written approval. Premium members receive
                 15% off eligible carpentry works; the figures shown include that discount.
               </p>
             </div>

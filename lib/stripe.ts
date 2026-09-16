@@ -7,7 +7,7 @@ import Stripe from 'stripe';
    Nothing breaks; nothing pretends to work.
    ───────────────────────────────────────────────────────────── */
 
-export const TIERS = ['essential', 'signature', 'reserve'] as const;
+export const TIERS = ['essential', 'signature', 'premium'] as const;
 export type Tier = (typeof TIERS)[number];
 
 export const PRICE_IDS: Record<Tier, { monthly?: string; annual?: string }> = {
@@ -19,16 +19,16 @@ export const PRICE_IDS: Record<Tier, { monthly?: string; annual?: string }> = {
     monthly: process.env.STRIPE_PRICE_SIGNATURE_MONTHLY,
     annual: process.env.STRIPE_PRICE_SIGNATURE_ANNUAL,
   },
-  reserve: {
-    monthly: process.env.STRIPE_PRICE_RESERVE_MONTHLY,
-    annual: process.env.STRIPE_PRICE_RESERVE_ANNUAL,
+  premium: {
+    monthly: process.env.STRIPE_PRICE_PREMIUM_MONTHLY,
+    annual: process.env.STRIPE_PRICE_PREMIUM_ANNUAL,
   },
 };
 
 /* The brief was explicit: scarcity must be real or it becomes a
    liability. This is counted against live subscriptions, never
    hardcoded. */
-export const RESERVE_CAP = Number(process.env.RESERVE_CAP ?? 5);
+export const PREMIUM_CAP = Number(process.env.PREMIUM_CAP ?? 5);
 
 export function isStripeConfigured(): boolean {
   return Boolean(process.env.STRIPE_SECRET_KEY);
@@ -43,20 +43,20 @@ export function getStripe(): Stripe {
   return cached;
 }
 
-/** Live count of active Reserve subscriptions, and whether any remain. */
-export async function getReserveAvailability(): Promise<{
+/** Live count of active Premium subscriptions, and whether any remain. */
+export async function getPremiumAvailability(): Promise<{
   cap: number;
   taken: number;
   remaining: number;
   configured: boolean;
 }> {
   if (!isStripeConfigured()) {
-    return { cap: RESERVE_CAP, taken: 0, remaining: RESERVE_CAP, configured: false };
+    return { cap: PREMIUM_CAP, taken: 0, remaining: PREMIUM_CAP, configured: false };
   }
 
-  const ids = [PRICE_IDS.reserve.monthly, PRICE_IDS.reserve.annual].filter(Boolean) as string[];
+  const ids = [PRICE_IDS.premium.monthly, PRICE_IDS.premium.annual].filter(Boolean) as string[];
   if (!ids.length) {
-    return { cap: RESERVE_CAP, taken: 0, remaining: RESERVE_CAP, configured: false };
+    return { cap: PREMIUM_CAP, taken: 0, remaining: PREMIUM_CAP, configured: false };
   }
 
   const stripe = getStripe();
@@ -72,9 +72,9 @@ export async function getReserveAvailability(): Promise<{
 
   const taken = seen.size;
   return {
-    cap: RESERVE_CAP,
+    cap: PREMIUM_CAP,
     taken,
-    remaining: Math.max(0, RESERVE_CAP - taken),
+    remaining: Math.max(0, PREMIUM_CAP - taken),
     configured: true,
   };
 }

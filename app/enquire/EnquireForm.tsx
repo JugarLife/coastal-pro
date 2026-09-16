@@ -9,7 +9,7 @@ import { ArrowLeft, Check } from 'lucide-react';
 const PLANS = {
   essential: { name: 'Essential', price: 179, annual: 2148, cadence: 'One visit each month' },
   signature: { name: 'Signature', price: 299, annual: 3588, cadence: 'Two visits each month' },
-  reserve: { name: 'Reserve', price: 499, annual: 5988, cadence: 'Weekly attendance' },
+  premium: { name: 'Premium', price: 499, annual: 5988, cadence: 'Weekly attendance' },
   undecided: { name: 'Not yet decided', price: null, annual: null, cadence: 'We will advise on a suitable level' },
 } as const;
 
@@ -288,11 +288,11 @@ export default function EnquireForm() {
         <aside className="lg:col-span-4 lg:col-start-9">
           <div className="lg:sticky lg:top-14">
             <div
-              className={`border-t-2 pt-8 ${plan === 'reserve' ? 'border-brass' : 'border-ink'}`}
+              className={`border-t-2 pt-8 ${plan === 'premium' ? 'border-brass' : 'border-ink'}`}
             >
               <span className="label text-muted block mb-4">Selected</span>
               <h2
-                className={`display d3 mb-2 ${plan === 'reserve' ? 'text-brass-ink' : 'text-ink'}`}
+                className={`display d3 mb-2 ${plan === 'premium' ? 'text-brass-ink' : 'text-ink'}`}
               >
                 {chosen.name}
               </h2>
@@ -314,7 +314,7 @@ export default function EnquireForm() {
                 >
                   <option value="essential">Essential — $179</option>
                   <option value="signature">Signature — $299</option>
-                  <option value="reserve">Reserve — $499</option>
+                  <option value="premium">Premium — $499</option>
                   <option value="undecided">Not yet decided</option>
                 </select>
               </div>
