@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, Check } from 'lucide-react';
+import { track } from '@vercel/analytics';
 
 const PLANS = {
   essential: { name: 'Essential', price: 179, annual: 2148, cadence: 'One visit each month' },
@@ -44,7 +45,13 @@ export default function EnquireForm() {
     if (status === 'done') doneRef.current?.focus();
   }, [status]);
 
+  const startedRef = useRef(false);
+
   const set = (k: string, v: string) => {
+    if (!startedRef.current) {
+      startedRef.current = true;
+      track('enquiry_start', { plan });
+    }
     setValues((p) => ({ ...p, [k]: v }));
     if (errors[k]) setErrors((p) => { const n = { ...p }; delete n[k]; return n; });
   };
@@ -62,6 +69,7 @@ export default function EnquireForm() {
 
     if (Object.keys(next).length) {
       setErrors(next);
+      track('enquiry_validation_error', { fields: Object.keys(next).join(',') });
       const first = document.getElementById(Object.keys(next)[0]);
       first?.focus();
       first?.scrollIntoView({ block: 'center', behavior: 'smooth' });
@@ -79,10 +87,12 @@ export default function EnquireForm() {
       if (!res.ok) {
         if (json.errors) setErrors(json.errors);
         setFormError('Please check the highlighted fields.');
+        track('enquiry_validation_error', { fields: Object.keys(json.errors || {}).join(',') });
         setStatus('error');
         return;
       }
       setReference(json.reference);
+      track('enquiry_submit', { plan, delivered: Boolean(json.delivered) });
       setStatus('done');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch {

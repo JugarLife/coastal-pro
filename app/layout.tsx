@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { Fraunces, Inter } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import './globals.css';
 
 /* Self-hosted via next/font — removes the render-blocking Google Fonts
@@ -41,12 +43,21 @@ export const metadata: Metadata = {
     siteName: 'Coastal Pro Property Care',
     title: 'Your property. Professionally cared for.',
     description: DESCRIPTION,
+    url: '/',
+    images: [{
+      url: '/og.jpg',
+      width: 1200,
+      height: 630,
+      alt: 'Coastal Pro Property Care — property care memberships for the Mornington Peninsula',
+    }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Your property. Professionally cared for.',
     description: DESCRIPTION,
+    images: ['/og.jpg'],
   },
+  alternates: { canonical: '/' },
   icons: { icon: '/icon.png', apple: '/icon.png' },
   robots: { index: true, follow: true },
 };
@@ -64,6 +75,8 @@ export default function RootLayout({
           Skip to content
         </a>
         {children}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

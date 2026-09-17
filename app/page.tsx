@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronDown, Plus, Phone, Menu, X, ArrowUpRight, Download, Check } from 'lucide-react';
+import { track } from '@vercel/analytics';
 import {
   TAGLINE, PLANS, MEMBERSHIP_BENEFITS, COMPARISON, CONCERNS, PROCESS,
   CARE_SERVICES, TRADE_SERVICES, COORDINATED, COORDINATION_INCLUDES, LICENSING_NOTICE,
@@ -31,6 +32,7 @@ function Brochure({ slug, dark = false }: { slug: string; dark?: boolean }) {
     <a
       href={`/brochure/${slug}.pdf`}
       download
+      onClick={() => track('brochure_download', { section: slug })}
       className={`inline-flex items-center gap-2.5 label transition-colors duration-200 ${
         dark ? 'text-white/50 hover:text-brass-lift' : 'text-muted hover:text-brass-ink'
       }`}
@@ -204,6 +206,28 @@ export default function Home() {
     return () => clearInterval(t);
   }, []);
 
+  /* Scroll depth, reported once per milestone per visit. Tells us whether
+     people reach the pricing or fall out at the problem section. */
+  useEffect(() => {
+    const marks = [25, 50, 75, 100];
+    const seen = new Set<number>();
+    const onScroll = () => {
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - window.innerHeight;
+      if (max <= 0) return;
+      const pct = Math.round((window.scrollY / max) * 100);
+      for (const m of marks) {
+        if (pct >= m && !seen.has(m)) {
+          seen.add(m);
+          track('scroll_depth', { depth: m });
+        }
+      }
+      if (seen.size === marks.length) window.removeEventListener('scroll', onScroll);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   const dim = scrolled ? 'text-muted' : 'text-white/70';
 
   return (
@@ -244,7 +268,7 @@ export default function Home() {
             </nav>
 
             <div className="hidden lg:flex items-center gap-7">
-              <a href="tel:0417349071"
+              <a href="tel:0417349071" onClick={() => track('phone_click')}
                 className={`flex items-center gap-2 text-[14.5px] transition-colors duration-300 ${
                   scrolled ? 'text-brass-ink hover:text-ink' : 'text-brass-lift hover:text-paper'}`}>
                 <Phone size={14} strokeWidth={1.75} />
@@ -571,6 +595,7 @@ export default function Home() {
                       )}
 
                       <Link href={`/enquire?plan=${plan.id}`}
+                        onClick={() => track('plan_selected', { plan: plan.id, billing: annual ? 'annual' : 'monthly' })}
                         className={`block w-full py-[14px] text-center text-[14px] font-medium transition-colors duration-200 ${
                           isPremium ? 'bg-brass-ink text-paper hover:bg-ink'
                           : isSig ? 'bg-paper text-ink hover:bg-white'
@@ -1244,7 +1269,7 @@ export default function Home() {
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="tel:0417349071"
+                <a href="tel:0417349071" onClick={() => track('phone_click')}
                   className="w-full sm:w-auto px-10 py-[15px] bg-paper text-ink text-[15px] font-medium hover:bg-white transition-colors duration-200 inline-flex items-center justify-center gap-2.5">
                   <Phone size={15} strokeWidth={1.75} />
                   <span className="tnum">0417 349 071</span>
@@ -1280,7 +1305,7 @@ export default function Home() {
               </div>
               <div>
                 <p className="label text-white/70 mb-4">Contact</p>
-                <a href="tel:0417349071" className="block text-[14.5px] text-brass-lift hover:text-paper transition-colors tnum mb-1.5">
+                <a href="tel:0417349071" onClick={() => track('phone_click')} className="block text-[14.5px] text-brass-lift hover:text-paper transition-colors tnum mb-1.5">
                   0417 349 071
                 </a>
                 <Link href="/enquire" className="block text-[14.5px] hover:text-paper transition-colors mb-1.5">
@@ -1305,7 +1330,7 @@ export default function Home() {
       </main>
 
       <div className="fixed bottom-0 inset-x-0 z-40 lg:hidden grid grid-cols-2 border-t rule-dark">
-        <a href="tel:0417349071"
+        <a href="tel:0417349071" onClick={() => track('phone_click')}
           className="flex items-center justify-center gap-2 py-4 bg-ink text-paper text-[14px] font-medium">
           <Phone size={15} strokeWidth={1.75} />Call
         </a>
