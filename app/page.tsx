@@ -41,6 +41,89 @@ function Brochure({ slug, dark = false }: { slug: string; dark?: boolean }) {
   );
 }
 
+/* ── Section header variants ──────────────────────────────────
+   Four shapes, distributed so no two adjacent sections open the
+   same way. A uniform header is what made the page feel uniform
+   even where the layouts underneath differed. */
+
+/* A · Stacked — eyebrow, headline, lede in a column. */
+function HeadA({ eyebrow, title, lede, children }: {
+  eyebrow: string; title: React.ReactNode; lede?: React.ReactNode; children?: React.ReactNode;
+}) {
+  return (
+    <div className="reveal max-w-[640px] mb-16 lg:mb-20">
+      <span className="label text-muted block mb-8">{eyebrow}</span>
+      <h2 className="display display-light d2 text-ink mb-7">{title}</h2>
+      {lede && <p className="lede text-muted measure">{lede}</p>}
+      {children && <div className="mt-8">{children}</div>}
+    </div>
+  );
+}
+
+/* B · Split — headline left, lede right, under a full rule. */
+function HeadB({ eyebrow, title, lede, children, dark = false }: {
+  eyebrow: string; title: React.ReactNode; lede?: React.ReactNode;
+  children?: React.ReactNode; dark?: boolean;
+}) {
+  return (
+    <div className="reveal mb-16 lg:mb-24">
+      <div className={`flex items-center justify-between gap-6 pb-6 border-b ${dark ? 'rule-dark' : 'rule'}`}>
+        <span className={`label ${dark ? 'text-brass-lift' : 'text-muted'}`}>{eyebrow}</span>
+        {children}
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-7 lg:gap-x-20 pt-10 lg:pt-12">
+        <h2 className={`lg:col-span-6 display display-light d2 ${dark ? 'text-paper' : 'text-ink'}`}>{title}</h2>
+        {lede && (
+          <p className={`lg:col-span-5 lg:col-start-8 lede measure self-end ${dark ? 'text-white/64' : 'text-muted'}`}>
+            {lede}
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* C · Centred — flanked eyebrow. Reserved for moments that earn it. */
+function HeadC({ eyebrow, title, lede, dark = false }: {
+  eyebrow: string; title: React.ReactNode; lede?: React.ReactNode; dark?: boolean;
+}) {
+  return (
+    <div className="reveal text-center mb-16 lg:mb-20">
+      <div className="flex items-center justify-center gap-4 mb-9">
+        <span className={`block w-11 h-px ${dark ? 'bg-brass-lift' : 'bg-brass'}`} />
+        <span className={`label ${dark ? 'text-brass-lift' : 'text-brass-ink'}`}>{eyebrow}</span>
+        <span className={`block w-11 h-px ${dark ? 'bg-brass-lift' : 'bg-brass'}`} />
+      </div>
+      <h2 className={`display display-light d2 mx-auto max-w-[780px] ${dark ? 'text-paper' : 'text-ink'}`}>{title}</h2>
+      {lede && (
+        <p className={`lede mx-auto max-w-[560px] mt-7 ${dark ? 'text-white/64' : 'text-muted'}`}>{lede}</p>
+      )}
+    </div>
+  );
+}
+
+/* D · Oversized index — a large faint numeral carries the eyebrow. */
+function HeadD({ index, eyebrow, title, lede, children }: {
+  index: string; eyebrow: string; title: React.ReactNode;
+  lede?: React.ReactNode; children?: React.ReactNode;
+}) {
+  return (
+    <div className="reveal mb-16 lg:mb-20">
+      <div className="flex items-start gap-8 lg:gap-12">
+        <span className="numeral text-[clamp(3rem,7vw,5.5rem)] leading-[0.8] text-ink/[0.11] shrink-0">
+          {index}
+        </span>
+        <div className="max-w-[660px] pt-1">
+          <span className="label text-muted block mb-6">{eyebrow}</span>
+          <h2 className="display display-light d2 text-ink mb-7">{title}</h2>
+          {lede && <p className="lede text-muted measure">{lede}</p>}
+          {children && <div className="mt-8">{children}</div>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [openFaq, setOpenFaq] = useState<string | null>(null);
   const [showTable, setShowTable] = useState(false);
@@ -198,7 +281,7 @@ export default function Home() {
         {/* ══ 01 · HERO ═══════════════════════════════════════ */}
         <section className="relative min-h-[94vh] -mt-[76px] flex items-end overflow-hidden bg-ink">
           <div className="absolute inset-0 ken-burns">
-            <Image src="/hero-bg.jpg" alt="" fill priority className="object-cover" />
+            <Image src="/hero-coast.jpg" alt="" fill priority sizes="100vw" className="object-cover" />
           </div>
           <div className="absolute inset-0" style={{ background:
             'linear-gradient(180deg, rgba(7,26,51,0.40) 0%, rgba(7,26,51,0.12) 30%, rgba(7,26,51,0.52) 74%, rgba(7,26,51,0.86) 100%)' }} />
@@ -304,34 +387,43 @@ export default function Home() {
         {/* ══ 03 · PROPERTY CARE SERVICES ═════════════════════ */}
         <section id="services" className="bg-paper">
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[88px] lg:py-[160px]">
-            <div className="reveal flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16 lg:mb-20">
-              <div className="max-w-[620px]">
-                <span className="label text-muted block mb-8">Property care services</span>
-                <h2 className="display display-light d2 text-ink mb-7">
-                  Your eyes and ears on the Peninsula.
-                </h2>
-                <p className="lede text-muted measure">
-                  From regular inspections and security checks to pre-arrival preparation and
-                  storm monitoring, we make sure your property is safe, secure and always ready for you.
+            <HeadB eyebrow="Property care services"
+              title={<>Your eyes and ears on the Peninsula.</>}
+              lede="From regular inspections and security checks to pre-arrival preparation and storm monitoring, we make sure your property is safe, secure and always ready for you.">
+              <Brochure slug="property-care-services" />
+            </HeadB>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-14 lg:gap-x-16">
+              <div className="lg:col-span-7">
+                <div className="border-t rule">
+                  {CARE_SERVICES.map((sv, i) => (
+                    <div key={sv.index} style={{ transitionDelay: `${i * 70}ms` }}
+                      className="reveal py-8 border-b rule">
+                      <div className="flex items-baseline gap-6">
+                        <span className="numeral text-[15px] text-ink/30 shrink-0 w-6">{sv.index}</span>
+                        <div>
+                          <h3 className="display d4 text-ink mb-2.5">{sv.title}</h3>
+                          <p className="text-[15.5px] leading-[1.68] text-muted measure">{sv.body}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <p className="reveal display text-[clamp(1.1rem,1.6vw,1.35rem)] text-ink mt-12 border-l-2 border-brass pl-6 leading-[1.4]">
+                  We look after your property like it is our own.
                 </p>
               </div>
-              <Brochure slug="property-care-services" />
-            </div>
 
-            <div className="border-t rule">
-              {CARE_SERVICES.map((s, i) => (
-                <div key={s.index} style={{ transitionDelay: `${i * 70}ms` }}
-                  className="reveal grid grid-cols-1 md:grid-cols-12 gap-y-3 md:gap-x-10 py-9 border-b rule items-baseline">
-                  <span className="md:col-span-1 numeral text-[15px] text-ink/30">{s.index}</span>
-                  <h3 className="md:col-span-4 display d4 text-ink">{s.title}</h3>
-                  <p className="md:col-span-7 text-[16px] leading-[1.68] text-muted measure">{s.body}</p>
+              <div className="reveal lg:col-span-4 lg:col-start-9">
+                <div className="lg:sticky lg:top-28">
+                  <div className="relative aspect-[3/4] overflow-hidden">
+                    <Image src="/img/cliff.jpg" alt="Mornington Peninsula coastline"
+                      fill sizes="(max-width: 1024px) 100vw, 33vw" className="object-cover" />
+                  </div>
+                  <p className="label text-muted mt-5">Mornington Peninsula</p>
                 </div>
-              ))}
+              </div>
             </div>
-
-            <p className="reveal display d4 text-ink mt-14">
-              We look after your property like it is our own.
-            </p>
           </div>
         </section>
 
@@ -656,69 +748,62 @@ export default function Home() {
         {/* ══ 08 · ANNUAL PROPERTY HEALTH ASSESSMENT ══════════ */}
         <section className="bg-sand">
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[88px] lg:py-[160px]">
-            <div className="reveal flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16 lg:mb-20">
-              <div className="max-w-[640px]">
-                <span className="label text-muted block mb-8">Annual assessment</span>
-                <h2 className="display display-light d2 text-ink mb-7">
-                  Protect your investment before problems become expensive repairs.
-                </h2>
-                <p className="lede text-muted measure">
-                  Just like a regular health check-up, your property benefits from a comprehensive
-                  annual assessment to identify maintenance concerns before they become costly issues.
-                </p>
-              </div>
+            <HeadD index="01" eyebrow="Annual assessment"
+              title={<>Protect your investment before problems become expensive repairs.</>}
+              lede="Just like a regular health check-up, your property benefits from a comprehensive annual assessment to identify maintenance concerns before they become costly issues.">
               <Brochure slug="annual-health-assessment" />
+            </HeadD>
+
+            {/* Four areas across the full width — no sidebar. */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 border-t rule mb-20">
+              {ASSESSMENT_AREAS.map((a, i) => (
+                <div key={a.title} style={{ transitionDelay: `${i * 80}ms` }}
+                  className={`reveal py-9 border-b rule ${i > 0 ? 'lg:border-l lg:pl-10 lg:-ml-px' : ''}`}>
+                  <h3 className="display d4 text-ink mb-5">{a.title}</h3>
+                  <ul className="space-y-2">
+                    {a.items.map((it) => (
+                      <li key={it} className="flex gap-3 text-[14.5px] leading-[1.55] text-muted">
+                        <span className="mt-[9px] w-2 h-px bg-[color:var(--rule)] shrink-0" />
+                        <span>{it}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-14 lg:gap-x-20">
-              <div className="lg:col-span-7">
-                <p className="label text-muted mb-8">What we assess</p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 border-t rule">
-                  {ASSESSMENT_AREAS.map((a, i) => (
-                    <div key={a.title} style={{ transitionDelay: `${i * 80}ms` }}
-                      className="reveal py-8 border-b rule">
-                      <h3 className="display d4 text-ink mb-4">{a.title}</h3>
-                      <ul className="space-y-2">
-                        {a.items.map((it) => (
-                          <li key={it} className="flex gap-3 text-[14.5px] leading-[1.55] text-muted">
-                            <span className="mt-[9px] w-2.5 h-px bg-[color:var(--rule)] shrink-0" />
-                            <span>{it}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="lg:col-span-5">
-                <div className="reveal bg-paper border rule p-8 lg:p-10 mb-10">
-                  <p className="label text-brass-ink mb-6">Your property health report</p>
-                  <ul className="space-y-3">
+            {/* Dark inset panel spanning the full measure. */}
+            <div className="reveal bg-ink text-paper p-9 lg:p-14">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-12 lg:gap-x-16">
+                <div className="lg:col-span-5">
+                  <p className="label text-brass-lift mb-7">Your property health report</p>
+                  <ul className="space-y-3.5">
                     {ASSESSMENT_DELIVERABLES.map((d) => (
-                      <li key={d} className="flex gap-3 text-[14.5px] leading-[1.5] text-text">
-                        <Check size={14} strokeWidth={2} className="shrink-0 mt-[5px] text-brass" />
+                      <li key={d} className="flex gap-3.5 text-[15px] leading-[1.5] text-white/85">
+                        <Check size={15} strokeWidth={2} className="shrink-0 mt-[5px] text-brass-lift" />
                         <span>{d}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="reveal border-t rule">
-                  {ASSESSMENT_REASONS.map((r) => (
-                    <div key={r.title} className="py-5 border-b rule">
-                      <h4 className="display d4 text-ink mb-1.5">{r.title}</h4>
-                      <p className="text-[14.5px] leading-[1.55] text-muted">{r.body}</p>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="reveal mt-10">
-                  <p className="label text-muted mb-4">Ideal for</p>
-                  <div className="flex flex-wrap gap-x-5 gap-y-2">
-                    {IDEAL_FOR.map((t) => (
-                      <span key={t} className="text-[14.5px] text-text">{t}</span>
+                <div className="lg:col-span-6 lg:col-start-7">
+                  <p className="label text-brass-lift mb-7">Why an annual assessment</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 border-t rule-dark">
+                    {ASSESSMENT_REASONS.map((r) => (
+                      <div key={r.title} className="py-5 border-b rule-dark">
+                        <h4 className="display d4 text-paper mb-1.5">{r.title}</h4>
+                        <p className="text-[14.5px] leading-[1.55] text-white/60">{r.body}</p>
+                      </div>
                     ))}
+                  </div>
+                  <div className="mt-9 pt-7 border-t rule-dark">
+                    <p className="label text-white/45 mb-4">Ideal for</p>
+                    <div className="flex flex-wrap gap-x-6 gap-y-2">
+                      {IDEAL_FOR.map((t) => (
+                        <span key={t} className="text-[14.5px] text-white/80">{t}</span>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -728,66 +813,63 @@ export default function Home() {
 
         {/* ══ 09 · MAINTENANCE & CARPENTRY ════════════════════ */}
         <section className="bg-paper">
-          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[88px] lg:py-[160px]">
-            <div className="reveal flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16 lg:mb-20">
-              <div className="max-w-[620px]">
-                <span className="label text-muted block mb-8">Maintenance and carpentry</span>
-                <h2 className="display display-light d2 text-ink mb-7">
-                  Reliable repairs. Professional workmanship.
-                </h2>
-                <p className="lede text-muted measure">
-                  Whether it is a minor repair, preventative maintenance, or an improvement project,
-                  we deliver dependable workmanship and attention to detail on every job.
-                </p>
-              </div>
+          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 pt-[88px] lg:pt-[160px]">
+            <HeadA eyebrow="Maintenance and carpentry"
+              title={<>Reliable repairs.<br />Professional workmanship.</>}
+              lede="Whether it is a minor repair, preventative maintenance, or an improvement project, we deliver dependable workmanship and attention to detail on every job.">
               <Brochure slug="maintenance-carpentry" />
+            </HeadA>
+          </div>
+
+          {/* Full-bleed — the one place the grid is deliberately broken. */}
+          <div className="reveal relative w-full h-[280px] sm:h-[380px] lg:h-[460px] my-4 lg:my-6">
+            <Image src="/img/deck.jpg" alt="Deck and pergola maintenance"
+              fill sizes="100vw" className="object-cover" />
+          </div>
+
+          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 pb-[88px] lg:pb-[160px] pt-14 lg:pt-20">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 border-t rule">
+              {TRADE_SERVICES.map((sv, i) => (
+                <div key={sv.title} style={{ transitionDelay: `${(i % 3) * 70}ms` }}
+                  className="reveal py-8 border-b rule">
+                  <h3 className="display d4 text-ink mb-2.5">{sv.title}</h3>
+                  <p className="text-[15px] leading-[1.65] text-muted">{sv.body}</p>
+                </div>
+              ))}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-14 lg:gap-x-20">
-              <div className="lg:col-span-7">
-                <div className="border-t rule">
-                  {TRADE_SERVICES.map((s, i) => (
-                    <div key={s.title} style={{ transitionDelay: `${i * 70}ms` }}
-                      className="reveal py-7 border-b rule">
-                      <h3 className="display d4 text-ink mb-2.5">{s.title}</h3>
-                      <p className="text-[15.5px] leading-[1.65] text-muted measure">{s.body}</p>
-                    </div>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-12 lg:gap-x-16 mt-16">
+              <div className="reveal lg:col-span-5">
+                <p className="label text-muted mb-6">Why choose Coastal Pro</p>
+                <ul className="space-y-3.5">
+                  {['Qualified carpentry experience', 'Reliable and professional service',
+                    'Honest advice and clear communication', 'Fully insured',
+                    'One point of contact for all property needs',
+                    'Local knowledge of the Mornington Peninsula'].map((t) => (
+                    <li key={t} className="flex gap-3.5 text-[15px] leading-[1.5] text-text">
+                      <Check size={15} strokeWidth={2} className="shrink-0 mt-[5px] text-brass" />
+                      <span>{t}</span>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
 
-              <div className="lg:col-span-5">
-                <div className="reveal bg-paper-warm border rule p-8 lg:p-10">
-                  <p className="label text-muted mb-7">Why choose Coastal Pro</p>
-                  <ul className="space-y-4">
-                    {['Qualified carpentry experience', 'Reliable and professional service',
-                      'Honest advice and clear communication', 'Fully insured',
-                      'One point of contact for all property needs',
-                      'Local knowledge of the Mornington Peninsula'].map((t) => (
-                      <li key={t} className="flex gap-3.5 text-[15px] leading-[1.5] text-text">
-                        <Check size={15} strokeWidth={2} className="shrink-0 mt-[5px] text-brass" />
-                        <span>{t}</span>
-                      </li>
+              <div className="reveal lg:col-span-6 lg:col-start-7 flex flex-col justify-between gap-10">
+                <p className="display text-[clamp(1.3rem,2.2vw,1.85rem)] text-ink leading-[1.32]">
+                  We treat every property as if it were our own.
+                </p>
+                <div>
+                  <div className="grid grid-cols-3 border-t rule pt-7">
+                    {[['5%', 'Essential'], ['10%', 'Signature'], ['15%', 'Premium']].map(([pc, t], i) => (
+                      <div key={t} className={i > 0 ? 'pl-6 border-l rule' : ''}>
+                        <span className={`numeral block text-[34px] leading-none mb-2 ${
+                          t === 'Premium' ? 'text-brass-ink' : 'text-ink'}`}>{pc}</span>
+                        <span className="label text-muted">{t}</span>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
+                  <p className="text-[13.5px] text-muted mt-4">Member discount on eligible works.</p>
                 </div>
-
-                <div className="reveal mt-10 border-l-2 border-brass pl-6">
-                  <p className="display text-[clamp(1.1rem,1.6vw,1.35rem)] text-ink leading-[1.4]">
-                    We treat every property as if it were our own.
-                  </p>
-                </div>
-
-                <div className="reveal grid grid-cols-3 border-t rule mt-10 pt-7">
-                  {[['5%', 'Essential'], ['10%', 'Signature'], ['15%', 'Premium']].map(([p, t], i) => (
-                    <div key={t} className={i > 0 ? 'pl-5 border-l rule' : ''}>
-                      <span className={`numeral block text-[30px] leading-none mb-2 ${
-                        t === 'Premium' ? 'text-brass-ink' : 'text-ink'}`}>{p}</span>
-                      <span className="label text-muted">{t}</span>
-                    </div>
-                  ))}
-                </div>
-                <p className="text-[13.5px] text-muted mt-4">Member discount on eligible works.</p>
               </div>
             </div>
           </div>
@@ -796,71 +878,65 @@ export default function Home() {
         {/* ══ 10 · SPECIALIST COORDINATION ════════════════════ */}
         <section className="bg-paper-warm border-y rule">
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[88px] lg:py-[160px]">
-            <div className="reveal flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16 lg:mb-20">
-              <div className="max-w-[660px]">
-                <span className="label text-muted block mb-8">Specialist coordination</span>
-                <h2 className="display display-light d2 text-ink mb-7">
-                  We organise the right professionals for the job.
-                </h2>
-                <p className="lede text-muted measure">
-                  Not every issue requires a handyman. Some situations require licensed trades,
-                  qualified inspectors or specialist contractors. We coordinate trusted local
-                  professionals on your behalf, saving you the time and hassle of sourcing them.
-                </p>
-              </div>
+            <HeadB eyebrow="Specialist coordination"
+              title={<>We organise the right professionals for the job.</>}
+              lede="Not every issue requires a handyman. Some situations require licensed trades, qualified inspectors or specialist contractors. We coordinate trusted local professionals on your behalf.">
               <Brochure slug="specialist-coordination" />
+            </HeadB>
+
+            {/* Six disciplines, three across — full width, no sidebar. */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 border-t rule mb-16">
+              {COORDINATED.map((c, i) => (
+                <div key={c.title} style={{ transitionDelay: `${(i % 3) * 70}ms` }}
+                  className="reveal py-9 border-b rule">
+                  <span className="numeral text-[13px] text-ink/30 block mb-4">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <h3 className="display d4 text-ink mb-4">{c.title}</h3>
+                  <ul className="space-y-2">
+                    {c.items.map((it) => (
+                      <li key={it} className="flex gap-3 text-[14.5px] leading-[1.55] text-muted">
+                        <span className="mt-[9px] w-2 h-px bg-[color:var(--rule)] shrink-0" />
+                        <span>{it}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-14 lg:gap-x-20">
-              <div className="lg:col-span-7">
-                <p className="label text-muted mb-8">Services we can coordinate</p>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-10 lg:gap-x-16 mb-14">
+              <div className="reveal lg:col-span-5">
+                <p className="label text-muted mb-5">Coordination fees</p>
+                <p className="text-[15.5px] leading-[1.68] text-muted measure">
+                  We charge a coordination and management fee for organising specialist inspections
+                  and contractors. Fees are tailored to the scope and complexity of each project,
+                  and confirmed with you in advance.
+                </p>
+                <p className="display text-[clamp(1.15rem,1.7vw,1.4rem)] text-ink leading-[1.38] mt-8 border-l-2 border-brass pl-6">
+                  We coordinate the right people, so you do not have to.
+                </p>
+              </div>
+              <div className="reveal lg:col-span-6 lg:col-start-7">
+                <p className="label text-muted mb-6">Our service may include</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 border-t rule">
-                  {COORDINATED.map((c, i) => (
-                    <div key={c.title} style={{ transitionDelay: `${i * 70}ms` }}
-                      className="reveal py-8 border-b rule">
-                      <h3 className="display d4 text-ink mb-4">{c.title}</h3>
-                      <ul className="space-y-2">
-                        {c.items.map((it) => (
-                          <li key={it} className="flex gap-3 text-[14.5px] leading-[1.55] text-muted">
-                            <span className="mt-[9px] w-2.5 h-px bg-[color:var(--rule)] shrink-0" />
-                            <span>{it}</span>
-                          </li>
-                        ))}
-                      </ul>
+                  {COORDINATION_INCLUDES.map((t) => (
+                    <div key={t} className="py-4 border-b rule flex gap-3.5 text-[14.5px] leading-[1.5] text-text">
+                      <Check size={14} strokeWidth={2} className="shrink-0 mt-[5px] text-brass" />
+                      <span>{t}</span>
                     </div>
                   ))}
                 </div>
               </div>
+            </div>
 
-              <div className="lg:col-span-5">
-                <div className="reveal bg-paper border rule p-8 lg:p-10 mb-10">
-                  <p className="label text-muted mb-4">Coordination fees</p>
-                  <p className="text-[15px] leading-[1.65] text-muted mb-7">
-                    We charge a coordination and management fee for organising specialist
-                    inspections and contractors. Our service may include:
-                  </p>
-                  <ul className="space-y-3">
-                    {COORDINATION_INCLUDES.map((t) => (
-                      <li key={t} className="flex gap-3 text-[14.5px] leading-[1.5] text-text">
-                        <Check size={14} strokeWidth={2} className="shrink-0 mt-[5px] text-brass" />
-                        <span>{t}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="text-[14px] leading-[1.6] text-muted mt-7 pt-6 border-t rule">
-                    Fees are tailored to the scope and complexity of each project, and confirmed
-                    with you in advance.
-                  </p>
-                </div>
-
-                {/* Regulatory scope — a compliance statement, not marketing. */}
-                <div className="reveal bg-ink text-paper p-8 lg:p-10">
-                  <p className="label text-brass-lift mb-5">Important information</p>
-                  <p className="text-[14.5px] leading-[1.7] text-white/80">{LICENSING_NOTICE}</p>
-                </div>
-
-                <p className="reveal display text-[clamp(1.05rem,1.5vw,1.3rem)] text-ink leading-[1.4] mt-10 border-l-2 border-brass pl-6">
-                  We coordinate the right people, so you do not have to.
+            {/* Regulatory scope — full width, and deliberately the most
+                prominent block in the section. */}
+            <div className="reveal bg-ink text-paper p-9 lg:p-12">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-5 lg:gap-x-16 items-start">
+                <p className="lg:col-span-3 label text-brass-lift">Important information</p>
+                <p className="lg:col-span-9 text-[15px] leading-[1.75] text-white/82 max-w-[68ch]">
+                  {LICENSING_NOTICE}
                 </p>
               </div>
             </div>
@@ -939,20 +1015,10 @@ export default function Home() {
 
         {/* ══ 12 · WHY COASTAL PRO ════════════════════════════ */}
         <section className="bg-paper">
-          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[88px] lg:py-[160px]">
-            <div className="reveal flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16 lg:mb-20">
-              <div className="max-w-[620px]">
-                <span className="label text-muted block mb-8">Why Coastal Pro</span>
-                <h2 className="display display-light d2 text-ink mb-7">
-                  More than maintenance. Complete property care.
-                </h2>
-                <p className="lede text-muted measure">
-                  Whether you are a homeowner, holiday home owner or property investor, we make it
-                  easy to keep your property safe, functional and looking its best.
-                </p>
-              </div>
-              <Brochure slug="why-coastal-pro" />
-            </div>
+          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 pt-[88px] lg:pt-[160px] pb-[72px] lg:pb-[110px]">
+            <HeadC eyebrow="Why Coastal Pro"
+              title={<>More than maintenance.<br />Complete property care.</>}
+              lede="Whether you are a homeowner, holiday home owner or property investor, we make it easy to keep your property safe, functional and looking its best." />
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 border-t rule">
               {WHY_US.map((w, i) => (
@@ -964,38 +1030,40 @@ export default function Home() {
               ))}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-12 lg:gap-x-20 mt-20">
-              <div className="reveal lg:col-span-7">
-                <p className="label text-muted mb-8">Why we exist</p>
-                <div className="border-t rule">
-                  {WHY_WE_EXIST.map((w) => (
-                    <div key={w.title} className="py-6 border-b rule grid grid-cols-1 sm:grid-cols-12 gap-y-2 sm:gap-x-8 items-baseline">
-                      <h3 className="sm:col-span-5 display d4 text-ink">{w.title}</h3>
-                      <p className="sm:col-span-7 text-[15px] leading-[1.6] text-muted">{w.body}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+            <div className="reveal flex justify-center mt-12">
+              <Brochure slug="why-coastal-pro" />
+            </div>
+          </div>
 
-              <div className="reveal lg:col-span-5">
-                <div className="bg-paper-warm border rule p-8 lg:p-10">
-                  <p className="label text-brass-ink mb-5">Supporting our local community</p>
-                  <p className="text-[15.5px] leading-[1.68] text-muted mb-7">
-                    We are proud to be a local Mornington Peninsula business, supporting local
-                    suppliers, trades and the community we live in.
-                  </p>
-                  <p className="display text-[clamp(1.1rem,1.6vw,1.35rem)] text-ink leading-[1.35] mb-8">
-                    Locals looking after locals.
-                  </p>
-                  <div className="pt-7 border-t rule">
-                    <p className="label text-muted mb-3">Our commitment</p>
-                    <p className="text-[15px] leading-[1.65] text-muted">
-                      To provide a professional, honest and reliable service that gives you more
-                      time to enjoy what matters most.
-                    </p>
-                  </div>
-                </div>
+          {/* Photographic band carrying the community line. */}
+          <div className="relative w-full min-h-[420px] lg:min-h-[500px] flex items-center overflow-hidden">
+            <Image src="/img/pool.jpg" alt="" fill sizes="100vw" className="object-cover" />
+            <div className="absolute inset-0" style={{ background:
+              'linear-gradient(90deg, rgba(7,26,51,0.93) 0%, rgba(7,26,51,0.80) 42%, rgba(7,26,51,0.36) 78%, rgba(7,26,51,0.22) 100%)' }} />
+            <div className="relative w-full mx-auto max-w-[1240px] px-6 lg:px-10 py-16">
+              <div className="max-w-[560px]">
+                <span className="label text-brass-lift block mb-7">Supporting our local community</span>
+                <p className="display display-light text-[clamp(1.7rem,3.4vw,2.8rem)] text-paper leading-[1.2] mb-8">
+                  Locals looking after locals.
+                </p>
+                <p className="text-[16px] leading-[1.7] text-white/74 measure">
+                  We are proud to be a local Mornington Peninsula business, supporting local
+                  suppliers, trades and the community we live in. Our commitment is a professional,
+                  honest and reliable service that gives you more time to enjoy what matters most.
+                </p>
               </div>
+            </div>
+          </div>
+
+          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[72px] lg:py-[110px]">
+            <p className="reveal label text-muted mb-8">Why we exist</p>
+            <div className="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 border-t rule">
+              {WHY_WE_EXIST.map((w) => (
+                <div key={w.title} className="py-8 border-b rule">
+                  <h3 className="display d4 text-ink mb-3">{w.title}</h3>
+                  <p className="text-[15px] leading-[1.6] text-muted">{w.body}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -1100,40 +1168,36 @@ export default function Home() {
         {/* ══ 16 · FAQ ════════════════════════════════════════ */}
         <section id="faq" className="bg-sand border-y rule">
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[88px] lg:py-[160px]">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-12 lg:gap-x-20">
-              <div className="lg:col-span-4">
-                <div className="reveal lg:sticky lg:top-32">
-                  <span className="label text-muted block mb-8">Questions</span>
-                  <h2 className="display display-light d2 text-ink mb-8">Before you commit.</h2>
-                  <Brochure slug="coastal-pro-brochure" />
-                  <p className="text-[13.5px] text-muted mt-3">The complete nine-page brochure.</p>
-                </div>
-              </div>
+            <HeadC eyebrow="Questions" title={<>Before you commit.</>} />
 
-              <div className="lg:col-span-7 lg:col-start-6">
-                <div className="border-t rule">
-                  {FAQS.map((faq) => {
-                    const open = openFaq === faq.id;
-                    return (
-                      <div key={faq.id} className="border-b rule">
-                        <button onClick={() => setOpenFaq(open ? null : faq.id)}
-                          aria-expanded={open} aria-controls={`faq-${faq.id}`}
-                          className="w-full flex items-start justify-between gap-8 py-[30px] text-left group">
-                          <span className="display d4 text-ink">{faq.q}</span>
-                          <Plus size={19} strokeWidth={1.5}
-                            className={`shrink-0 mt-1 text-muted group-hover:text-ink transition-transform duration-[420ms] ${
-                              open ? 'rotate-[135deg]' : ''}`}
-                            style={{ transitionTimingFunction: 'var(--ease)' }} />
-                        </button>
-                        <div id={`faq-${faq.id}`} className={`collapse ${open ? 'open' : ''}`}>
-                          <div>
-                            <p className="pb-[30px] pr-12 text-[16px] leading-[1.72] text-muted measure">{faq.a}</p>
-                          </div>
+            <div className="max-w-[860px] mx-auto">
+              <div className="border-t rule">
+                {FAQS.map((faq) => {
+                  const open = openFaq === faq.id;
+                  return (
+                    <div key={faq.id} className="border-b rule">
+                      <button onClick={() => setOpenFaq(open ? null : faq.id)}
+                        aria-expanded={open} aria-controls={`faq-${faq.id}`}
+                        className="w-full flex items-start justify-between gap-8 py-[30px] text-left group">
+                        <span className="display d4 text-ink">{faq.q}</span>
+                        <Plus size={19} strokeWidth={1.5}
+                          className={`shrink-0 mt-1 text-muted group-hover:text-ink transition-transform duration-[420ms] ${
+                            open ? 'rotate-[135deg]' : ''}`}
+                          style={{ transitionTimingFunction: 'var(--ease)' }} />
+                      </button>
+                      <div id={`faq-${faq.id}`} className={`collapse ${open ? 'open' : ''}`}>
+                        <div>
+                          <p className="pb-[30px] pr-8 text-[16px] leading-[1.72] text-muted max-w-[64ch]">{faq.a}</p>
                         </div>
                       </div>
-                    );
-                  })}
-                </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-5 pt-12">
+                <p className="text-[15px] text-muted">The complete nine-page brochure.</p>
+                <Brochure slug="coastal-pro-brochure" />
               </div>
             </div>
           </div>

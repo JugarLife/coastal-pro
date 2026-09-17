@@ -15,13 +15,15 @@ Everything below must be resolved before a domain is pointed at this site.
       liability. Fill every `[square bracket]`. Remove the draft banner in
       `app/components/LegalPage.tsx` once settled.
 
-- [ ] **Hero image is Cradle Mountain, Tasmania.** `public/hero-bg.jpg`.
-      Any local will recognise it, three scrolls above "We live and work on
-      the Peninsula." Reshoot at Cape Schanck, Bushrangers Bay or the
-      Sorrento back beach road, at dusk.
-      NOTE: the current file is only 1448x1086, which is soft for a
-      full-bleed hero on a retina display. Shoot the replacement at
-      2560px wide minimum.
+- [ ] **Photography resolution.** The Tasmanian hero is GONE — replaced with
+      the coastal shot from your own brochure cover, along with three more
+      pulled from the brochure (cliff, deck, pool). They are extracted from
+      1055px-wide print PNGs, so they are soft at full-bleed sizes even after
+      upscaling. They hold under the hero scrim and at band sizes, but:
+      supply the ORIGINAL full-resolution files if you have them (ask
+      whoever built the brochure), or reshoot at 2560px wide minimum.
+      Sources: hero + coast = brochure p.1, cliff = p.2, deck = p.4,
+      pool = p.5.
 
 - [ ] **ABN is a placeholder** (`12 345 678 901`) in `app/page.tsx` and
       `/terms`.
