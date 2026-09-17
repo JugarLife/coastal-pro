@@ -1041,30 +1041,31 @@ export default function Home() {
 
                   {SUBURBS.map((sub) => {
                     const on = hoverSuburb === sub.name;
-                    const leftHalf = sub.x < 480;
                     return (
                       <g key={sub.name}
                         onMouseEnter={() => setHoverSuburb(sub.name)}
                         onMouseLeave={() => setHoverSuburb(null)}
                         style={{ cursor: 'default' }}>
-                        {/* generous invisible hit area */}
                         <circle cx={sub.x} cy={sub.y} r={34} fill="transparent" />
+                        {/* leader from marker to its solved label position */}
+                        <line x1={sub.x} y1={sub.y} x2={sub.lx + (sub.anchor === 'start' ? -10 : 10)} y2={sub.ly - 8}
+                          stroke="var(--ink)" strokeOpacity={on ? 0 : 0.28} strokeWidth="1"
+                          vectorEffect="non-scaling-stroke"
+                          style={{ transition: 'all 220ms var(--ease)' }} />
                         {on && (
-                          <>
-                            <line x1={sub.x} y1={sub.y} x2={sub.x} y2={sub.y - 40}
-                              stroke="var(--brass)" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
-                            <text x={sub.x} y={sub.y - 52}
-                              textAnchor={leftHalf ? 'start' : 'end'}
-                              fontSize="30" letterSpacing="3.4" fontWeight={600}
-                              fill="var(--brass-ink)"
-                              style={{ textTransform: 'uppercase' }}>
-                              {sub.name}
-                            </text>
-                          </>
+                          <line x1={sub.x} y1={sub.y} x2={sub.lx + (sub.anchor === 'start' ? -10 : 10)} y2={sub.ly - 8}
+                            stroke="var(--brass)" strokeWidth="1.75" vectorEffect="non-scaling-stroke" />
                         )}
+                        <text x={sub.lx} y={sub.ly} textAnchor={sub.anchor}
+                          fontSize="27" letterSpacing="3.1" fontWeight={on ? 700 : 600}
+                          fill={on ? 'var(--brass-ink)' : 'var(--ink)'}
+                          fillOpacity={on ? 1 : 0.68}
+                          style={{ textTransform: 'uppercase', transition: 'all 220ms var(--ease)' }}>
+                          {sub.name}
+                        </text>
                         <circle cx={sub.x} cy={sub.y} r={on ? 13 : 8}
                           fill={on ? 'var(--brass)' : 'var(--ink)'}
-                          fillOpacity={on ? 1 : 0.55}
+                          fillOpacity={on ? 1 : 0.6}
                           style={{ transition: 'all 220ms var(--ease)' }} />
                       </g>
                     );
