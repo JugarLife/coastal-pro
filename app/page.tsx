@@ -24,7 +24,7 @@ const NAV = [
   ['Questions', '#faq'],
 ] as const;
 
-const PILLARS = ['Inspections', 'Maintenance', 'Specialist coordination', 'Carpentry & repairs', 'Peace of mind'];
+const PILLARS = ['Inspections', 'Maintenance', 'Coordination', 'Carpentry', 'Peace of mind'];
 
 /* Per-section download of the matching brochure page. */
 function Brochure({ slug, dark = false }: { slug: string; dark?: boolean }) {
@@ -33,7 +33,7 @@ function Brochure({ slug, dark = false }: { slug: string; dark?: boolean }) {
       href={`/brochure/${slug}.pdf`}
       download
       onClick={() => track('brochure_download', { section: slug })}
-      className={`inline-flex items-center gap-2.5 label transition-colors duration-200 ${
+      className={`inline-flex items-center gap-2.5 label py-3 -my-3 transition-colors duration-200 ${
         dark ? 'text-white/50 hover:text-brass-lift' : 'text-muted hover:text-brass-ink'
       }`}
     >
@@ -74,9 +74,9 @@ function HeadB({ eyebrow, title, lede, children, dark = false }: {
         {children}
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-7 lg:gap-x-20 pt-10 lg:pt-12">
-        <h2 className={`lg:col-span-6 display display-light d2 ${dark ? 'text-paper' : 'text-ink'}`}>{title}</h2>
+        <h2 className={`lg:col-span-7 display display-light d2 ${dark ? 'text-paper' : 'text-ink'}`}>{title}</h2>
         {lede && (
-          <p className={`lg:col-span-5 lg:col-start-8 lede measure self-end ${dark ? 'text-white/64' : 'text-muted'}`}>
+          <p className={`lg:col-span-4 lg:col-start-9 lede measure self-end ${dark ? 'text-white/64' : 'text-muted'}`}>
             {lede}
           </p>
         )}
@@ -312,7 +312,7 @@ export default function Home() {
           <div className="absolute inset-0" style={{ background:
             'linear-gradient(90deg, rgba(7,26,51,0.46) 0%, rgba(7,26,51,0.22) 42%, rgba(7,26,51,0) 72%)' }} />
 
-          <div className="relative w-full mx-auto max-w-[1240px] px-6 lg:px-10 pb-20 lg:pb-[132px] pt-40">
+          <div className="relative w-full mx-auto max-w-[1240px] px-6 lg:px-10 pb-24 lg:pb-[120px] pt-40">
             <div className="max-w-[880px]">
               <div className="hero-fade flex items-center gap-4 mb-9" style={{ animationDelay: '80ms' }}>
                 <span className="block w-11 h-px bg-brass-lift" />
@@ -334,6 +334,15 @@ export default function Home() {
                 Whether you are local, interstate or overseas, we become your single point of contact.
               </p>
 
+              <div className="hero-line flex flex-wrap items-center gap-x-5 gap-y-2 mb-11" style={{ animationDelay: '440ms' }}>
+                {['Fully insured', 'Qualified carpenters', 'Locally based'].map((t, i) => (
+                  <span key={t} className="flex items-center gap-5">
+                    {i > 0 && <span className="w-[3px] h-[3px] rounded-full bg-brass-lift/70" />}
+                    <span className="label text-white/62">{t}</span>
+                  </span>
+                ))}
+              </div>
+
               <div className="hero-line flex flex-col sm:flex-row gap-3.5" style={{ animationDelay: '380ms' }}>
                 <a href="#memberships"
                   className="px-9 py-[15px] bg-paper text-ink text-[15px] font-medium text-center hover:bg-white transition-colors duration-200">
@@ -347,33 +356,21 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="absolute bottom-0 inset-x-0 border-t rule-dark hero-fade" style={{ animationDelay: '520ms' }}>
-            <div className="mx-auto max-w-[1240px] px-6 lg:px-10">
-              <div className="flex flex-wrap">
-                {['Fully insured', 'Qualified carpenters', 'Locally based'].map((t, i) => (
-                  <div key={t} className={`py-[18px] pr-8 lg:pr-14 ${i > 0 ? 'pl-8 lg:pl-14 border-l rule-dark' : ''}`}>
-                    <span className="label text-white/60">{t}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+
         </section>
 
         {/* ══ PILLARS STRIP ═══════════════════════════════════ */}
         <section className="bg-ink-deep text-paper">
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10">
-            <div className="grid grid-cols-2 md:grid-cols-5 border-x-0">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5">
               {PILLARS.map((p, i) => (
-                <div key={p} className={`py-7 lg:py-8 px-2 lg:px-5 ${i > 0 ? 'md:border-l rule-dark' : ''} ${
-                  i % 2 === 1 ? 'border-l rule-dark md:border-l' : ''} ${i >= 2 ? 'border-t rule-dark md:border-t-0' : ''}`}>
-                  <span className="label text-white/62 block text-center">{p}</span>
+                <div key={p}
+                  className={`py-6 lg:py-7 px-3 flex items-center justify-center
+                    ${i > 0 ? 'md:border-l rule-dark' : ''}`}>
+                  <span className="label text-white/60 text-center whitespace-nowrap">{p}</span>
                 </div>
               ))}
             </div>
-            <p className="text-center py-7 border-t rule-dark display text-[clamp(1rem,1.5vw,1.3rem)] text-paper">
-              Complete property care. <span className="text-brass-lift">Total peace of mind.</span>
-            </p>
           </div>
         </section>
 
@@ -424,7 +421,7 @@ export default function Home() {
                     <div key={sv.index} style={{ transitionDelay: `${i * 70}ms` }}
                       className={`reveal tile ${i === 0 ? 'sm:col-span-2' : ''}`}>
                       <span className="numeral text-[26px] leading-none text-brass-ink block mb-5">{sv.index}</span>
-                      <h3 className="display d4 text-ink mb-2.5">{sv.title}</h3>
+                      <h3 className="display d4 text-ink mb-2.5 sm:min-h-[2.6em]">{sv.title}</h3>
                       <p className="text-[15px] leading-[1.6] text-muted">{sv.body}</p>
                     </div>
                   ))}
@@ -464,7 +461,7 @@ export default function Home() {
                       {s.index}
                     </span>
                   </div>
-                  <h3 className="display d3 text-paper mb-4">{s.title}</h3>
+                  <h3 className="display d3 text-paper mb-4 md:min-h-[2.32em]">{s.title}</h3>
                   <p className="text-[16px] leading-[1.68] text-white/64 measure">{s.body}</p>
                 </div>
               ))}
@@ -751,7 +748,7 @@ export default function Home() {
                   </div>
 
                   <a href="/sample-report"
-                    className="inline-flex items-center gap-2 mt-8 text-[14.5px] text-brass-lift hover:text-paper transition-colors">
+                    className="inline-flex items-center gap-2 mt-8 py-2 text-[14.5px] text-brass-lift hover:text-paper transition-colors">
                     See a full sample report
                     <ArrowUpRight size={15} strokeWidth={1.75} />
                   </a>
@@ -869,7 +866,7 @@ export default function Home() {
               {TRADE_SERVICES.map((sv, i) => (
                 <div key={sv.title} style={{ transitionDelay: `${(i % 3) * 70}ms` }}
                   className="reveal tile">
-                  <h3 className="display d4 text-ink mb-2.5">{sv.title}</h3>
+                  <h3 className="display d4 text-ink mb-2.5 sm:min-h-[2.6em]">{sv.title}</h3>
                   <p className="text-[15px] leading-[1.65] text-muted">{sv.body}</p>
                 </div>
               ))}
@@ -1105,7 +1102,7 @@ export default function Home() {
               {WHY_WE_EXIST.map((w, i) => (
                 <div key={w.title} className={`py-9 lg:pr-9 border-b rule ${
                   i > 0 ? 'lg:border-l lg:pl-9 lg:-ml-px' : ''}`}>
-                  <h3 className="display d4 text-ink mb-3">{w.title}</h3>
+                  <h3 className="display d4 text-ink mb-3 sm:min-h-[2.6em]">{w.title}</h3>
                   <p className="text-[15px] leading-[1.6] text-muted">{w.body}</p>
                 </div>
               ))}
@@ -1321,8 +1318,8 @@ export default function Home() {
             <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
               <span className="text-[13px]">© 2026 Coastal Pro Property Care</span>
               <div className="flex gap-8">
-                <Link href="/terms" className="text-[13px] hover:text-paper transition-colors">Terms</Link>
-                <Link href="/privacy" className="text-[13px] hover:text-paper transition-colors">Privacy</Link>
+                <Link href="/terms" className="py-2 text-[13px] hover:text-paper transition-colors">Terms</Link>
+                <Link href="/privacy" className="py-2 text-[13px] hover:text-paper transition-colors">Privacy</Link>
               </div>
             </div>
           </div>
