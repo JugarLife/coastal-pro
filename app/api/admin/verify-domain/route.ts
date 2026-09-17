@@ -65,3 +65,30 @@ export async function POST(request: Request) {
     })),
   });
 }
+
+/* Read-only: returns exactly what Resend expects for each record, so it can
+   be compared against what is actually published in DNS. */
+export async function GET(request: Request) {
+  const url = new URL(request.url);
+  if (url.searchParams.get('token') !== GUARD) {
+    return NextResponse.json({ ok: false, error: 'Forbidden.' }, { status: 403 });
+  }
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return NextResponse.json({ ok: false }, { status: 503 });
+  const h = { Authorization: `Bearer ${key}` };
+
+  const list = await (await fetch('https://api.resend.com/domains', { headers: h })).json();
+  const d = (list.data || []).find((x: { name: string }) => x.name === 'coastalpropropertycare.com');
+  if (!d) return NextResponse.json({ ok: false, error: 'not found' }, { status: 404 });
+
+  const full = await (await fetch(`https://api.resend.com/domains/${d.id}`, { headers: h })).json();
+  return NextResponse.json({
+    status: full.status,
+    region: full.region,
+    records: (full.records || []).map((r: Record<string, unknown>) => ({
+      record: r.record, name: r.name, type: r.type,
+      status: r.status, ttl: r.ttl, priority: r.priority,
+      value: r.value,
+    })),
+  });
+}
