@@ -33,9 +33,11 @@ Everything below must be resolved before a domain is pointed at this site.
 
 ## Blocking — functional
 
-- [ ] **Enquiries reach nobody.** Set `RESEND_API_KEY` and `ENQUIRY_TO` in
-      Vercel. Until then `/api/enquiry` validates and logs only, and returns
-      `delivered:false`. Send a real test enquiry after setting them.
+- [ ] **Resend domain not verified.** Env vars are set and the key works;
+      DNS (MX, SPF, DKIM) is correct and public. Resend reports the domain
+      as `not_started` — click "Verify DNS Records" in Resend > Domains.
+      Until then Resend refuses to send and enquiries reach nobody.
+      Check status any time: GET /api/enquiry on the live site.
 
 - [ ] **Team photograph** placeholder in the "Who we are" section. Two people,
       branded ute, coastal light, mid-morning. Mid-work and slightly candid,
@@ -59,6 +61,17 @@ Everything below must be resolved before a domain is pointed at this site.
       (`/api/availability` → `configured: true`).
 - [ ] Decide whether Essential gets a direct-Checkout fast lane. Signature and
       Reserve stay consultation-first per the brief.
+
+## Done
+
+- [x] **Domain live** — coastalpropropertycare.com, apex + www, Let's Encrypt
+      certificate, www 308-redirects to the bare host. The .net.au has been
+      removed from the project entirely.
+- [x] **Enquiry environment variables** set in Vercel Production as Sensitive
+      (RESEND_API_KEY, ENQUIRY_TO, ENQUIRY_FROM). Note: Sensitive values
+      cannot be read back — a lost API key is regenerated, not recovered.
+- [x] **Brochure integrated** — all nine pages of content built natively,
+      plus per-section PDF downloads (9 of 9 serving).
 
 ## Decided — no longer open
 
@@ -85,9 +98,7 @@ Everything below must be resolved before a domain is pointed at this site.
       photograph, not the logo.
 - [ ] Convert imagery to AVIF/WebP with blur-up placeholders once real photos
       land, and confirm Lighthouse 95+ on mobile.
-- [ ] **Domain.** `coastalpropropertycare.com.au` is a mouthful. Prefer
-      `coastalpro.com.au`, else `thecoastalpro.com.au` or
-      `coastalproperty.care`. The .com.au matters for local trust.
+
 
 ## Verified working
 
