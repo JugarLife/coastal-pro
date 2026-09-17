@@ -12,8 +12,10 @@
 :root {
   /* Fields — warm off-white, never pure white */
   --paper:      #FAF8F5;
-  --paper-warm: #F5F2EC;   /* Signature card, alternate bands */
-  --sand:       #F1ECE3;
+  --paper-warm: #F3EEE4;   /* Signature card only */
+  --sand:       #E8E0D0;   /* alternate band — 1.24:1 against paper, so the
+                              alternation is actually visible. The previous
+                              value was 1.05:1, i.e. invisible. */
   --ink:        #0B2545;   /* deep ink navy */
   --ink-deep:   #071A33;
 
@@ -148,6 +150,23 @@
     transition:
       opacity 0.5s var(--ease),
       transform 0.5s var(--ease);
+  }
+
+  /* ── Tile — a boxed device, deliberately unlike the ruled list.
+        Having only one device (a hairline-ruled row) was what made
+        every section read identically however the grid varied.      */
+  .tile {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 1.75rem;
+    transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
+  }
+  .tile:hover { border-color: rgba(11, 37, 69, 0.3); }
+
+  .tile-ink {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--rule-dark);
+    padding: 1.75rem;
   }
 
   .rule      { border-color: var(--rule); }

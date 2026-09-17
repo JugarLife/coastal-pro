@@ -395,17 +395,13 @@ export default function Home() {
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-14 lg:gap-x-16">
               <div className="lg:col-span-7">
-                <div className="border-t rule">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {CARE_SERVICES.map((sv, i) => (
                     <div key={sv.index} style={{ transitionDelay: `${i * 70}ms` }}
-                      className="reveal py-8 border-b rule">
-                      <div className="flex items-baseline gap-6">
-                        <span className="numeral text-[15px] text-ink/30 shrink-0 w-6">{sv.index}</span>
-                        <div>
-                          <h3 className="display d4 text-ink mb-2.5">{sv.title}</h3>
-                          <p className="text-[15.5px] leading-[1.68] text-muted measure">{sv.body}</p>
-                        </div>
-                      </div>
+                      className={`reveal tile ${i === 0 ? 'sm:col-span-2' : ''}`}>
+                      <span className="numeral text-[26px] leading-none text-brass-ink block mb-5">{sv.index}</span>
+                      <h3 className="display d4 text-ink mb-2.5">{sv.title}</h3>
+                      <p className="text-[15px] leading-[1.6] text-muted">{sv.body}</p>
                     </div>
                   ))}
                 </div>
@@ -428,24 +424,24 @@ export default function Home() {
         </section>
 
         {/* ══ 04 · PROCESS ════════════════════════════════════ */}
-        <section className="bg-paper-warm border-y rule">
+        <section className="bg-ink text-paper">
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[88px] lg:py-[140px]">
             <div className="reveal max-w-[620px] mb-16 lg:mb-20">
-              <span className="label text-muted block mb-8">How it works</span>
-              <h2 className="display display-light d2 text-ink">Three steps, repeated with discipline.</h2>
+              <span className="label text-brass-lift block mb-8">How it works</span>
+              <h2 className="display display-light d2 text-paper">Three steps, repeated with discipline.</h2>
             </div>
 
             <div className="relative grid grid-cols-1 md:grid-cols-3 gap-y-14 md:gap-x-16">
-              <span aria-hidden className="hidden md:block absolute top-[13px] left-[8%] right-[8%] h-px bg-[color:var(--rule)]" />
+              <span aria-hidden className="hidden md:block absolute top-[13px] left-[8%] right-[8%] h-px bg-[color:var(--rule-dark)]" />
               {PROCESS.map((s, i) => (
                 <div key={s.index} style={{ transitionDelay: `${i * 100}ms` }} className="reveal relative">
                   <div className="flex items-center gap-4 mb-8">
-                    <span className="relative z-10 bg-paper-warm pr-4 numeral text-[26px] leading-none text-brass-ink">
+                    <span className="relative z-10 bg-ink pr-4 numeral text-[26px] leading-none text-brass-lift">
                       {s.index}
                     </span>
                   </div>
-                  <h3 className="display d3 text-ink mb-4">{s.title}</h3>
-                  <p className="text-[16px] leading-[1.68] text-muted measure">{s.body}</p>
+                  <h3 className="display d3 text-paper mb-4">{s.title}</h3>
+                  <p className="text-[16px] leading-[1.68] text-white/64 measure">{s.body}</p>
                 </div>
               ))}
             </div>
@@ -501,54 +497,63 @@ export default function Home() {
                       {isSig && <span className="label text-brass-ink">{plan.note}</span>}
                     </div>
 
-                    <div className={`flex flex-col flex-1 p-9 lg:p-10 border rule ${
-                      isSig ? 'bg-paper-warm' : 'bg-transparent'}`}>
+                    <div className={`flex flex-col flex-1 p-9 lg:p-10 border ${
+                      isSig ? 'bg-ink border-[color:var(--ink)] lg:-my-4 lg:py-14 shadow-[0_18px_50px_rgba(7,26,51,0.18)]'
+                      : isPremium ? 'bg-paper border-brass' : 'bg-transparent rule'}`}>
                       <div className="flex items-baseline justify-between mb-2">
-                        <h3 className={`display d3 ${isPremium ? 'text-brass-ink' : 'text-ink'}`}>{plan.name}</h3>
-                        <span className="numeral text-[13px] text-ink/25">{plan.index}</span>
+                        <h3 className={`display d3 ${
+                          isSig ? 'text-paper' : isPremium ? 'text-brass-ink' : 'text-ink'}`}>{plan.name}</h3>
+                        <span className={`numeral text-[13px] ${isSig ? 'text-white/35' : 'text-ink/25'}`}>{plan.index}</span>
                       </div>
-                      <p className="label text-muted mb-6">{plan.strap}</p>
-                      <p className="text-[15px] leading-[1.6] text-muted measure-sm mb-9">{plan.line}</p>
+                      <p className={`label mb-6 ${isSig ? 'text-brass-lift' : 'text-muted'}`}>{plan.strap}</p>
+                      <p className={`text-[15px] leading-[1.6] measure-sm mb-9 ${
+                        isSig ? 'text-white/70' : 'text-muted'}`}>{plan.line}</p>
 
                       <div className="mb-2">
                         <span key={annual ? 'a' : 'm'} className="hero-fade inline-flex items-start">
-                          <span className="display text-[19px] text-ink/55 mt-[10px] mr-[3px]">$</span>
-                          <span className="display display-light text-[54px] leading-[0.95] text-ink tnum">
+                          <span className={`display text-[19px] mt-[10px] mr-[3px] ${
+                            isSig ? 'text-white/55' : 'text-ink/55'}`}>$</span>
+                          <span className={`display display-light text-[54px] leading-[0.95] tnum ${
+                            isSig ? 'text-paper' : 'text-ink'}`}>
                             {annual ? plan.annual.toLocaleString() : plan.price}
                           </span>
                         </span>
                       </div>
-                      <p className="text-[13.5px] text-muted mb-2">{annual ? 'per year' : 'per month'}</p>
+                      <p className={`text-[13.5px] mb-2 ${isSig ? 'text-white/60' : 'text-muted'}`}>{annual ? 'per year' : 'per month'}</p>
                       {annual && (
-                        <span className="hero-fade inline-block self-start label text-brass-ink border rule px-2.5 py-1 mb-2">
+                        <span className={`hero-fade inline-block self-start label border px-2.5 py-1 mb-2 ${
+                          isSig ? 'text-brass-lift border-[color:var(--rule-dark)]' : 'text-brass-ink rule'}`}>
                           Save ${(plan.price * 12 - plan.annual).toLocaleString()}
                         </span>
                       )}
 
-                      <div className="py-4 border-y rule my-8">
-                        <span className="text-[14px] text-ink">{plan.cadence}</span>
+                      <div className={`py-4 border-y my-8 ${isSig ? 'border-[color:var(--rule-dark)]' : 'rule'}`}>
+                        <span className={`text-[14px] ${isSig ? 'text-paper' : 'text-ink'}`}>{plan.cadence}</span>
                       </div>
 
-                      {plan.inheritsFrom && (
-                        <p className="label text-ink mb-5">Everything in {plan.inheritsFrom}, plus</p>
-                      )}
-                      {!plan.inheritsFrom && <p className="label text-ink mb-5">Included</p>}
+                      <p className={`label mb-5 ${isSig ? 'text-paper' : 'text-ink'}`}>
+                        {plan.inheritsFrom ? `Everything in ${plan.inheritsFrom}, plus` : 'Included'}
+                      </p>
 
                       <ul className="space-y-3 mb-9 flex-1">
                         {plan.features.map((f) => (
-                          <li key={f} className="flex gap-3.5 text-[14.5px] leading-[1.5] text-text">
-                            <span className="mt-[8px] w-[3px] h-[3px] rounded-full bg-brass shrink-0" />
+                          <li key={f} className={`flex gap-3.5 text-[14.5px] leading-[1.5] ${
+                            isSig ? 'text-white/85' : 'text-text'}`}>
+                            <span className={`mt-[8px] w-[3px] h-[3px] rounded-full shrink-0 ${
+                              isSig ? 'bg-brass-lift' : 'bg-brass'}`} />
                             <span>{f}</span>
                           </li>
                         ))}
                       </ul>
 
-                      <div className="border-t rule pt-6 mb-7">
-                        <p className="label text-muted mb-4">Member benefits</p>
+                      <div className={`border-t pt-6 mb-7 ${isSig ? 'border-[color:var(--rule-dark)]' : 'rule'}`}>
+                        <p className={`label mb-4 ${isSig ? 'text-brass-lift' : 'text-muted'}`}>Member benefits</p>
                         <ul className="space-y-2.5">
                           {plan.benefits.map((b) => (
-                            <li key={b} className="flex gap-3 text-[14px] leading-[1.5] text-text">
-                              <Check size={14} strokeWidth={2} className="shrink-0 mt-[5px] text-brass" />
+                            <li key={b} className={`flex gap-3 text-[14px] leading-[1.5] ${
+                              isSig ? 'text-white/85' : 'text-text'}`}>
+                              <Check size={14} strokeWidth={2} className={`shrink-0 mt-[5px] ${
+                                isSig ? 'text-brass-lift' : 'text-brass'}`} />
                               <span>{b}</span>
                             </li>
                           ))}
@@ -568,7 +573,7 @@ export default function Home() {
                       <Link href={`/enquire?plan=${plan.id}`}
                         className={`block w-full py-[14px] text-center text-[14px] font-medium transition-colors duration-200 ${
                           isPremium ? 'bg-brass-ink text-paper hover:bg-ink'
-                          : isSig ? 'bg-ink text-paper hover:bg-ink-deep'
+                          : isSig ? 'bg-paper text-ink hover:bg-white'
                           : 'border border-[color:var(--ink)] text-ink hover:bg-ink hover:text-paper'}`}>
                         {plan.cta}
                       </Link>
@@ -755,10 +760,10 @@ export default function Home() {
             </HeadD>
 
             {/* Four areas across the full width — no sidebar. */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 border-t rule mb-20">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-20">
               {ASSESSMENT_AREAS.map((a, i) => (
                 <div key={a.title} style={{ transitionDelay: `${i * 80}ms` }}
-                  className={`reveal py-9 border-b rule ${i > 0 ? 'lg:border-l lg:pl-10 lg:-ml-px' : ''}`}>
+                  className="reveal tile">
                   <h3 className="display d4 text-ink mb-5">{a.title}</h3>
                   <ul className="space-y-2">
                     {a.items.map((it) => (
@@ -828,10 +833,10 @@ export default function Home() {
           </div>
 
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10 pb-[88px] lg:pb-[160px] pt-14 lg:pt-20">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 border-t rule">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {TRADE_SERVICES.map((sv, i) => (
                 <div key={sv.title} style={{ transitionDelay: `${(i % 3) * 70}ms` }}
-                  className="reveal py-8 border-b rule">
+                  className="reveal tile">
                   <h3 className="display d4 text-ink mb-2.5">{sv.title}</h3>
                   <p className="text-[15px] leading-[1.65] text-muted">{sv.body}</p>
                 </div>
@@ -876,7 +881,7 @@ export default function Home() {
         </section>
 
         {/* ══ 10 · SPECIALIST COORDINATION ════════════════════ */}
-        <section className="bg-paper-warm border-y rule">
+        <section className="bg-sand">
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[88px] lg:py-[160px]">
             <HeadB eyebrow="Specialist coordination"
               title={<>We organise the right professionals for the job.</>}
@@ -885,10 +890,10 @@ export default function Home() {
             </HeadB>
 
             {/* Six disciplines, three across — full width, no sidebar. */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 border-t rule mb-16">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-16">
               {COORDINATED.map((c, i) => (
                 <div key={c.title} style={{ transitionDelay: `${(i % 3) * 70}ms` }}
-                  className="reveal py-9 border-b rule">
+                  className="reveal tile">
                   <span className="numeral text-[13px] text-ink/30 block mb-4">
                     {String(i + 1).padStart(2, '0')}
                   </span>
@@ -944,7 +949,7 @@ export default function Home() {
         </section>
 
         {/* ══ 11 · COVERAGE ═══════════════════════════════════ */}
-        <section id="coverage" className="bg-sand">
+        <section id="coverage" className="bg-paper">
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[88px] lg:py-[160px]">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-14 lg:gap-x-20 items-center">
               <div className="reveal lg:col-span-5">
@@ -1020,10 +1025,10 @@ export default function Home() {
               title={<>More than maintenance.<br />Complete property care.</>}
               lede="Whether you are a homeowner, holiday home owner or property investor, we make it easy to keep your property safe, functional and looking its best." />
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 border-t rule">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {WHY_US.map((w, i) => (
                 <div key={w.title} style={{ transitionDelay: `${(i % 4) * 70}ms` }}
-                  className="reveal py-8 border-b rule">
+                  className="reveal tile">
                   <h3 className="display d4 text-ink mb-3">{w.title}</h3>
                   <p className="text-[15px] leading-[1.6] text-muted">{w.body}</p>
                 </div>
@@ -1057,9 +1062,9 @@ export default function Home() {
 
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[72px] lg:py-[110px]">
             <p className="reveal label text-muted mb-8">Why we exist</p>
-            <div className="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 border-t rule">
+            <div className="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {WHY_WE_EXIST.map((w) => (
-                <div key={w.title} className="py-8 border-b rule">
+                <div key={w.title} className="tile">
                   <h3 className="display d4 text-ink mb-3">{w.title}</h3>
                   <p className="text-[15px] leading-[1.6] text-muted">{w.body}</p>
                 </div>
@@ -1069,7 +1074,7 @@ export default function Home() {
         </section>
 
         {/* ══ 13 · WHO WE ARE ═════════════════════════════════ */}
-        <section className="bg-paper-warm border-y rule">
+        <section className="bg-sand">
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[88px] lg:py-[160px]">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-14 lg:gap-x-20 items-center">
               <div className="reveal lg:col-span-6">
@@ -1134,22 +1139,22 @@ export default function Home() {
         </section>
 
         {/* ══ 15 · TESTIMONIALS ═══════════════════════════════ */}
-        <section className="bg-paper">
+        <section className="bg-ink text-paper">
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[88px] lg:py-[140px]">
             <div className="reveal max-w-[900px]">
-              <span className="label text-muted block mb-12">In their words</span>
+              <span className="label text-brass-lift block mb-12">In their words</span>
               <div className="grid min-h-[220px] lg:min-h-[200px]">
                 {TESTIMONIALS.map((t, i) => (
                   <figure key={t.name} aria-hidden={i !== quote}
                     className={`col-start-1 row-start-1 transition-opacity duration-700 ${
                       i === quote ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-                    <blockquote className="display display-light text-[clamp(1.45rem,2.9vw,2.3rem)] leading-[1.32] text-ink mb-9">
+                    <blockquote className="display display-light text-[clamp(1.45rem,2.9vw,2.3rem)] leading-[1.32] text-paper mb-9">
                       {t.quote}
                     </blockquote>
                     <figcaption className="flex items-center gap-3">
-                      <span className="label text-muted">{t.name}</span>
-                      <span className="w-5 h-px bg-[color:var(--rule)]" />
-                      <span className="label text-brass-ink">{t.place}</span>
+                      <span className="label text-white/55">{t.name}</span>
+                      <span className="w-5 h-px bg-[color:var(--rule-dark)]" />
+                      <span className="label text-brass-lift">{t.place}</span>
                     </figcaption>
                   </figure>
                 ))}
@@ -1158,7 +1163,7 @@ export default function Home() {
                 {TESTIMONIALS.map((t, i) => (
                   <button key={t.name} onClick={() => setQuote(i)} aria-label={`Testimonial ${i + 1}`}
                     className={`h-px transition-all duration-500 ${
-                      i === quote ? 'w-12 bg-brass' : 'w-6 bg-ink/20 hover:bg-ink/40'}`} />
+                      i === quote ? 'w-12 bg-brass-lift' : 'w-6 bg-white/25 hover:bg-white/50'}`} />
                 ))}
               </div>
             </div>
