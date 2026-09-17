@@ -750,26 +750,38 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ══ 08 · ANNUAL PROPERTY HEALTH ASSESSMENT ══════════ */}
-        <section className="bg-sand">
+        {/* ══ 08 · ANNUAL ASSESSMENT — vertical ledger ═══════ */}
+        <section className="bg-ink-deep text-paper">
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[88px] lg:py-[160px]">
-            <HeadD index="01" eyebrow="Annual assessment"
-              title={<>Protect your investment before problems become expensive repairs.</>}
-              lede="Just like a regular health check-up, your property benefits from a comprehensive annual assessment to identify maintenance concerns before they become costly issues.">
-              <Brochure slug="annual-health-assessment" />
-            </HeadD>
+            <div className="reveal mb-16 lg:mb-24 max-w-[700px]">
+              <span className="label text-brass-lift block mb-8">Annual assessment</span>
+              <h2 className="display display-light d2 text-paper mb-7">
+                Protect your investment before problems become expensive repairs.
+              </h2>
+              <p className="lede text-white/64 measure">
+                Like a regular health check-up for the property — a single deep assessment each
+                year that finds what monthly visits are not looking for.
+              </p>
+            </div>
 
-            {/* Four areas across the full width — no sidebar. */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-20">
+            {/* A ledger running down a single rule — not a grid of boxes. */}
+            <div className="relative pl-8 lg:pl-16 mb-20">
+              <span aria-hidden className="absolute left-0 lg:left-4 top-2 bottom-2 w-px bg-[color:var(--rule-dark)]" />
               {ASSESSMENT_AREAS.map((a, i) => (
-                <div key={a.title} style={{ transitionDelay: `${i * 80}ms` }}
-                  className="reveal tile">
-                  <h3 className="display d4 text-ink mb-5">{a.title}</h3>
-                  <ul className="space-y-2">
+                <div key={a.title} style={{ transitionDelay: `${i * 90}ms` }}
+                  className="reveal relative grid grid-cols-1 lg:grid-cols-12 gap-y-4 lg:gap-x-12 py-9 lg:py-11 border-b rule-dark last:border-0">
+                  <span aria-hidden
+                    className="absolute -left-8 lg:-left-[4.1rem] top-[2.9rem] w-2 h-2 rounded-full bg-brass-lift" />
+                  <div className="lg:col-span-4">
+                    <span className="numeral text-[13px] text-white/35 block mb-3">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <h3 className="display d3 text-paper">{a.title}</h3>
+                  </div>
+                  <ul className="lg:col-span-8 flex flex-wrap gap-x-7 gap-y-2.5 self-center">
                     {a.items.map((it) => (
-                      <li key={it} className="flex gap-3 text-[14.5px] leading-[1.55] text-muted">
-                        <span className="mt-[9px] w-2 h-px bg-[color:var(--rule)] shrink-0" />
-                        <span>{it}</span>
+                      <li key={it} className="text-[15px] text-white/70 whitespace-nowrap">
+                        {it}
                       </li>
                     ))}
                   </ul>
@@ -777,40 +789,35 @@ export default function Home() {
               ))}
             </div>
 
-            {/* Dark inset panel spanning the full measure. */}
-            <div className="reveal bg-ink text-paper p-9 lg:p-14">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-12 lg:gap-x-16">
-                <div className="lg:col-span-5">
-                  <p className="label text-brass-lift mb-7">Your property health report</p>
-                  <ul className="space-y-3.5">
-                    {ASSESSMENT_DELIVERABLES.map((d) => (
-                      <li key={d} className="flex gap-3.5 text-[15px] leading-[1.5] text-white/85">
-                        <Check size={15} strokeWidth={2} className="shrink-0 mt-[5px] text-brass-lift" />
-                        <span>{d}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="lg:col-span-6 lg:col-start-7">
-                  <p className="label text-brass-lift mb-7">Why an annual assessment</p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 border-t rule-dark">
-                    {ASSESSMENT_REASONS.map((r) => (
-                      <div key={r.title} className="py-5 border-b rule-dark">
-                        <h4 className="display d4 text-paper mb-1.5">{r.title}</h4>
-                        <p className="text-[14.5px] leading-[1.55] text-white/60">{r.body}</p>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-9 pt-7 border-t rule-dark">
-                    <p className="label text-white/45 mb-4">Ideal for</p>
-                    <div className="flex flex-wrap gap-x-6 gap-y-2">
-                      {IDEAL_FOR.map((t) => (
-                        <span key={t} className="text-[14.5px] text-white/80">{t}</span>
-                      ))}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-12 lg:gap-x-16">
+              <div className="reveal lg:col-span-5">
+                <p className="label text-brass-lift mb-7">Your property health report</p>
+                <ul className="space-y-3">
+                  {ASSESSMENT_DELIVERABLES.map((d) => (
+                    <li key={d} className="flex gap-3.5 text-[15px] leading-[1.5] text-white/85">
+                      <Check size={15} strokeWidth={2} className="shrink-0 mt-[5px] text-brass-lift" />
+                      <span>{d}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="reveal lg:col-span-6 lg:col-start-7">
+                <p className="label text-brass-lift mb-7">Why an annual assessment</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10">
+                  {ASSESSMENT_REASONS.map((r) => (
+                    <div key={r.title} className="py-5 border-b rule-dark">
+                      <h4 className="display d4 text-paper mb-1.5">{r.title}</h4>
+                      <p className="text-[14.5px] leading-[1.55] text-white/60">{r.body}</p>
                     </div>
-                  </div>
+                  ))}
                 </div>
+                <div className="mt-9 pt-7 border-t rule-dark flex flex-wrap items-baseline gap-x-6 gap-y-2">
+                  <span className="label text-white/45">Ideal for</span>
+                  {IDEAL_FOR.map((t) => (
+                    <span key={t} className="text-[14.5px] text-white/80">{t}</span>
+                  ))}
+                </div>
+                <div className="mt-9"><Brochure slug="annual-health-assessment" dark /></div>
               </div>
             </div>
           </div>
@@ -880,42 +887,41 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ══ 10 · SPECIALIST COORDINATION ════════════════════ */}
-        <section className="bg-sand">
-          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[88px] lg:py-[160px]">
+        {/* ══ 10 · SPECIALIST COORDINATION — directory ════════ */}
+        <section className="bg-paper">
+          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 pt-[88px] lg:pt-[160px] pb-[72px] lg:pb-[100px]">
             <HeadB eyebrow="Specialist coordination"
               title={<>We organise the right professionals for the job.</>}
               lede="Not every issue requires a handyman. Some situations require licensed trades, qualified inspectors or specialist contractors. We coordinate trusted local professionals on your behalf.">
               <Brochure slug="specialist-coordination" />
             </HeadB>
 
-            {/* Six disciplines, three across — full width, no sidebar. */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-16">
+            {/* An index: large left label, inline right entries. */}
+            <div className="border-t rule">
               {COORDINATED.map((c, i) => (
-                <div key={c.title} style={{ transitionDelay: `${(i % 3) * 70}ms` }}
-                  className="reveal tile">
-                  <span className="numeral text-[13px] text-ink/30 block mb-4">
+                <div key={c.title} style={{ transitionDelay: `${i * 60}ms` }}
+                  className="reveal grid grid-cols-1 lg:grid-cols-12 gap-y-3 lg:gap-x-12 py-8 border-b rule items-baseline group">
+                  <span className="lg:col-span-1 numeral text-[15px] text-ink/28">
                     {String(i + 1).padStart(2, '0')}
                   </span>
-                  <h3 className="display d4 text-ink mb-4">{c.title}</h3>
-                  <ul className="space-y-2">
+                  <h3 className="lg:col-span-4 display d3 text-ink group-hover:text-brass-ink transition-colors duration-300">
+                    {c.title}
+                  </h3>
+                  <ul className="lg:col-span-7 flex flex-wrap gap-x-6 gap-y-2">
                     {c.items.map((it) => (
-                      <li key={it} className="flex gap-3 text-[14.5px] leading-[1.55] text-muted">
-                        <span className="mt-[9px] w-2 h-px bg-[color:var(--rule)] shrink-0" />
-                        <span>{it}</span>
-                      </li>
+                      <li key={it} className="text-[14.5px] text-muted">{it}</li>
                     ))}
                   </ul>
                 </div>
               ))}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-10 lg:gap-x-16 mb-14">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-10 lg:gap-x-16 mt-16">
               <div className="reveal lg:col-span-5">
                 <p className="label text-muted mb-5">Coordination fees</p>
                 <p className="text-[15.5px] leading-[1.68] text-muted measure">
-                  We charge a coordination and management fee for organising specialist inspections
-                  and contractors. Fees are tailored to the scope and complexity of each project,
+                  We charge a coordination and management fee for organising specialist
+                  inspections and contractors. Fees are tailored to the scope of each project
                   and confirmed with you in advance.
                 </p>
                 <p className="display text-[clamp(1.15rem,1.7vw,1.4rem)] text-ink leading-[1.38] mt-8 border-l-2 border-brass pl-6">
@@ -924,9 +930,9 @@ export default function Home() {
               </div>
               <div className="reveal lg:col-span-6 lg:col-start-7">
                 <p className="label text-muted mb-6">Our service may include</p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 border-t rule">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10">
                   {COORDINATION_INCLUDES.map((t) => (
-                    <div key={t} className="py-4 border-b rule flex gap-3.5 text-[14.5px] leading-[1.5] text-text">
+                    <div key={t} className="py-3.5 border-b rule flex gap-3.5 text-[14.5px] leading-[1.5] text-text">
                       <Check size={14} strokeWidth={2} className="shrink-0 mt-[5px] text-brass" />
                       <span>{t}</span>
                     </div>
@@ -934,13 +940,15 @@ export default function Home() {
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Regulatory scope — full width, and deliberately the most
-                prominent block in the section. */}
-            <div className="reveal bg-ink text-paper p-9 lg:p-12">
+          {/* Full-bleed. The regulatory statement is the one thing on the page
+              that should be impossible to scroll past. */}
+          <div className="reveal w-full bg-ink text-paper">
+            <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-12 lg:py-16">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-5 lg:gap-x-16 items-start">
                 <p className="lg:col-span-3 label text-brass-lift">Important information</p>
-                <p className="lg:col-span-9 text-[15px] leading-[1.75] text-white/82 max-w-[68ch]">
+                <p className="lg:col-span-9 text-[15.5px] leading-[1.75] text-white/85 max-w-[68ch]">
                   {LICENSING_NOTICE}
                 </p>
               </div>
@@ -949,7 +957,7 @@ export default function Home() {
         </section>
 
         {/* ══ 11 · COVERAGE ═══════════════════════════════════ */}
-        <section id="coverage" className="bg-paper">
+        <section id="coverage" className="bg-sand">
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[88px] lg:py-[160px]">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-14 lg:gap-x-20 items-center">
               <div className="reveal lg:col-span-5">
@@ -989,9 +997,9 @@ export default function Home() {
                 <svg viewBox="0 0 600 260" className="w-full h-auto" role="img"
                   aria-label="Stylised map of the Mornington Peninsula showing serviced suburbs">
                   <path d="M556 8 C 520 34, 470 74, 404 96 C 330 121, 262 134, 196 148 C 150 158, 110 142, 74 116 C 52 100, 34 86, 20 78"
-                    fill="none" stroke="var(--ink)" strokeOpacity="0.32" strokeWidth="1.25" strokeLinecap="round" />
+                    fill="none" stroke="var(--ink)" strokeOpacity="0.55" strokeWidth="2" strokeLinecap="round" />
                   <path d="M566 30 C 528 60, 476 100, 408 124 C 332 150, 258 164, 190 176 C 142 185, 100 168, 62 138 C 40 120, 24 106, 12 98"
-                    fill="none" stroke="var(--ink)" strokeOpacity="0.14" strokeWidth="1" strokeLinecap="round" strokeDasharray="2 5" />
+                    fill="none" stroke="var(--ink)" strokeOpacity="0.26" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="3 6" />
                   {SUBURBS.map((s) => {
                     const on = hoverSuburb === s.name;
                     const cx = s.x * 0.92 + 22;
@@ -1000,11 +1008,11 @@ export default function Home() {
                       <g key={s.name}
                         onMouseEnter={() => setHoverSuburb(s.name)}
                         onMouseLeave={() => setHoverSuburb(null)} style={{ cursor: 'default' }}>
-                        <circle cx={cx} cy={cy} r={on ? 5 : 3}
-                          fill={on ? 'var(--brass)' : 'var(--ink)'} fillOpacity={on ? 1 : 0.42}
+                        <circle cx={cx} cy={cy} r={on ? 7 : 4.5}
+                          fill={on ? 'var(--brass)' : 'var(--ink)'} fillOpacity={on ? 1 : 0.7}
                           style={{ transition: 'all 200ms var(--ease)' }} />
-                        <text x={cx} y={cy - 13} textAnchor="middle" fontSize="10.5" letterSpacing="1.6"
-                          fill={on ? 'var(--brass-ink)' : 'var(--muted)'} fontWeight={on ? 600 : 400}
+                        <text x={cx} y={cy - 16} textAnchor="middle" fontSize="13" letterSpacing="1.8"
+                          fill={on ? 'var(--brass-ink)' : 'var(--ink)'} fontWeight={on ? 700 : 600}
                           style={{ textTransform: 'uppercase', transition: 'all 200ms var(--ease)' }}>
                           {s.name}
                         </text>
@@ -1025,12 +1033,17 @@ export default function Home() {
               title={<>More than maintenance.<br />Complete property care.</>}
               lede="Whether you are a homeowner, holiday home owner or property investor, we make it easy to keep your property safe, functional and looking its best." />
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-20 border-t rule">
               {WHY_US.map((w, i) => (
-                <div key={w.title} style={{ transitionDelay: `${(i % 4) * 70}ms` }}
-                  className="reveal tile">
-                  <h3 className="display d4 text-ink mb-3">{w.title}</h3>
-                  <p className="text-[15px] leading-[1.6] text-muted">{w.body}</p>
+                <div key={w.title} style={{ transitionDelay: `${(i % 2) * 80}ms` }}
+                  className="reveal grid grid-cols-[auto_1fr] gap-x-7 py-8 border-b rule items-baseline">
+                  <span className="numeral text-[15px] text-brass-ink">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <div>
+                    <h3 className="display d3 text-ink mb-2.5">{w.title}</h3>
+                    <p className="text-[15.5px] leading-[1.65] text-muted">{w.body}</p>
+                  </div>
                 </div>
               ))}
             </div>
@@ -1042,9 +1055,10 @@ export default function Home() {
 
           {/* Photographic band carrying the community line. */}
           <div className="relative w-full min-h-[420px] lg:min-h-[500px] flex items-center overflow-hidden">
-            <Image src="/img/pool.jpg" alt="" fill sizes="100vw" className="object-cover" />
+            <Image src="/img/coast.jpg" alt="" fill sizes="100vw"
+              className="object-cover object-[62%_58%]" />
             <div className="absolute inset-0" style={{ background:
-              'linear-gradient(90deg, rgba(7,26,51,0.93) 0%, rgba(7,26,51,0.80) 42%, rgba(7,26,51,0.36) 78%, rgba(7,26,51,0.22) 100%)' }} />
+              'linear-gradient(90deg, rgba(7,26,51,0.90) 0%, rgba(7,26,51,0.66) 36%, rgba(7,26,51,0.26) 66%, rgba(7,26,51,0.12) 100%)' }} />
             <div className="relative w-full mx-auto max-w-[1240px] px-6 lg:px-10 py-16">
               <div className="max-w-[560px]">
                 <span className="label text-brass-lift block mb-7">Supporting our local community</span>
@@ -1062,9 +1076,10 @@ export default function Home() {
 
           <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[72px] lg:py-[110px]">
             <p className="reveal label text-muted mb-8">Why we exist</p>
-            <div className="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {WHY_WE_EXIST.map((w) => (
-                <div key={w.title} className="tile">
+            <div className="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-t rule">
+              {WHY_WE_EXIST.map((w, i) => (
+                <div key={w.title} className={`py-9 lg:pr-9 border-b rule ${
+                  i > 0 ? 'lg:border-l lg:pl-9 lg:-ml-px' : ''}`}>
                   <h3 className="display d4 text-ink mb-3">{w.title}</h3>
                   <p className="text-[15px] leading-[1.6] text-muted">{w.body}</p>
                 </div>
@@ -1140,15 +1155,18 @@ export default function Home() {
 
         {/* ══ 15 · TESTIMONIALS ═══════════════════════════════ */}
         <section className="bg-ink text-paper">
-          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[88px] lg:py-[140px]">
-            <div className="reveal max-w-[900px]">
-              <span className="label text-brass-lift block mb-12">In their words</span>
-              <div className="grid min-h-[220px] lg:min-h-[200px]">
+          <div className="mx-auto max-w-[1240px] px-6 lg:px-10 py-[80px] lg:py-[120px]">
+            <div className="reveal max-w-[1000px]">
+              <div className="flex items-center gap-4 mb-10">
+                <span className="block w-11 h-px bg-brass-lift" />
+                <span className="label text-brass-lift">In their words</span>
+              </div>
+              <div className="grid min-h-[230px] lg:min-h-[260px]">
                 {TESTIMONIALS.map((t, i) => (
                   <figure key={t.name} aria-hidden={i !== quote}
                     className={`col-start-1 row-start-1 transition-opacity duration-700 ${
                       i === quote ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-                    <blockquote className="display display-light text-[clamp(1.45rem,2.9vw,2.3rem)] leading-[1.32] text-paper mb-9">
+                    <blockquote className="display display-light text-[clamp(1.75rem,3.9vw,3.1rem)] leading-[1.26] text-paper mb-10">
                       {t.quote}
                     </blockquote>
                     <figcaption className="flex items-center gap-3">
