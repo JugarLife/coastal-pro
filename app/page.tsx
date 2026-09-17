@@ -1302,14 +1302,16 @@ export default function Home() {
               </div>
               <div>
                 <p className="label text-white/70 mb-4">Contact</p>
-                <a href="tel:0417349071" onClick={() => track('phone_click')} className="block text-[14.5px] text-brass-lift hover:text-paper transition-colors tnum mb-1.5">
+                <a href="tel:0417349071" onClick={() => track('phone_click')}
+                  className="block py-2 text-[14.5px] text-brass-lift hover:text-paper transition-colors tnum">
                   0417 349 071
                 </a>
-                <Link href="/enquire" className="block text-[14.5px] hover:text-paper transition-colors mb-1.5">
+                <Link href="/enquire" className="block py-2 text-[14.5px] hover:text-paper transition-colors">
                   Send an enquiry
                 </Link>
                 <a href="/brochure/coastal-pro-brochure.pdf" download
-                  className="block text-[14.5px] hover:text-paper transition-colors">
+                  onClick={() => track('brochure_download', { section: 'footer-full' })}
+                  className="block py-2 text-[14.5px] hover:text-paper transition-colors">
                   Download brochure
                 </a>
               </div>
