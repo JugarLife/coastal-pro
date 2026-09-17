@@ -10,7 +10,7 @@ import {
   CARE_SERVICES, TRADE_SERVICES, COORDINATED, COORDINATION_INCLUDES, LICENSING_NOTICE,
   ASSESSMENT_AREAS, ASSESSMENT_DELIVERABLES, ASSESSMENT_REASONS, IDEAL_FOR,
   WHY_US, WHY_WE_EXIST, REPORT_CONDITIONS, REPORT_FINDINGS,
-  SUBURBS, WIDER_AREA, FAQS, TESTIMONIALS,
+  SUBURBS, WIDER_AREA, FAQS, TESTIMONIALS, PENINSULA_PATH, PENINSULA_VIEWBOX,
 } from './data';
 
 const PREMIUM_CAP = 5;
@@ -694,7 +694,7 @@ export default function Home() {
                     </div>
 
                     <div className="grid grid-cols-3 gap-6 py-6 border-b rule">
-                      {[['Attendance', 'Scheduled'], ['Duration', '48 minutes'], ['Attended by', 'D. Sidebottom']].map(([k, v]) => (
+                      {[['Attendance', 'Scheduled'], ['Duration', '48 minutes'], ['Attended by', 'C. Lacey']].map(([k, v]) => (
                         <div key={k}>
                           <p className="label text-muted mb-2">{k}</p>
                           <p className="text-[14px] text-text">{v}</p>
@@ -1016,33 +1016,60 @@ export default function Home() {
               </div>
 
               <div className="reveal lg:col-span-7">
-                <svg viewBox="0 0 600 260" className="w-full h-auto" role="img"
-                  aria-label="Stylised map of the Mornington Peninsula showing serviced suburbs">
-                  <path d="M556 8 C 520 34, 470 74, 404 96 C 330 121, 262 134, 196 148 C 150 158, 110 142, 74 116 C 52 100, 34 86, 20 78"
-                    fill="none" stroke="var(--ink)" strokeOpacity="0.55" strokeWidth="2" strokeLinecap="round" />
-                  <path d="M566 30 C 528 60, 476 100, 408 124 C 332 150, 258 164, 190 176 C 142 185, 100 168, 62 138 C 40 120, 24 106, 12 98"
-                    fill="none" stroke="var(--ink)" strokeOpacity="0.26" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="3 6" />
-                  {SUBURBS.map((s) => {
-                    const on = hoverSuburb === s.name;
-                    const cx = s.x * 0.92 + 22;
-                    const cy = s.y * 0.72 + 22;
+                <svg viewBox={PENINSULA_VIEWBOX} className="w-full h-auto" role="img"
+                  aria-label="Map of the Mornington Peninsula showing the suburbs Coastal Pro services">
+                  {/* The source map is clipped by the brochure page edge, so the
+                      trace inherits a straight eastern boundary. Fading that edge
+                      turns the artefact into an honest statement: the Peninsula
+                      continues past where we work. */}
+                  <defs>
+                    <linearGradient id="coastFade" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="white" stopOpacity="1" />
+                      <stop offset="72%" stopColor="white" stopOpacity="1" />
+                      <stop offset="100%" stopColor="white" stopOpacity="0" />
+                    </linearGradient>
+                    <mask id="coastMask">
+                      <rect x="-60" y="-80" width="1120" height="910" fill="url(#coastFade)" />
+                    </mask>
+                  </defs>
+
+                  <g mask="url(#coastMask)">
+                    <path d={PENINSULA_PATH} fill="var(--ink)" fillOpacity="0.10"
+                      stroke="var(--ink)" strokeOpacity="0.5" strokeWidth="2.5"
+                      strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+                  </g>
+
+                  {SUBURBS.map((sub) => {
+                    const on = hoverSuburb === sub.name;
+                    const leftHalf = sub.x < 480;
                     return (
-                      <g key={s.name}
-                        onMouseEnter={() => setHoverSuburb(s.name)}
-                        onMouseLeave={() => setHoverSuburb(null)} style={{ cursor: 'default' }}>
-                        <circle cx={cx} cy={cy} r={on ? 7 : 4.5}
-                          fill={on ? 'var(--brass)' : 'var(--ink)'} fillOpacity={on ? 1 : 0.7}
-                          style={{ transition: 'all 200ms var(--ease)' }} />
-                        <text x={cx} y={cy - 16} textAnchor="middle" fontSize="13" letterSpacing="1.8"
-                          fill={on ? 'var(--brass-ink)' : 'var(--ink)'} fontWeight={on ? 700 : 600}
-                          style={{ textTransform: 'uppercase', transition: 'all 200ms var(--ease)' }}>
-                          {s.name}
-                        </text>
+                      <g key={sub.name}
+                        onMouseEnter={() => setHoverSuburb(sub.name)}
+                        onMouseLeave={() => setHoverSuburb(null)}
+                        style={{ cursor: 'default' }}>
+                        {/* generous invisible hit area */}
+                        <circle cx={sub.x} cy={sub.y} r={34} fill="transparent" />
+                        {on && (
+                          <>
+                            <line x1={sub.x} y1={sub.y} x2={sub.x} y2={sub.y - 40}
+                              stroke="var(--brass)" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
+                            <text x={sub.x} y={sub.y - 52}
+                              textAnchor={leftHalf ? 'start' : 'end'}
+                              fontSize="30" letterSpacing="3.4" fontWeight={600}
+                              fill="var(--brass-ink)"
+                              style={{ textTransform: 'uppercase' }}>
+                              {sub.name}
+                            </text>
+                          </>
+                        )}
+                        <circle cx={sub.x} cy={sub.y} r={on ? 13 : 8}
+                          fill={on ? 'var(--brass)' : 'var(--ink)'}
+                          fillOpacity={on ? 1 : 0.55}
+                          style={{ transition: 'all 220ms var(--ease)' }} />
                       </g>
                     );
                   })}
                 </svg>
-                <p className="label text-muted/70 mt-6">Indicative — not to scale</p>
               </div>
             </div>
           </div>
@@ -1142,7 +1169,7 @@ export default function Home() {
                 </div>
 
                 <ul className="mt-10 border-t rule">
-                  {[['Dale', 'Carpenter — Cert III Carpentry, [licence no.]'],
+                  {[['Chris Lacey', 'Builder — [licence no.]'],
                     ['[Name]', '[Trade and qualification]']].map(([n, r]) => (
                     <li key={n} className="py-4 border-b rule flex items-baseline gap-5">
                       <span className="display d4 text-ink w-[92px] shrink-0">{n}</span>

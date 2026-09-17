@@ -43,9 +43,10 @@ Everything below must be resolved before a domain is pointed at this site.
       branded ute, coastal light, mid-morning. Mid-work and slightly candid,
       not smiling at camera. Wide cinematic crop.
 
-- [ ] **Team names and qualifications** — one row is filled, the second is
-      `[Name]` / `[Trade and qualification]`. Anonymity is the enemy of trust
-      for a business built on key access.
+- [ ] **Team names and qualifications** — Chris Lacey (builder) is listed but
+      still needs a licence number; the second row is `[Name]` /
+      `[Trade and qualification]`. Anonymity is the enemy of trust for a
+      business built on key access.
 
 - [ ] **Process photography (optional but recommended)** — a hand on a
       downpipe, a phone photographing a deck joint, a laptop with the report

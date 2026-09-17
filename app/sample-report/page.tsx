@@ -88,7 +88,7 @@ export default function SampleReport() {
                 ['Membership', 'Premium'],
                 ['Attendance', 'Scheduled — weekly'],
                 ['Duration', '48 minutes'],
-                ['Attended by', 'D. Sidebottom'],
+                ['Attended by', 'C. Lacey'],
               ].map(([k, v]) => (
                 <div key={k}>
                   <p className="label text-muted mb-2">{k}</p>
