@@ -2,14 +2,9 @@ import type { NextConfig } from 'next';
 
 const CANONICAL = 'coastalpropropertycare.com';
 
-/* Every other hostname we own folds into the canonical one with a 308,
-   so the .net.au keeps working for anything already printed or linked,
-   and search engines consolidate onto a single host. */
-const ALIASES = [
-  `www.${CANONICAL}`,
-  'coastalpropertycare.net.au',
-  'www.coastalpropertycare.net.au',
-];
+/* www folds into the bare host with a 308 so search engines consolidate
+   onto one hostname rather than splitting authority across two. */
+const ALIASES = [`www.${CANONICAL}`];
 
 const nextConfig: NextConfig = {
   async redirects() {
