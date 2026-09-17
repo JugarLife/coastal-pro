@@ -86,6 +86,7 @@ export async function POST(request: Request) {
   const to = process.env.ENQUIRY_TO;
   const key = process.env.RESEND_API_KEY;
   let delivered = false;
+  let reason: string | undefined;
 
   if (key && to) {
     try {
@@ -105,18 +106,64 @@ export async function POST(request: Request) {
       });
       delivered = res.ok;
       if (!res.ok) {
-        console.error('[enquiry] delivery failed', res.status, await res.text());
+        const body = await res.text();
+        console.error('[enquiry] delivery failed', res.status, body);
+        // Short, non-sensitive code so a failure is diagnosable from the
+        // response rather than only from logs we may not be able to read.
+        let detail = '';
+        try {
+          const j = JSON.parse(body);
+          detail = String(j.message || j.name || '').slice(0, 160);
+        } catch {
+          detail = body.slice(0, 160);
+        }
+        reason = `resend_${res.status}: ${detail}`;
       }
     } catch (err) {
       console.error('[enquiry] delivery threw', err);
+      reason = 'network_error';
     }
   } else {
     console.warn(
       '[enquiry] RESEND_API_KEY / ENQUIRY_TO not set — enquiry logged only, NOT delivered.',
     );
+    reason = !key ? 'missing_api_key' : 'missing_enquiry_to';
   }
 
   console.log(`[enquiry]\n${summary}\ndelivered=${delivered}`);
 
-  return NextResponse.json({ ok: true, delivered, reference });
+  return NextResponse.json({ ok: true, delivered, reference, ...(reason ? { reason } : {}) });
+}
+
+/* Diagnostic probe. Reports only whether configuration is present and what
+   Resend says about the sending domain — never the key or its value. */
+export async function GET() {
+  const key = process.env.RESEND_API_KEY;
+  const out: Record<string, unknown> = {
+    hasApiKey: Boolean(key),
+    hasEnquiryTo: Boolean(process.env.ENQUIRY_TO),
+    hasEnquiryFrom: Boolean(process.env.ENQUIRY_FROM),
+    fromDomain: (process.env.ENQUIRY_FROM || '').split('@')[1]?.replace('>', '') || null,
+  };
+
+  if (key) {
+    try {
+      const res = await fetch('https://api.resend.com/domains', {
+        headers: { Authorization: `Bearer ${key}` },
+      });
+      out.resendStatus = res.status;
+      if (res.ok) {
+        const j = await res.json();
+        out.domains = (j.data || []).map((d: { name: string; status: string }) => ({
+          name: d.name, status: d.status,
+        }));
+      } else {
+        out.resendError = (await res.text()).slice(0, 200);
+      }
+    } catch {
+      out.resendStatus = 'unreachable';
+    }
+  }
+
+  return NextResponse.json(out);
 }
